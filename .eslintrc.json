@@ -1,3 +1,46 @@
 {
-  "extends": "next/core-web-vitals"
+  "root": true,
+  "plugins": ["@typescript-eslint", "import-helpers"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:tailwindcss/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    // Essa regra é para que o eslint consigo fornecer uma organização padrão para os imports
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          ["/^react/", "/^next/", "/^@next/"],
+          ["/constants/", "/types/"],
+          ["parent", "sibling", "index"],
+          ["/clsx/", "/tailwind/", "/styles/"],
+          ["/usecases/", "/adapters/", "/services/", "/entities/"]
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
+        }
+      }
+    ],
+    // Permite classes customizadas no tailwind
+    "tailwindcss/no-custom-classname": ["off"],
+    // Não permite classes que se contradizem no tailwind (ex: h-2 h-4)
+    "tailwindcss/no-contradicting-classname": [
+      "warn",
+      {
+        "callees": ["classnames", "clsx", "ctl", "cva", "tv", "twm"]
+      }
+    ]
+  }
 }
