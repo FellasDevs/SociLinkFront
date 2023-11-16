@@ -9,11 +9,6 @@ export const metadata: Metadata = {
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt">
-    <body className='flex min-h-screen'>
-
     <main>{children}</main>
-    </body>
-    </html>
   )
 }

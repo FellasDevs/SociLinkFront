@@ -1,4 +1,7 @@
+import Link from 'next/link';
 import { FC, ReactNode } from 'react';
+
+import { Button } from '@/components/ui/button';
 
 type Props = {
   children: ReactNode;
@@ -7,8 +10,10 @@ type Props = {
 
 export const SidebarItem: FC<Props> = ({ children, href }) => {
   return (
-    <a href={href} className='rounded-lg bg-primary p-2 text-bg-light hover:bg-info'>
-      {children}
-    </a>
+    <Link href={href} passHref>
+      <Button className='w-full'>
+        {children}
+      </Button >
+    </Link>
   )
 }
