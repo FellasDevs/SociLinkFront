@@ -1,17 +1,14 @@
-'use client'
-
-import { useRouter } from 'next/navigation';
+'use client';
 
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/auth';
 
 export const LogoutButton = () => {
-const router = useRouter()
-  const logout = () => {
-    document.cookie = "token=;"
-    router.push('/login')
-  }
+  const { logout } = useAuth();
 
   return (
-    <Button onClick={logout} className='mt-auto rounded shadow'>Sair</Button>
+    <Button onClick={logout} className='mt-auto rounded shadow'>
+      Sair
+    </Button>
   )
 }

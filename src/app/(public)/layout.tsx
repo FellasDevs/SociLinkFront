@@ -7,8 +7,12 @@ export const metadata: Metadata = {
   description: 'Rede Social muito boa',
 }
 
-export default function PublicLayout({ children }: { children: ReactNode }) {
+type Props = { children: ReactNode }
+
+export default function PublicLayout({ children }: Props) {
   return (
-    <main>{children}</main>
+    <main>
+      {children}
+    </main>
   )
 }

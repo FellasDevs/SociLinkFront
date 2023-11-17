@@ -6,15 +6,23 @@ import { ReactNode } from 'react';
 
 import { Navbar } from '@/components/layout/navbar';
 import { Sidebar } from '@/components/layout/sidebar';
+import { GetSelfRequest } from '@/http/requests/users';
 
 export const metadata: Metadata = {
   title: 'SociLink',
   description: 'Rede Social muito boa',
 }
 
-export default function AuthenticatedLayout({ children }: { children: ReactNode }) {
-  if (!cookies().get('token')?.value) {
-    redirect('/login');
+export default async function AuthenticatedLayout({ children }: { children: ReactNode }) {
+  if (!cookies().get('authToken')?.value) {
+    redirect('/auth');
+  }
+
+  const user = await GetSelfRequest();
+
+  if (!user) {
+    cookies().set('authToken', '');
+    redirect('/auth');
   }
 
   return (
