@@ -30,14 +30,8 @@ export const useAuth = () => {
     }
   };
 
-  const logout = () => {
-    setCookie('authToken', '');
-    router.push('/auth')
-  }
-
   return {
     signIn,
     signUp,
-    logout,
   }
 }

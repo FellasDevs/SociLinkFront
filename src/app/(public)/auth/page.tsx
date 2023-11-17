@@ -1,12 +1,14 @@
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { AuthComponent } from '@/components/auth';
 import { GetSelfRequest } from '@/http/requests/users';
 
-export default async function Login () {
-  const user = await GetSelfRequest();
-
-  if (!!user) redirect('/');
+export default async function Auth () {
+  if (cookies().get('authToken')?.value) {
+    const user = await GetSelfRequest();
+    if (!!user) redirect('/');
+  }
 
   return (
     <div className='flex min-h-screen items-center justify-center'>

@@ -23,7 +23,9 @@ export const Sidebar = () => {
             <SidebarItem href='/alo'>Configurações</SidebarItem>
           </div>
 
-          <LogoutButton />
+          <div className='mt-auto'>
+            <LogoutButton />
+          </div>
         </div>
     </div>
   )

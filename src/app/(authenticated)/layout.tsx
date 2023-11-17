@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '../../styles/globals.css';
+import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
@@ -13,17 +14,17 @@ export const metadata: Metadata = {
   description: 'Rede Social muito boa',
 }
 
+const logout = () => {
+  revalidateTag('getSelf');
+  redirect('/auth');
+}
+
 export default async function AuthenticatedLayout({ children }: { children: ReactNode }) {
-  if (!cookies().get('authToken')?.value) {
-    redirect('/auth');
-  }
+  if (!cookies().get('authToken')?.value) logout();
 
   const user = await GetSelfRequest();
 
-  if (!user) {
-    cookies().set('authToken', '');
-    redirect('/auth');
-  }
+  if (!user) logout();
 
   return (
     <div className='flex min-h-screen'>
