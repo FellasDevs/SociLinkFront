@@ -1,11 +1,11 @@
-import { ToggleThemeBtn } from '@/components/layout/theme-provider/ToggleThemeBtn';
+import { ProfileIcon } from '@/components/layout/navbar/ProfileIcon';
+import { ThemeButton } from '@/components/layout/theme-button';
 
 export const Navbar = () => {
   return (
     <div className='flex justify-end gap-5 p-2'>
-      <div>Usuário aqui</div>
-
-      <ToggleThemeBtn />
+      <ProfileIcon />
+      <ThemeButton />
     </div>
   )
 }
