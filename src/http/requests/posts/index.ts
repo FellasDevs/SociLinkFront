@@ -1,4 +1,4 @@
-import { User } from '@/types/User';
+import { User } from '@/types/models/User';
 
 import { fetchClient } from '@/http/http-client/fetch';
 
