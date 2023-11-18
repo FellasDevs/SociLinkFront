@@ -11,11 +11,8 @@ export type SignInProps = {
 export type SignUpProps = {
   email: string;
   password: string;
-  name: string;
   birthdate: string;
-  nickname?: string;
-  country?: string;
-  city?: string;
+  nickname: string;
 }
 
 export type AuthResponse = BaseResponse<{
