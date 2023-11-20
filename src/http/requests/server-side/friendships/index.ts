@@ -1,6 +1,6 @@
-import {fetchClient} from "@/http/http-client/fetch";
 import {Friendship} from "@/types/models/Friendship";
-import {User} from "@/types/models/User";
+
+import {fetchClient} from "@/http/http-client/fetch";
 
 type AnswerFriendshipRequestProps = {
     requestId: string;
