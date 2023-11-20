@@ -1,22 +1,20 @@
-import { User } from '@/types/User';
+import { Post } from '@/types/models/Post';
+import { User } from '@/types/models/User';
 
 import { fetchClient } from '@/http/http-client/fetch';
 
-type Post = {
-  Id: string;
-  Content: string;
-  Images: string[];
-  Visibility: string;
-  User: User
-}
-
-type TimelineResponse = {
+type GetOwnTimelineResponse = {
   Posts: Post[];
 }
 
-export const GetOwnTimelineRequest = async () => {
+type GetUserTimelineResponse = {
+  Posts: Post[];
+  User: User;
+}
+
+export const GetOwnTimelineRequest = async (): Promise<Post[]> => {
   try {
-    const { data } = await fetchClient<TimelineResponse>('/timeline', {next: {tags: ['timeline'], revalidate: 60 * 2}});
+    const { data } = await fetchClient<GetOwnTimelineResponse>('/timeline', {next: {tags: ['timeline'], revalidate: 60 * 2}});
 
     return data.Posts;
   } catch (e) {
@@ -26,14 +24,14 @@ export const GetOwnTimelineRequest = async () => {
   }
 }
 
-export const GetUserTimelineRequest = async (nickname: string) => {
+export const GetUserTimelineRequest = async (nickname: string): Promise<GetUserTimelineResponse | null> => {
   try {
-    const { data } = await fetchClient<TimelineResponse>(`/timeline/${nickname}`, {next: {tags: [`timeline-${nickname}`], revalidate: 60 * 2}});
+    const { data } = await  fetchClient<GetUserTimelineResponse>(`/timeline/${nickname}`, {next: {tags: [`timeline-${nickname}`], revalidate: 60 * 2}});
 
-    return data.Posts;
+    return data;
   } catch (e) {
     console.error(e);
 
-    return [];
+    return null;
   }
 }
