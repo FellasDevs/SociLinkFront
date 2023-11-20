@@ -1,10 +1,10 @@
-import { Metadata } from 'next';
-import { Suspense } from 'react';
+import {Metadata} from 'next';
+import {Suspense} from 'react';
 
-import { Loader } from '@/components/global/Loader';
-import { ProfileHeader } from '@/components/profile/ProfileHeader';
-import { Separator } from '@/components/ui/separator';
-import { GetUserTimelineRequest } from '@/http/requests/server-side/posts';
+import {Loader} from '@/components/global/Loader';
+import {ProfileHeader} from '@/components/profile/ProfileHeader';
+import {Separator} from '@/components/ui/separator';
+import {GetUserTimelineRequest} from '@/http/requests/server-side/posts';
 
 export const metadata: Metadata = {
   title: 'Perfil',
@@ -37,7 +37,7 @@ const UserLoading = () => {
 const GetProfile = async ({ nickname }: { nickname: string }) => {
   const response = await GetUserTimelineRequest(nickname);
 
-  if (!response) return <div>Usuário não encontrado</div>;
+  if (!response) return <div className='m-auto text-2xl'>Usuário não encontrado.</div>;
 
   return (
     <div>

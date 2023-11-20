@@ -1,8 +1,10 @@
 import Image from 'next/image';
+import {Suspense} from "react";
 
-import { User } from '@/types/models/User';
+import {User} from '@/types/models/User';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {FriendshipButton} from "@/components/profile/FriendshipButton";
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 
 type Props = {
   user: User;
@@ -21,11 +23,18 @@ export const ProfileHeader = ({ user }: Props) => {
           <AvatarFallback>{user.Name[0]}</AvatarFallback>
         </Avatar>
 
-        <div>
-          <div className='text-xl'>{user.Name}</div>
-          <div className='text-sm'>{user.Nickname}</div>
+        <div className='flex'>
+            <div>
+                <div className='text-xl'>{user.Name}</div>
+                <div className='text-sm'>{user.Nickname}</div>
+            </div>
+
+            <Suspense>
+                <FriendshipButton friend={user} />
+            </Suspense>
         </div>
       </div>
     </div>
   )
 }
+
