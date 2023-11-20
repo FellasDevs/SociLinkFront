@@ -11,22 +11,20 @@ const logout = () => {
   redirect('/auth');
 }
 
-export default async function AuthenticatedLayout({ children }: { children: ReactNode }) {
-  if (!cookies().get('authToken')?.value) logout();
+type Props = { children: ReactNode }
+
+export default async function AuthenticatedLayout({ children }: Props) {
+  if (!cookies().get('authToken')?.value) {
+    logout();
+    return null;
+  }
 
   const user = await GetSelfRequest();
 
-  if (!user) logout();
+  if (!user) {
+    logout();
+    return null;
+  }
 
-  return (
-    <div className='flex min-h-screen'>
-      <Sidebar />
-
-      <div className='w-full'>
-        <Navbar />
-        <main>{children}</main>
-      </div>
-    </div>
-
-  )
+  return <>{children}</>
 }

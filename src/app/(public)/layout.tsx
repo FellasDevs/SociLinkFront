@@ -1,18 +1,27 @@
-import type { Metadata } from 'next';
 import '../../styles/globals.css';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
-export const metadata: Metadata = {
-  title: 'SociLink',
-  description: 'Rede Social muito boa',
-}
+import { PublicNavbar } from '@/components/layout/navbar';
+import { GetSelfRequest } from '@/http/requests/server-side/users';
 
 type Props = { children: ReactNode }
 
-export default function PublicLayout({ children }: Props) {
+export default async function PublicLayout({ children }: Props) {
   return (
-    <main>
+    <>
+      <Suspense>
+        <GetNavbar />
+      </Suspense>
+      
       {children}
-    </main>
+    </>
   )
+}
+
+const GetNavbar = async () => {
+  const user = await GetSelfRequest();
+
+  if (!!user) return null;
+
+  return <PublicNavbar />
 }
