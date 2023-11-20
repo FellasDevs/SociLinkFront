@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 
 import { LogoutButton } from '@/components/layout/sidebar/LogoutButton';
 import { SidebarItem } from '@/components/layout/sidebar/SidebarItem';
-import { GetSelfRequest } from '@/http/requests/users';
+import { GetSelfRequest } from '@/http/requests/server-side/users';
 
 export const Sidebar = () => {
   return (

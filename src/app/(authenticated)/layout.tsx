@@ -1,18 +1,10 @@
-import type { Metadata } from 'next';
 import '../../styles/globals.css';
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 
-import { Navbar } from '@/components/layout/navbar';
-import { Sidebar } from '@/components/layout/sidebar';
-import { GetSelfRequest } from '@/http/requests/users';
-
-export const metadata: Metadata = {
-  title: 'SociLink',
-  description: 'Rede Social muito boa',
-}
+import { GetSelfRequest } from '@/http/requests/server-side/users';
 
 const logout = () => {
   revalidateTag('getSelf');

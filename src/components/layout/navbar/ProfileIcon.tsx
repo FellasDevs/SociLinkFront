@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { GetSelfRequest } from '@/http/requests/users';
+import { GetSelfRequest } from '@/http/requests/server-side/users';
 
 export const ProfileIcon = async () => {
   const user = await GetSelfRequest()

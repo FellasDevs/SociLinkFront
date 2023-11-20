@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 
-import { SignInProps, SignInRequest, SignUpProps, SignUpRequest } from '@/http/requests/auth';
+import { SignInProps, SignInRequest, SignUpProps, SignUpRequest } from '@/http/requests/client-side/auth';
 import { setCookie } from 'cookies-next';
 
 export const useAuth = () => {
@@ -9,6 +9,8 @@ export const useAuth = () => {
   const signIn = async (props: SignInProps) => {
     try {
       const { data } = await SignInRequest(props);
+
+      'use server'
 
       setCookie('authToken', data.data.AuthToken);
       router.push('/');
