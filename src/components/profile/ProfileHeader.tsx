@@ -11,8 +11,8 @@ type Props = {
 export const ProfileHeader = ({ user }: Props) => {
   return (
     <div>
-      <div className='h-[5em] w-full bg-primary'>
-        <Image src={user.Banner} alt='Profile banner' />
+      <div className='relative h-[20em] w-full bg-cyan-800'>
+        { user.Banner ? <Image src={user.Banner} fill className='object-cover' alt='Profile banner' /> : null }
       </div>
 
       <div className='m-3 flex gap-2'>
