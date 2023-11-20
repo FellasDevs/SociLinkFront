@@ -19,18 +19,20 @@ type Props = { children: ReactNode }
 export default async function RootLayout({ children }: Props) {
   return (
     <html lang="pt" className={GeistSans.className}>
-      <body className='flex'>
+      <body>
         <Providers>
-          <Suspense>
-            <GetSidebar />
-          </Suspense>
-
-          <div className='w-full'>
+          <div className='flex min-h-screen w-full'>
             <Suspense>
-              <GetNavbar />
+              <GetSidebar />
             </Suspense>
 
-            <main>{children}</main>
+            <div className='w-full'>
+              <Suspense>
+                <GetNavbar />
+              </Suspense>
+
+              {children}
+            </div>
           </div>
         </Providers>
       </body>
