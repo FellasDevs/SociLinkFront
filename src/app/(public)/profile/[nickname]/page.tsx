@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import Image from 'next/image';
 import { Suspense } from 'react';
 
 import { Loader } from '@/components/global/Loader';
