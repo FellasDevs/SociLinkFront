@@ -1,5 +1,5 @@
 import { BaseResponse } from '@/types/http/BaseResponse';
-import { User } from '@/types/User';
+import { User } from '@/types/models/User';
 
 import { httpClient } from '@/http/http-client/axios';
 
