@@ -10,8 +10,6 @@ export const useAuth = () => {
     try {
       const { data } = await SignInRequest(props);
 
-      'use server'
-
       setCookie('authToken', data.data.AuthToken);
       router.push('/');
     } catch (e: any) {
