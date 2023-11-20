@@ -13,14 +13,15 @@ import * as z from 'zod';
 const signUpSchema = z
   .object({
     email: z.string().email({message: 'O e-mail deve ser válido'}).max(50, {message: 'O e-mail deve ter até 50 caracteres'}),
+    name: z.string().trim().regex(/^[a-zA-Z ]*$/, {message: 'O nome não pode conter caracteres especiais ou números'}).min(5, {message: 'O nome deve ter ao menos 5 caracteres'}).max(50, {message: 'O nome deve ter até 50 caracteres'}),
+    nickname: z.string().trim().regex(/^[a-zA-Z0-9]*$/, {message: 'O apelido não pode conter caracteres especiais ou espaços'}).min(5, {message: 'O apelido deve ter ao menos 5 caracteres'}).max(50, {message: 'O apelido deve ter até 50 caracteres'}),
     password: z.string().min(6, {message: 'A senha deve ter ao menos 6 caracteres'}).max(50, {message: 'A senha deve ter até 50 caracteres'}),
     confirmPassword: z.string(),
-    name: z.string().trim().regex(/^[a-zA-Z ]*$/, {message: 'O nome deve ser válido'}).min(5, {message: 'O nome deve ter ao menos 5 caracteres'}).max(50, {message: 'O nome deve ter até 50 caracteres'}),
     birthdate: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "As senhas devem ser iguais",
-    path: ["confirmPassword"], // path of error
+    path: ["confirmPassword"],
   });
 
 export const SignUpForm = () => {
@@ -36,7 +37,7 @@ export const SignUpForm = () => {
 
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
-    defaultValues: { email: '', name: '', birthdate: '', password: '', confirmPassword: '' },
+    defaultValues: { email: '', name: '', nickname: '', birthdate: '', password: '', confirmPassword: '' },
   })
 
   return (
@@ -64,6 +65,20 @@ export const SignUpForm = () => {
               <FormLabel>Nome</FormLabel>
               <FormControl>
                 <Input placeholder="Insira seu nome" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="nickname"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Apelido</FormLabel>
+              <FormControl>
+                <Input placeholder="Insira seu apelido" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

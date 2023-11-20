@@ -1,7 +1,13 @@
+import { Metadata } from 'next';
 import { revalidateTag } from 'next/cache';
 import { Suspense } from 'react';
 
-import { GetOwnTimelineRequest } from '@/http/requests/posts';
+import { GetOwnTimelineRequest } from '@/http/requests/server-side/posts';
+
+export const metadata: Metadata = {
+  title: 'Início',
+  description: 'Página inicial',
+}
 
 export default function Home() {
   return (
@@ -14,7 +20,7 @@ export default function Home() {
 }
 
 const Timeline = async () => {
-  const { data } = await GetOwnTimelineRequest();
+  const posts = await GetOwnTimelineRequest();
 
   const a = async () => {
     'use server'
@@ -27,7 +33,7 @@ const Timeline = async () => {
         <button type='submit'>atualizar juca</button>
       </form>
 
-      {data.map((post) => (
+      {posts.map((post) => (
         <div key={post.Id}>
           {post.Content}
         </div>

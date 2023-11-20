@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 
-import { SignInProps, SignInRequest, SignUpProps, SignUpRequest } from '@/http/requests/auth';
+import { SignInProps, SignInRequest, SignUpProps, SignUpRequest } from '@/http/requests/client-side/auth';
 import { setCookie } from 'cookies-next';
 
 export const useAuth = () => {
@@ -25,8 +25,20 @@ export const useAuth = () => {
       setCookie('authToken', data.data.AuthToken);
       router.push('/');
     } catch (e: any) {
-      console.error(e)
-      alert(e.response?.data?.message || 'Aconteceu um erro ao tentar entrar em sua conta, tente novamente mais tarde.')
+      console.error(e);
+
+      let errorMsg = e.response?.data?.message || 'Aconteceu um erro ao tentar criar a sua conta, tente novamente mais tarde.'
+
+      switch (e.response?.data?.data?.reason) {
+        case 'email':
+          errorMsg = 'O e-mail informado já está em uso.';
+          break;
+        case 'nickname':
+          errorMsg = 'O nickname informado já está em uso.';
+          break;
+      }
+
+      alert(errorMsg);
     }
   };
 

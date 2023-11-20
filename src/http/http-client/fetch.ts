@@ -15,7 +15,5 @@ export const fetchClient = async<T> (input: RequestInfo | URL, init?: RequestIni
     throw new Error(data.message);
   }
 
-  const data = await response.json() as BaseResponse<T>;
-
-  return { data: data.data, message: data.message, success: data.success };
+  return await response.json() as BaseResponse<T>;
 }
