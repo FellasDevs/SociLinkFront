@@ -1,10 +1,12 @@
 import Image from 'next/image';
-import {Suspense} from "react";
+import { Suspense } from 'react';
 
-import {User} from '@/types/models/User';
+import { User } from '@/types/models/User';
 
-import {FriendshipButton} from "@/components/profile/FriendshipButton";
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
+import { FriendshipButton } from '@/components/profile/FriendshipButton';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { GetFriendshipByNicknameRequest } from '@/http/requests/server-side/friendships';
+import { GetSelfRequest } from '@/http/requests/server-side/users';
 
 type Props = {
   user: User;
@@ -30,11 +32,23 @@ export const ProfileHeader = ({ user }: Props) => {
             </div>
 
             <Suspense>
-                <FriendshipButton friend={user} />
+                <GetFriendshipButton user={user} />
             </Suspense>
         </div>
       </div>
     </div>
   )
+}
+
+const GetFriendshipButton = async ({ user }: { user: User }) => {
+  const loggedUser = await GetSelfRequest();
+
+  if (!loggedUser || loggedUser.Id === user.Id) return null;
+
+  const friendship = await GetFriendshipByNicknameRequest(user.Nickname);
+
+  console.log(friendship)
+
+  return <FriendshipButton user={loggedUser} friend={user} friendship={friendship} />;
 }
 

@@ -1,48 +1,46 @@
-import {revalidateTag} from "next/cache";
+'use client';
 
-import {User} from "@/types/models/User";
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
+import { useFormStatus } from 'react-dom';
 
-import {Button} from "@/components/ui/button";
-import {
-    DeleteFriendshipRequest,
-    GetFriendshipByNicknameRequest,
-    RequestFriendshipRequest
-} from "@/http/requests/server-side/friendships";
-import {GetSelfRequest} from "@/http/requests/server-side/users";
+import { Friendship } from '@/types/models/Friendship';
+import { User } from '@/types/models/User';
+
+import { answerFriendship, deleteFriendship, requestFriendship } from '@/actions/profile';
+import { Button } from '@/components/ui/button';
 
 type Props = {
+    user: User | null;
     friend: User;
+    friendship: Friendship | null;
 }
 
-export const FriendshipButton = async ({ friend }: Props) => {
-    'use server'
+export const FriendshipButton = ({ user, friend, friendship }: Props) => {
+    const { text, action } = ( (): { text: string, action: () => Promise<void> } => {
+        if (!friendship) return { text: 'Solicitar amizade', action: requestFriendship.bind(null, friend) };
 
-    const loggedUser = await GetSelfRequest();
+        if (friendship.Accepted) return { text: 'Desfazer amizade', action: deleteFriendship.bind(null, friend) };
 
-    if (!loggedUser || loggedUser.Id === friend.Id) return null;
+        const requestedByOther = friendship.Friend.Id === user?.Id;
 
-    const friendship = await GetFriendshipByNicknameRequest(friend.Nickname);
+        console.log({ friendship, user })
 
-    const deleteFriendship = async () => {
-        'use server'
+        if (requestedByOther) return { text: 'responder', action: answerFriendship.bind(null, friend, true) }
 
-        const confirmed = confirm(`Tem certeza que deseja desfazer a sua amizade com ${friend.Name.split(' ')[0]}?`);
-
-        if (!confirmed) return;
-
-        return DeleteFriendshipRequest(friend.Id);
-    }
-
-    const friendshipAction = async () => {
-        'use server'
-
-        !!friendship ? await deleteFriendship() : await RequestFriendshipRequest(friend.Id);
-        revalidateTag(`friendship-${friend.Nickname}`);
-    }
+        return { text: 'Cancelar solicitação', action: async () => {} };
+    })();
 
     return (
-        <form action={friendshipAction}>
-            <Button>{!!friendship ? 'Desfazer' : 'Solicitar'} amizade</Button>
-        </form>
+      <ErrorBoundary errorComponent={({error, reset}) => <div><div>{error.message}</div><button onClick={reset}>de novo</button></div>}>
+            <form action={action}>
+                <GetButton text={text} />
+            </form>
+        </ErrorBoundary>
     )
+}
+
+const GetButton = ({ text }: { text: string }) => {
+    const { pending } = useFormStatus();
+
+    return <Button isLoading={pending} type='submit'>{text}</Button>
 }

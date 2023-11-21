@@ -67,14 +67,15 @@ export const RequestFriendshipRequest = async (id: string) => {
 
 export const AnswerFriendshipRequestRequest = async (props: AnswerFriendshipRequestProps) => {
     try {
-        await fetchClient('/friendships', {
+        await fetchClient('/friendships/answer', {
             method: 'POST',
             body: JSON.stringify(props),
         });
     } catch (e) {
         console.error(e);
 
-        alert('Ocorreu um erro ao tentar realizar a solicitação de amizade')
+        throw new Error('Ocorreu um erro ao tentar realizar a solicitação de amizade')
+        // alert('Ocorreu um erro ao tentar realizar a solicitação de amizade')
     }
 }
 
