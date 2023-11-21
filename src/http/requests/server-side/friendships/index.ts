@@ -61,7 +61,7 @@ export const RequestFriendshipRequest = async (id: string) => {
     } catch (e) {
         console.error(e);
 
-        alert('Ocorreu um erro ao tentar realizar a solicitação de amizade')
+        // alert('Ocorreu um erro ao tentar realizar a solicitação de amizade')
     }
 }
 
@@ -85,7 +85,7 @@ export const DeleteFriendshipRequest = async (friendshipId: string) => {
     } catch (e) {
         console.error(e);
 
-        alert('Ocorreu um erro ao tentar remover a amizade')
+        // alert('Ocorreu um erro ao tentar remover a amizade')
     }
 }
 

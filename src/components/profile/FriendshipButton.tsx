@@ -19,15 +19,19 @@ export const FriendshipButton = ({ user, friend, friendship }: Props) => {
     const { text, action } = ( (): { text: string, action: () => Promise<void> } => {
         if (!friendship) return { text: 'Solicitar amizade', action: requestFriendship.bind(null, friend) };
 
-        if (friendship.Accepted) return { text: 'Desfazer amizade', action: deleteFriendship.bind(null, friend) };
+        if (friendship.Accepted) return {
+            text: 'Desfazer amizade',
+            action: async () => {
+                const confirmed = confirm(`Tem certeza que deseja desfazer a sua amizade com ${friend.Name.split(' ')[0]}?`);
+                if (!confirmed) return;
+                await (deleteFriendship.bind(null, friendship))()
+            },
+        };
 
         const requestedByOther = friendship.Friend.Id === user?.Id;
+        if (requestedByOther) return { text: 'responder', action: answerFriendship.bind(null, friendship, true) }
 
-        console.log({ friendship, user })
-
-        if (requestedByOther) return { text: 'responder', action: answerFriendship.bind(null, friend, true) }
-
-        return { text: 'Cancelar solicitação', action: async () => {} };
+        return { text: 'Cancelar solicitação', action: deleteFriendship.bind(null, friendship) };
     })();
 
     return (

@@ -2,6 +2,7 @@
 
 import { revalidateTag } from 'next/cache';
 
+import {Friendship} from "@/types/models/Friendship";
 import { User } from '@/types/models/User';
 
 import {
@@ -15,16 +16,12 @@ export const requestFriendship = async (friend: User) => {
   revalidateTag(`friendship-${friend.Nickname}`);
 }
 
-export const deleteFriendship = async (friend: User) => {
-  const confirmed = confirm(`Tem certeza que deseja desfazer a sua amizade com ${friend.Name.split(' ')[0]}?`);
-
-  if (!confirmed) return;
-
-  await DeleteFriendshipRequest(friend.Id);
-  revalidateTag(`friendship-${friend.Nickname}`);
+export const deleteFriendship = async (friendship: Friendship) => {
+  await DeleteFriendshipRequest(friendship.Id);
+  revalidateTag(`friendship-${friendship.Friend.Nickname}`);
 }
 
-export const answerFriendship = async (friend: User, accepted: boolean) => {
-  await AnswerFriendshipRequestRequest({requestId: friend.Id, answer: accepted});
-  revalidateTag(`friendship-${friend.Nickname}`);
+export const answerFriendship = async (friendship: Friendship, accepted: boolean) => {
+  await AnswerFriendshipRequestRequest({requestId: friendship.Id, answer: accepted});
+  revalidateTag(`friendship-${friendship.Friend.Nickname}`);
 }
