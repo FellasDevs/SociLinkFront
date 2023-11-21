@@ -1,13 +1,21 @@
 'use client';
 
-import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
-import { useFormStatus } from 'react-dom';
+import {ErrorBoundary} from 'next/dist/client/components/error-boundary';
+import {useFormStatus} from 'react-dom';
 
-import { Friendship } from '@/types/models/Friendship';
-import { User } from '@/types/models/User';
+import {Friendship} from '@/types/models/Friendship';
+import {User} from '@/types/models/User';
 
-import { answerFriendship, deleteFriendship, requestFriendship } from '@/actions/profile';
-import { Button } from '@/components/ui/button';
+import {deleteFriendship, requestFriendship} from '@/actions/profile';
+import {Button} from '@/components/ui/button';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
 
 type Props = {
     user: User | null;
@@ -16,8 +24,11 @@ type Props = {
 }
 
 export const FriendshipButton = ({ user, friend, friendship }: Props) => {
-    const { text, action } = ( (): { text: string, action: () => Promise<void> } => {
-        if (!friendship) return { text: 'Solicitar amizade', action: requestFriendship.bind(null, friend) };
+    const { text, action, isAnswer } = ( (): { text: string, action: (formData: FormData) => Promise<void>, isAnswer?: boolean } => {
+        if (!friendship) return {
+            text: 'Solicitar amizade',
+            action: requestFriendship.bind(null, friend),
+        };
 
         if (friendship.Accepted) return {
             text: 'Desfazer amizade',
@@ -29,7 +40,14 @@ export const FriendshipButton = ({ user, friend, friendship }: Props) => {
         };
 
         const requestedByOther = friendship.Friend.Id === user?.Id;
-        if (requestedByOther) return { text: 'responder', action: answerFriendship.bind(null, friendship, true) }
+        if (requestedByOther) return {
+            text: 'Responder solicitação',
+            action: async (data) => {
+                console.log('alo', data.get('answer'));
+                // await (answerFriendship.bind(null, friendship, answer))();
+            },
+            isAnswer: true,
+        };
 
         return { text: 'Cancelar solicitação', action: deleteFriendship.bind(null, friendship) };
     })();
@@ -37,7 +55,7 @@ export const FriendshipButton = ({ user, friend, friendship }: Props) => {
     return (
       <ErrorBoundary>
             <form action={action}>
-                <GetButton text={text} isDestructive={friendship} />
+                { isAnswer ? <GetDropdown /> : <GetButton text={text} isDestructive={friendship} /> }
             </form>
       </ErrorBoundary>
     )
@@ -50,5 +68,37 @@ const GetButton = ({ text, isDestructive }: { text: string; isDestructive: boole
         <Button isLoading={pending} type='submit' variant={isDestructive ? 'destructive' : 'outline'} className='rounded-2xl'>
             {text}
         </Button>
+    )
+}
+
+const GetDropdown = () => {
+    const { pending, data } = useFormStatus();
+
+    data?.set('answer', true)
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button isLoading={pending} type='button' variant='secondary' className='bg-green-600 text-white'>
+                    Responder solicitação
+                </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent>
+                <DropdownMenuLabel>Resposta</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem>
+                    <Button type='submit' variant='ghost' className='h-full w-full'>
+                        Aceitar
+                    </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Button type='submit' variant='ghost' className='h-full w-full'>
+                        Ignorar
+                    </Button>
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
     )
 }
