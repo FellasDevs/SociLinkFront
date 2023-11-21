@@ -20,10 +20,12 @@ export type AuthResponse = BaseResponse<{
   AuthToken: string;
 }>
 
-export const SignInRequest = async (props: SignInProps) => {
-  return httpClient.post<AuthResponse>('/auth/sign_in', props)
-}
+export const AuthRoutes = {
+  SignInRequest: async (props: SignInProps) => {
+    return httpClient.post<AuthResponse>('/auth/sign_in', props);
+  },
 
-export const SignUpRequest = async (props: SignUpProps) => {
-  return httpClient.post<AuthResponse>('/auth/sign_up', props)
+  SignUpRequest: async (props: SignUpProps) => {
+    return httpClient.post<AuthResponse>('/auth/sign_up', props);
+  }
 }
