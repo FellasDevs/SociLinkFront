@@ -1,14 +1,14 @@
-import { useRouter } from 'next/navigation';
+import {useRouter} from 'next/navigation';
 
-import { SignInProps, SignInRequest, SignUpProps, SignUpRequest } from '@/http/requests/client-side/auth';
-import { setCookie } from 'cookies-next';
+import {AuthRoutes, SignInProps, SignUpProps} from '@/http/requests/client-side/auth';
+import {setCookie} from 'cookies-next';
 
 export const useAuth = () => {
   const router = useRouter();
 
   const signIn = async (props: SignInProps) => {
     try {
-      const { data } = await SignInRequest(props);
+      const { data } = await AuthRoutes.SignInRequest(props);
 
       setCookie('authToken', data.data.AuthToken);
       router.push('/');
@@ -20,7 +20,7 @@ export const useAuth = () => {
 
   const signUp = async (props: SignUpProps) => {
     try {
-      const { data } = await SignUpRequest(props);
+      const { data } = await AuthRoutes.SignUpRequest(props);
 
       setCookie('authToken', data.data.AuthToken);
       router.push('/');

@@ -12,26 +12,28 @@ type GetUserTimelineResponse = {
   User: User;
 }
 
-export const GetOwnTimelineRequest = async (): Promise<Post[]> => {
-  try {
-    const { data } = await fetchClient<GetOwnTimelineResponse>('/timeline', {next: {tags: ['timeline'], revalidate: 60 * 2}});
+export const PostRoutes = {
+  GetOwnTimelineRequest: async (): Promise<Post[]> => {
+    try {
+      const { data } = await fetchClient<GetOwnTimelineResponse>('/timeline', {next: {tags: ['timeline'], revalidate: 60 * 2}});
 
-    return data.Posts;
-  } catch (e) {
-    console.error(e);
+      return data.Posts;
+    } catch (e) {
+      console.error(e);
 
-    return [];
-  }
-}
+      return [];
+    }
+  },
 
-export const GetUserTimelineRequest = async (nickname: string): Promise<GetUserTimelineResponse | null> => {
-  try {
-    const { data } = await  fetchClient<GetUserTimelineResponse>(`/timeline/${nickname}`, {next: {tags: [`timeline-${nickname}`], revalidate: 60 * 2}});
+  GetUserTimelineRequest: async (nickname: string): Promise<GetUserTimelineResponse | null> => {
+    try {
+      const { data } = await  fetchClient<GetUserTimelineResponse>(`/timeline/${nickname}`, {next: {tags: [`timeline-${nickname}`], revalidate: 60 * 2}});
 
-    return data;
-  } catch (e) {
-    console.error(e);
+      return data;
+    } catch (e) {
+      console.error(e);
 
-    return null;
-  }
+      return null;
+    }
+  },
 }
