@@ -62,7 +62,7 @@ export const SignInForm = () => {
           )}
         />
 
-        <Button type="submit" disabled={isLoading} isLoading={isLoading}>Enviar</Button>
+        <Button type="submit" isLoading={isLoading}>Enviar</Button>
       </form>
     </Form>
   )

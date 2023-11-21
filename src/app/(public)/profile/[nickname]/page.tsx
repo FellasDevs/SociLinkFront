@@ -37,7 +37,7 @@ const UserLoading = () => {
 const GetProfile = async ({ nickname }: { nickname: string }) => {
   const response = await PostRoutes.GetUserTimelineRequest(nickname);
 
-  if (!response) return <div>Usuário não encontrado</div>;
+  if (!response) return <div className='m-auto text-2xl'>Usuário não encontrado.</div>;
 
   return (
     <div>
