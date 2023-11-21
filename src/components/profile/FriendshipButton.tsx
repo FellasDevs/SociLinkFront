@@ -35,16 +35,20 @@ export const FriendshipButton = ({ user, friend, friendship }: Props) => {
     })();
 
     return (
-      <ErrorBoundary errorComponent={({error, reset}) => <div><div>{error.message}</div><button onClick={reset}>de novo</button></div>}>
+      <ErrorBoundary>
             <form action={action}>
-                <GetButton text={text} />
+                <GetButton text={text} isDestructive={friendship} />
             </form>
-        </ErrorBoundary>
+      </ErrorBoundary>
     )
 }
 
-const GetButton = ({ text }: { text: string }) => {
+const GetButton = ({ text, isDestructive }: { text: string; isDestructive: boolean }) => {
     const { pending } = useFormStatus();
 
-    return <Button isLoading={pending} type='submit'>{text}</Button>
+    return (
+        <Button isLoading={pending} type='submit' variant={isDestructive ? 'destructive' : 'outline'} className='rounded-2xl'>
+            {text}
+        </Button>
+    )
 }

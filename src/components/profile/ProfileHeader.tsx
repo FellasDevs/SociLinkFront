@@ -19,22 +19,20 @@ export const ProfileHeader = ({ user }: Props) => {
         { user.Banner ? <Image src={user.Banner} fill className='object-cover' alt='Profile banner' /> : null }
       </div>
 
-      <div className='m-3 flex gap-2'>
-        <Avatar>
+      <div className='m-4 flex'>
+        <Avatar className='mr-3'>
           <AvatarImage src={user.Picture} />
           <AvatarFallback>{user.Name[0]}</AvatarFallback>
         </Avatar>
 
-        <div className='flex'>
-            <div>
-                <div className='text-xl'>{user.Name}</div>
-                <div className='text-sm'>{user.Nickname}</div>
-            </div>
-
-            <Suspense>
-                <GetFriendshipButton user={user} />
-            </Suspense>
+        <div className='mr-5'>
+            <div className='text-xl'>{user.Name}</div>
+            <div className='text-sm'>{user.Nickname}</div>
         </div>
+
+        <Suspense>
+            <GetFriendshipButton user={user} />
+        </Suspense>
       </div>
     </div>
   )
