@@ -8,10 +8,11 @@ import { User } from '@/types/models/User';
 import { answerFriendship, deleteFriendship, requestFriendship } from '@/actions/profile';
 import { Button } from '@/components/ui/button';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem, DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
 type Props = {
@@ -87,14 +88,5 @@ const GetDropdown = ({ friendship }: { friendship: Friendship }) => {
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
-    )
-}
-
-
-export const FriendshipErrorFallback = ({error, reset}: { error: Error; reset: () => void }) => {
-    return (
-      <Button onClick={reset}>
-          {error.message}
-      </Button>
     )
 }
