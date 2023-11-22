@@ -52,10 +52,15 @@ const GetFriendshipButton = async ({ user }: { user: User }) => {
   return <FriendshipButton user={loggedUser} friend={user} friendship={friendship} />;
 }
 
-const FriendshipErrorFallback = ({error, reset}: { error: Error; reset: () => void }) => {
+const FriendshipErrorFallback = async ({ reset }: { error: Error; reset: () => void }) => {
+  'use server'
+
   return (
-    <Button onClick={reset}>
-      {error.message}
-    </Button>
+    <div>
+      <div>Ocorreu um erro</div>
+      <Button onClick={reset}>
+        Tentar novamente
+      </Button>
+    </div>
   )
 }
