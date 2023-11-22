@@ -1,5 +1,7 @@
 import Link from 'next/link';
 
+import '../styles/globals.css';
+
 export default function ErrorPage() {
   return (
     <div className='flex h-screen flex-col items-center justify-center'>
