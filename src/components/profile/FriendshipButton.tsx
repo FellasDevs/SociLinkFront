@@ -5,7 +5,7 @@ import { useFormStatus } from 'react-dom';
 import { Friendship } from '@/types/models/Friendship';
 import { User } from '@/types/models/User';
 
-import { answerFriendship, deleteFriendship, requestFriendship } from '@/actions/profile';
+import { answerFriendshipAction, deleteFriendshipAction, requestFriendshipAction } from '@/actions/profile';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -23,7 +23,7 @@ type Props = {
 
 export const FriendshipButton = ({ user, friend, friendship }: Props) => {
     if (!friendship) return (
-      <form action={requestFriendship.bind(null, friend)}>
+      <form action={requestFriendshipAction.bind(null, friend)}>
           <GetButton text='Solicitar amizade' />
       </form>
     );
@@ -32,7 +32,7 @@ export const FriendshipButton = ({ user, friend, friendship }: Props) => {
       <form action={async () => {
           const confirmed = confirm(`Tem certeza que deseja desfazer a sua amizade com ${friend.Name.split(' ')[0]}?`);
           if (!confirmed) return;
-          await (deleteFriendship.bind(null, friendship))()
+          await (deleteFriendshipAction.bind(null, friendship))()
       }}>
           <GetButton text='Desfazer amizade' isRed />
       </form>
@@ -43,7 +43,7 @@ export const FriendshipButton = ({ user, friend, friendship }: Props) => {
     )
 
     return (
-      <form action={deleteFriendship.bind(null, friendship)}>
+      <form action={deleteFriendshipAction.bind(null, friendship)}>
           <GetButton text='Cancelar solicitação' isRed />
       </form>
     )
@@ -70,7 +70,7 @@ const GetDropdown = ({ friendship }: { friendship: Friendship }) => {
 
             <DropdownMenuContent>
                 <DropdownMenuItem className='p-0'>
-                    <form className='h-full w-full' action={answerFriendship.bind(null, friendship, true)}>
+                    <form className='h-full w-full' action={answerFriendshipAction.bind(null, friendship, true)}>
                         <Button type='submit' variant='success' className='h-full w-full'>
                             Aceitar
                         </Button>
@@ -80,7 +80,7 @@ const GetDropdown = ({ friendship }: { friendship: Friendship }) => {
                 <DropdownMenuSeparator className='my-1' />
 
                 <DropdownMenuItem className='p-0'>
-                    <form className='h-full w-full' action={answerFriendship.bind(null, friendship, false)}>
+                    <form className='h-full w-full' action={answerFriendshipAction.bind(null, friendship, false)}>
                         <Button type='submit' variant='error' className='h-full w-full'>
                             Ignorar
                         </Button>

@@ -11,17 +11,17 @@ import {
   RequestFriendshipRequest,
 } from '@/http/requests/server-side/friendships';
 
-export const requestFriendship = async (friend: User) => {
+export const requestFriendshipAction = async (friend: User) => {
   await RequestFriendshipRequest(friend.Id);
   revalidateTag(`friendship-${friend.Nickname}`);
 }
 
-export const deleteFriendship = async (friendship: Friendship) => {
+export const deleteFriendshipAction = async (friendship: Friendship) => {
   await DeleteFriendshipRequest(friendship.Id);
   revalidateTag(`friendship-${friendship.Friend.Nickname}`);
 }
 
-export const answerFriendship = async (friendship: Friendship, accepted: boolean) => {
+export const answerFriendshipAction = async (friendship: Friendship, accepted: boolean) => {
   await AnswerFriendshipRequestRequest({requestId: friendship.Id, answer: accepted});
   revalidateTag(`friendship-${friendship.Friend.Nickname}`);
 }
