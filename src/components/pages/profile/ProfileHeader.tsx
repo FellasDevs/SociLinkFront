@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 
 import { User } from '@/types/models/User';
 
-import { FriendshipButton } from '@/components/profile/FriendshipButton';
+import { FriendshipButton } from '@/components/pages/profile/FriendshipButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { GetFriendshipByNicknameRequest } from '@/http/requests/server-side/friendships';

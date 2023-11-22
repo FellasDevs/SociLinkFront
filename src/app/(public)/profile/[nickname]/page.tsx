@@ -2,7 +2,7 @@ import {Metadata} from 'next';
 import {Suspense} from 'react';
 
 import {Loader} from '@/components/global/Loader';
-import {ProfileHeader} from '@/components/profile/ProfileHeader';
+import {ProfileHeader} from '@/components/pages/profile/ProfileHeader';
 import {Separator} from '@/components/ui/separator';
 import {PostRoutes} from "@/http/requests/server-side/posts";
 
