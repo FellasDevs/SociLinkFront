@@ -1,13 +1,11 @@
 import '../styles/globals.css';
 
-import { Metadata } from 'next';
-import { ReactNode, Suspense } from 'react';
+import {Metadata} from 'next';
+import {ReactNode} from 'react';
 
-import { AuthenticatedNavbar } from '@/components/layout/navbar';
-import { Sidebar } from '@/components/layout/sidebar';
-import { GetSelfRequest } from '@/http/requests/server-side/users';
-import { Providers } from '@/providers';
-import { GeistSans } from 'geist/font/sans';
+import {Sidebar} from '@/components/layout/sidebar';
+import {Providers} from '@/providers';
+import {GeistSans} from 'geist/font/sans';
 
 export const metadata: Metadata = {
   title: 'SociLink',
@@ -22,15 +20,9 @@ export default async function RootLayout({ children }: Props) {
       <body>
         <Providers>
           <div className='flex min-h-screen w-full'>
-            <Suspense>
-              <GetSidebar />
-            </Suspense>
+            <Sidebar />
 
             <div className='w-full'>
-              <Suspense>
-                <GetNavbar />
-              </Suspense>
-
               {children}
             </div>
           </div>
@@ -38,20 +30,4 @@ export default async function RootLayout({ children }: Props) {
       </body>
     </html>
   )
-}
-
-const GetSidebar = async () => {
-  const user = await GetSelfRequest();
-
-  if (!user) return null;
-
-  return <Sidebar />
-}
-
-const GetNavbar = async () => {
-  const user = await GetSelfRequest();
-
-  if (!user) return null;
-
-  return <AuthenticatedNavbar />
 }
