@@ -3,16 +3,16 @@ import { User } from '@/types/models/User';
 
 import { fetchClient } from '@/http/http-client/fetch';
 
-type GetOwnTimelineResponse = {
+export type GetOwnTimelineResponse = {
   Posts: Post[];
 }
 
-type GetUserTimelineResponse = {
+export type GetUserTimelineResponse = {
   Posts: Post[];
   User: User;
 }
 
-export const PostRoutes = {
+export const ServerPostRoutes = {
   GetOwnTimelineRequest: async (): Promise<Post[]> => {
     try {
       const { data } = await fetchClient<GetOwnTimelineResponse>('/timeline', {next: {tags: ['timeline'], revalidate: 60 * 2}});
