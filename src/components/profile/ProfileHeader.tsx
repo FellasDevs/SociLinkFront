@@ -1,9 +1,10 @@
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import Image from 'next/image';
 import { Suspense } from 'react';
 
 import { User } from '@/types/models/User';
 
-import { FriendshipButton } from '@/components/profile/FriendshipButton';
+import { FriendshipButton, FriendshipErrorFallback } from '@/components/profile/FriendshipButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { GetFriendshipByNicknameRequest } from '@/http/requests/server-side/friendships';
 import { GetSelfRequest } from '@/http/requests/server-side/users';
@@ -30,9 +31,11 @@ export const ProfileHeader = ({ user }: Props) => {
             <div className='text-sm'>{user.Nickname}</div>
         </div>
 
-        <Suspense>
+        <ErrorBoundary errorComponent={FriendshipErrorFallback}>
+          <Suspense>
             <GetFriendshipButton user={user} />
-        </Suspense>
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </div>
   )
@@ -44,8 +47,6 @@ const GetFriendshipButton = async ({ user }: { user: User }) => {
   if (!loggedUser || loggedUser.Id === user.Id) return null;
 
   const friendship = await GetFriendshipByNicknameRequest(user.Nickname);
-
-  console.log(friendship)
 
   return <FriendshipButton user={loggedUser} friend={user} friendship={friendship} />;
 }

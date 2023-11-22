@@ -1,21 +1,18 @@
 'use client';
 
-import {ErrorBoundary} from 'next/dist/client/components/error-boundary';
-import {useFormStatus} from 'react-dom';
+import { useFormStatus } from 'react-dom';
 
-import {Friendship} from '@/types/models/Friendship';
-import {User} from '@/types/models/User';
+import { Friendship } from '@/types/models/Friendship';
+import { User } from '@/types/models/User';
 
-import {deleteFriendship, requestFriendship} from '@/actions/profile';
-import {Button} from '@/components/ui/button';
+import { answerFriendship, deleteFriendship, requestFriendship } from '@/actions/profile';
+import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
+    DropdownMenuItem, DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 type Props = {
     user: User | null;
@@ -24,81 +21,80 @@ type Props = {
 }
 
 export const FriendshipButton = ({ user, friend, friendship }: Props) => {
-    const { text, action, isAnswer } = ( (): { text: string, action: (formData: FormData) => Promise<void>, isAnswer?: boolean } => {
-        if (!friendship) return {
-            text: 'Solicitar amizade',
-            action: requestFriendship.bind(null, friend),
-        };
+    if (!friendship) return (
+      <form action={requestFriendship.bind(null, friend)}>
+          <GetButton text='Solicitar amizade' />
+      </form>
+    );
 
-        if (friendship.Accepted) return {
-            text: 'Desfazer amizade',
-            action: async () => {
-                const confirmed = confirm(`Tem certeza que deseja desfazer a sua amizade com ${friend.Name.split(' ')[0]}?`);
-                if (!confirmed) return;
-                await (deleteFriendship.bind(null, friendship))()
-            },
-        };
+    if (friendship.Accepted) return (
+      <form action={async () => {
+          const confirmed = confirm(`Tem certeza que deseja desfazer a sua amizade com ${friend.Name.split(' ')[0]}?`);
+          if (!confirmed) return;
+          await (deleteFriendship.bind(null, friendship))()
+      }}>
+          <GetButton text='Desfazer amizade' isRed />
+      </form>
+    );
 
-        const requestedByOther = friendship.Friend.Id === user?.Id;
-        if (requestedByOther) return {
-            text: 'Responder solicitação',
-            action: async (data) => {
-                console.log('alo', data.get('answer'));
-                // await (answerFriendship.bind(null, friendship, answer))();
-            },
-            isAnswer: true,
-        };
-
-        return { text: 'Cancelar solicitação', action: deleteFriendship.bind(null, friendship) };
-    })();
+    if (friendship.Friend.Id === user?.Id) return (
+      <GetDropdown friendship={friendship} />
+    )
 
     return (
-      <ErrorBoundary>
-            <form action={action}>
-                { isAnswer ? <GetDropdown /> : <GetButton text={text} isDestructive={friendship} /> }
-            </form>
-      </ErrorBoundary>
+      <form action={deleteFriendship.bind(null, friendship)}>
+          <GetButton text='Cancelar solicitação' isRed />
+      </form>
     )
 }
 
-const GetButton = ({ text, isDestructive }: { text: string; isDestructive: boolean }) => {
+const GetButton = ({ text, isRed }: { text: string; isRed?: boolean }) => {
     const { pending } = useFormStatus();
 
     return (
-        <Button isLoading={pending} type='submit' variant={isDestructive ? 'destructive' : 'outline'} className='rounded-2xl'>
+        <Button isLoading={pending} type='submit' variant={isRed ? 'error' : 'outline'} className='rounded-2xl'>
             {text}
         </Button>
     )
 }
 
-const GetDropdown = () => {
-    const { pending, data } = useFormStatus();
-
-    data?.set('answer', true)
-
+const GetDropdown = ({ friendship }: { friendship: Friendship }) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button isLoading={pending} type='button' variant='secondary' className='bg-green-600 text-white'>
+                <Button type='button'>
                     Responder solicitação
                 </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent>
-                <DropdownMenuLabel>Resposta</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-
-                <DropdownMenuItem>
-                    <Button type='submit' variant='ghost' className='h-full w-full'>
-                        Aceitar
-                    </Button>
+                <DropdownMenuItem className='p-0'>
+                    <form className='h-full w-full' action={answerFriendship.bind(null, friendship, true)}>
+                        <Button type='submit' variant='success' className='h-full w-full'>
+                            Aceitar
+                        </Button>
+                    </form>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <Button type='submit' variant='ghost' className='h-full w-full'>
-                        Ignorar
-                    </Button>
+
+                <DropdownMenuSeparator className='my-1' />
+
+                <DropdownMenuItem className='p-0'>
+                    <form className='h-full w-full' action={answerFriendship.bind(null, friendship, false)}>
+                        <Button type='submit' variant='error' className='h-full w-full'>
+                            Ignorar
+                        </Button>
+                    </form>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
+    )
+}
+
+
+export const FriendshipErrorFallback = ({error, reset}: { error: Error; reset: () => void }) => {
+    return (
+      <Button onClick={reset}>
+          {error.message}
+      </Button>
     )
 }
