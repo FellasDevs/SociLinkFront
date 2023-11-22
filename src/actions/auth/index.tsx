@@ -38,3 +38,8 @@ export const signUpAction = async (props: SignUpProps) => {
     throw new Error(errorMsg);
   }
 };
+
+export const logoutAction = async () => {
+  cookies().set('authToken', '');
+  revalidateTag('getSelf');
+}
