@@ -21,12 +21,11 @@ export const SignInForm = () => {
     defaultValues: { email: '',password: '' },
   })
 
+  const values = form.watch();
+
   return (
     <form
-      action={async () => {
-        const values = form.getValues();
-        await (signInAction.bind(null, values))();
-      }}
+      action={signInAction.bind(null, values)}
       className='flex flex-col space-y-6'
     >
       <GetForm form={form} />

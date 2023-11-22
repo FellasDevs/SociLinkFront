@@ -15,10 +15,10 @@ export type SignUpProps = {
   nickname: string;
 }
 
-export type AuthResponse = BaseResponse<{
+export type AuthResponse = {
   User: User;
   AuthToken: string;
-}>
+}
 
 export const AuthRoutes = {
   SignInRequest: async (props: SignInProps) => {
