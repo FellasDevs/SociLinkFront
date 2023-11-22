@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFormStatus } from 'react-dom';
+import { useForm, UseFormReturn } from 'react-hook-form';
 
+import { signInAction } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/hooks/auth';
+import { SignInProps } from '@/http/requests/server-side/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
@@ -16,54 +17,57 @@ const signInSchema = z.object({
 })
 
 export const SignInForm = () => {
-  const { signIn } = useAuth();
-
-  const [ isLoading, setIsLoading ] = useState(false);
-
-  const onSubmit = async () => {
-    setIsLoading(true);
-    await signIn(form.getValues())
-    setIsLoading(false);
-  }
-  
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: { email: '',password: '' },
   })
 
+  const values = form.watch();
+
+  return (
+    <form
+      action={signInAction.bind(null, values)}
+      className='flex flex-col space-y-6'
+    >
+      <GetForm form={form} />
+    </form>
+  )
+}
+
+const GetForm = ({ form }: { form: UseFormReturn<SignInProps> }) => {
+  const { pending } = useFormStatus();
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col space-y-6'>
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>E-mail</FormLabel>
-              <FormControl>
-                <Input placeholder="Insira seu e-mail" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <FormField
+        control={form.control}
+        name="email"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>E-mail</FormLabel>
+            <FormControl>
+              <Input placeholder="Insira seu e-mail" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Senha</FormLabel>
-              <FormControl>
-                <Input type='password' placeholder="Insira sua senha" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <FormField
+        control={form.control}
+        name="password"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Senha</FormLabel>
+            <FormControl>
+              <Input type='password' placeholder="Insira sua senha" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
-        <Button type="submit" isLoading={isLoading}>Enviar</Button>
-      </form>
+      <Button type="submit" isLoading={pending}>Enviar</Button>
     </Form>
   )
 }

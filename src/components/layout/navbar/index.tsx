@@ -19,7 +19,7 @@ export const AuthenticatedNavbar = () => {
 export const PublicNavbar = () => {
   return (
     <div className='flex justify-end gap-5 p-2 shadow-xl'>
-      <Link href='/auth' passHref>
+      <Link href='/auth/signin' passHref>
         <Button>
           Entrar
         </Button>

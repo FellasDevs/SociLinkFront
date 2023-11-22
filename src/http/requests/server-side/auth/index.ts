@@ -1,7 +1,6 @@
-import { BaseResponse } from '@/types/http/BaseResponse';
 import { User } from '@/types/models/User';
 
-import { httpClient } from '@/http/http-client/axios';
+import { fetchClient } from '@/http/http-client/fetch';
 
 export type SignInProps = {
   email: string;
@@ -13,19 +12,20 @@ export type SignUpProps = {
   password: string;
   birthdate: string;
   nickname: string;
+  name: string;
 }
 
-export type AuthResponse = BaseResponse<{
+export type AuthResponse = {
   User: User;
   AuthToken: string;
-}>
+}
 
 export const AuthRoutes = {
   SignInRequest: async (props: SignInProps) => {
-    return httpClient.post<AuthResponse>('/auth/sign_in', props);
+    return fetchClient<AuthResponse>('/auth/sign_in', { method: 'POST', body: JSON.stringify(props) });
   },
 
   SignUpRequest: async (props: SignUpProps) => {
-    return httpClient.post<AuthResponse>('/auth/sign_up', props);
-  }
+    return fetchClient<AuthResponse>('/auth/sign_up', { method: 'POST', body: JSON.stringify(props) });
+  },
 }

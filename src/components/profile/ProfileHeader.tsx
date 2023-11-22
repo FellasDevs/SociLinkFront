@@ -4,8 +4,9 @@ import { Suspense } from 'react';
 
 import { User } from '@/types/models/User';
 
-import { FriendshipButton, FriendshipErrorFallback } from '@/components/profile/FriendshipButton';
+import { FriendshipButton } from '@/components/profile/FriendshipButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import { GetFriendshipByNicknameRequest } from '@/http/requests/server-side/friendships';
 import { GetSelfRequest } from '@/http/requests/server-side/users';
 
@@ -51,3 +52,15 @@ const GetFriendshipButton = async ({ user }: { user: User }) => {
   return <FriendshipButton user={loggedUser} friend={user} friendship={friendship} />;
 }
 
+const FriendshipErrorFallback = async ({ reset }: { error: Error; reset: () => void }) => {
+  'use server'
+
+  return (
+    <div>
+      <div>Ocorreu um erro</div>
+      <Button onClick={reset}>
+        Tentar novamente
+      </Button>
+    </div>
+  )
+}

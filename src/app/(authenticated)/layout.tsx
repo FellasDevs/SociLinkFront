@@ -8,7 +8,7 @@ import { GetSelfRequest } from '@/http/requests/server-side/users';
 
 const logout = () => {
   revalidateTag('getSelf');
-  redirect('/auth');
+  redirect('/auth/signin');
 }
 
 type Props = { children: ReactNode }

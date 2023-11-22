@@ -12,8 +12,6 @@ export const GetSelfRequest = async () => {
 
     return data.User;
   } catch (e) {
-    console.error(e);
-
     return null;
   }
 }

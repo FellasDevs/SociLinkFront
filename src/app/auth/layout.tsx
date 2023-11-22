@@ -14,5 +14,13 @@ export default async function PublicLayout({ children }: Props) {
     if (!!user) redirect('/');
   }
 
-  return <>{children}</>
+  return (
+    <div className='flex min-h-screen items-center justify-center'>
+      <div className='w-[80vw] max-w-[25em] text-xl'>
+        <div className='mb-10 font-bold'>SociLink</div>
+
+        {children}
+      </div>
+    </div>
+  )
 }
