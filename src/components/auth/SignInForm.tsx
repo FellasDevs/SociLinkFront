@@ -7,6 +7,7 @@ import { signInAction } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { SignInProps } from '@/http/requests/server-side/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
@@ -33,7 +34,7 @@ export const SignInForm = () => {
   )
 }
 
-const GetForm = ({ form }: { form: UseFormReturn<{email: string, password: string}, any, undefined> }) => {
+const GetForm = ({ form }: { form: UseFormReturn<SignInProps> }) => {
   const { pending } = useFormStatus();
 
   return (

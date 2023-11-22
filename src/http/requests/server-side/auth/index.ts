@@ -1,4 +1,3 @@
-import { BaseResponse } from '@/types/http/BaseResponse';
 import { User } from '@/types/models/User';
 
 import { fetchClient } from '@/http/http-client/fetch';
@@ -13,6 +12,7 @@ export type SignUpProps = {
   password: string;
   birthdate: string;
   nickname: string;
+  name: string;
 }
 
 export type AuthResponse = {
