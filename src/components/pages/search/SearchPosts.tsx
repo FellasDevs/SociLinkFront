@@ -1,37 +1,50 @@
-'use client'
+import { Suspense } from 'react';
 
-import { useEffect, useState } from 'react';
+import { PageQueryParams } from '@/types/next/Page';
 
-import { PaginationRequest } from '@/types/http/Pagination';
+import { PaginationComponent } from '@/components/pages/search/client-side/PaginationComponent';
+import { SearchArea } from '@/components/pages/search/client-side/SearchArea';
+import { PostRoutes } from '@/http/requests/server-side/posts';
 
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useSearchPosts } from '@/hooks/queries/search/useSearchPosts';
-
-export const SearchPosts = () => {
-  const [ pagination, setPagination ] = useState<PaginationRequest>({ page: 1, pageSize: 20 });
-  const [ search, setSearch ] = useState('');
-
-  const { data: posts, isLoading } = useSearchPosts({
-    query: search,
-    pagination,
-  })
-
+export const SearchPosts = ({ params }: { params: PageQueryParams }) => {
   return (
-    <div className=''>
-      <Label className='text-xl'>Pesquisar</Label>
-      <Input
-        className='grow'
-        placeholder='Pesquise aqui'
-        value={search}
-        onChange={(e) => setSearch(e.currentTarget.value)}
-      />
+    <div className='flex flex-col gap-10'>
+      <Suspense>
+        <SearchArea initialSearch={params.search as string ?? ''} />
+      </Suspense>
 
-      <div>
-        {posts?.Posts?.map((post) => (
-          <div key={post.Id}>{post.Content}</div>
-        ))}
-      </div>
+      <Suspense>
+        <GetPosts params={params} />
+      </Suspense>
     </div>
   )
 }
+
+const GetPosts = async ({ params }: { params: PageQueryParams }) => {
+  const page = isNaN(Number(params.page)) ? 1 : Number(params.page);
+  const pageSize = isNaN(Number(params.pageSize)) ? 3 : Number(params.pageSize);
+
+  const response = await PostRoutes.searchPosts({
+    query: params.search as string ?? '',
+    pagination: { page, pageSize },
+  });
+
+  if (!response || !response.Posts)
+    return <div className='text-2xl'>Ocorreu um problema ao procurar as postagens. Tente novamente mais tarde</div>;
+
+  if (!response.Posts.length)
+    return <div className='text-2xl'>Nenhuma postagem encontrada</div>;
+
+  const { Posts, PageSize, Page, TotalCount } = response;
+
+  return (
+    <PaginationComponent paginationProps={{ TotalCount, Page, PageSize }}>
+      {Posts.map((post, i) => (
+        <div key={post.Id}>
+          {i + 1}: {post.Content}
+        </div>
+      ))}
+    </PaginationComponent>
+  )
+}
+
