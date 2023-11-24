@@ -1,17 +1,14 @@
-import { revalidateTag } from 'next/cache';
-import { cookies } from 'next/headers';
+import {logoutAction} from "@/actions/auth";
+import {Button} from '@/components/ui/button';
+import {GetSelfRequest} from "@/http/requests/server-side/users";
 
-import { Button } from '@/components/ui/button';
+export const LogoutButton = async () => {
+  const user = GetSelfRequest();
 
-export const LogoutButton = () => {
-  const action = async () => {
-    'use server'
-    cookies().set('authToken', '');
-    revalidateTag('getSelf');
-  }
+  if (!user) return null;
 
   return (
-      <form action={action}>
+      <form action={logoutAction}>
         <Button type='submit' className='w-full rounded shadow'>
           Sair
         </Button>
