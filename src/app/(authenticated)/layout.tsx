@@ -4,7 +4,8 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 
-import { GetSelfRequest } from '@/http/requests/server-side/users';
+import { UserRoutes } from '@/http/requests/server-side/users';
+
 
 const logout = () => {
   revalidateTag('getSelf');
@@ -19,7 +20,7 @@ export default async function AuthenticatedLayout({ children }: Props) {
     return null;
   }
 
-  const user = await GetSelfRequest();
+  const user = await UserRoutes.getSelf();
 
   if (!user) {
     logout();

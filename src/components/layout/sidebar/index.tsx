@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 
 import { LogoutButton } from '@/components/layout/sidebar/LogoutButton';
 import { SidebarItem } from '@/components/layout/sidebar/SidebarItem';
-import { GetSelfRequest } from '@/http/requests/server-side/users';
+import { UserRoutes } from '@/http/requests/server-side/users';
 
 export const Sidebar = () => {
   return (
@@ -34,7 +34,7 @@ export const Sidebar = () => {
 }
 
 const UserName = async () => {
-  const user = await GetSelfRequest();
+  const user = await UserRoutes.getSelf();
 
   if (!user) return null;
 
@@ -42,7 +42,7 @@ const UserName = async () => {
 }
 
 const ProfileButton = async () => {
-  const user = await GetSelfRequest();
+  const user = await UserRoutes.getSelf();
 
   if (!user) return null;
 

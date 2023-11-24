@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { revalidateTag } from 'next/cache';
 import { Suspense } from 'react';
 
-import {ServerPostRoutes} from "@/http/requests/server-side/posts";
+import {PostRoutes} from "@/http/requests/server-side/posts";
 
 export const metadata: Metadata = {
   title: 'Início',
@@ -20,7 +20,7 @@ export default function Home() {
 }
 
 const Timeline = async () => {
-  const posts = await ServerPostRoutes.GetOwnTimelineRequest();
+  const posts = await PostRoutes.getOwnTimeline();
 
   const a = async () => {
     'use server'

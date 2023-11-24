@@ -2,7 +2,7 @@ import '../../styles/globals.css';
 import { ReactNode, Suspense } from 'react';
 
 import { PublicNavbar } from '@/components/layout/navbar';
-import { GetSelfRequest } from '@/http/requests/server-side/users';
+import { UserRoutes } from '@/http/requests/server-side/users';
 
 type Props = { children: ReactNode }
 
@@ -19,7 +19,7 @@ export default async function PublicLayout({ children }: Props) {
 }
 
 const GetNavbar = async () => {
-  const user = await GetSelfRequest();
+  const user = await UserRoutes.getSelf();
 
   if (!!user) return null;
 

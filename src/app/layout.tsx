@@ -5,7 +5,7 @@ import { ReactNode, Suspense } from 'react';
 
 import { AuthenticatedNavbar } from '@/components/layout/navbar';
 import { Sidebar } from '@/components/layout/sidebar';
-import { GetSelfRequest } from '@/http/requests/server-side/users';
+import { UserRoutes } from '@/http/requests/server-side/users';
 import { Providers } from '@/providers';
 import { GeistSans } from 'geist/font/sans';
 
@@ -41,7 +41,7 @@ export default async function RootLayout({ children }: Props) {
 }
 
 const GetSidebar = async () => {
-  const user = await GetSelfRequest();
+  const user = await UserRoutes.getSelf();
 
   if (!user) return null;
 
@@ -49,7 +49,7 @@ const GetSidebar = async () => {
 }
 
 const GetNavbar = async () => {
-  const user = await GetSelfRequest();
+  const user = await UserRoutes.getSelf();
 
   if (!user) return null;
 
