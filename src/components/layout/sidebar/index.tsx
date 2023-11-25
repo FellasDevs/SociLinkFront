@@ -1,8 +1,11 @@
+import Link from 'next/link';
 import {Suspense} from 'react';
 
+import { logoutAction } from '@/actions/auth';
 import { LogoutButton } from '@/components/layout/sidebar/LogoutButton';
 import { SidebarItem } from '@/components/layout/sidebar/SidebarItem';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from '@/components/ui/button';
 import { UserRoutes } from '@/http/requests/server-side/users';
 
 export const Sidebar = () => {
@@ -23,7 +26,9 @@ export const Sidebar = () => {
           </div>
 
           <div className='mt-auto'>
-            <LogoutButton />
+            <Suspense>
+              <GetLogoutButton />
+            </Suspense>
           </div>
         </div>
     </div>
@@ -63,5 +68,20 @@ const GetLinks = async () => {
         <SidebarItem href='/friends'>Amigos</SidebarItem>
         <SidebarItem href='/configs'>Configurações</SidebarItem>
       </>
+  )
+}
+
+const GetLogoutButton = async () => {
+  const user = await UserRoutes.getSelf();
+
+  if (!user)
+    return <SidebarItem href='/auth/signin'>Entrar</SidebarItem>;
+
+  return (
+    <form action={logoutAction}>
+      <Button type='submit' className='w-full rounded shadow'>
+        Sair
+      </Button>
+    </form>
   )
 }
