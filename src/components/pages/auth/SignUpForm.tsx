@@ -13,10 +13,26 @@ import * as z from 'zod';
 
 const signUpSchema = z
   .object({
-    email: z.string().email({message: 'O e-mail deve ser válido'}).max(50, {message: 'O e-mail deve ter até 50 caracteres'}),
-    name: z.string().trim().regex(/^[a-zA-Z ]*$/, {message: 'O nome não pode conter caracteres especiais ou números'}).min(5, {message: 'O nome deve ter ao menos 5 caracteres'}).max(50, {message: 'O nome deve ter até 50 caracteres'}),
-    nickname: z.string().trim().regex(/^[a-zA-Z0-9]*$/, {message: 'O apelido não pode conter caracteres especiais ou espaços'}).min(5, {message: 'O apelido deve ter ao menos 5 caracteres'}).max(50, {message: 'O apelido deve ter até 50 caracteres'}),
-    password: z.string().min(6, {message: 'A senha deve ter ao menos 6 caracteres'}).max(50, {message: 'A senha deve ter até 50 caracteres'}),
+    email: z
+      .string()
+      .email({message: 'O e-mail deve ser válido'})
+      .max(50, {message: 'O e-mail deve ter até 50 caracteres'}),
+    name: z
+      .string()
+      .trim()
+      .regex(/^[a-zA-Z ]*$/, {message: 'O nome não pode conter caracteres especiais ou números'})
+      .min(5, {message: 'O nome deve ter ao menos 5 caracteres'})
+      .max(50, {message: 'O nome deve ter até 50 caracteres'}),
+    nickname: z
+      .string()
+      .trim()
+      .regex(/^[a-zA-Z0-9]*$/, {message: 'O apelido não pode conter caracteres especiais ou espaços'})
+      .min(5, {message: 'O apelido deve ter ao menos 5 caracteres'})
+      .max(50, {message: 'O apelido deve ter até 50 caracteres'}),
+    password: z
+      .string()
+      .min(6, {message: 'A senha deve ter ao menos 6 caracteres'})
+      .max(50, {message: 'A senha deve ter até 50 caracteres'}),
     confirmPassword: z.string(),
     birthdate: z.string(),
   })

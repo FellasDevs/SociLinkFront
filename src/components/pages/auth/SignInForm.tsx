@@ -12,14 +12,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const signInSchema = z.object({
-  email: z.string().email({message: 'O e-mail deve ser válido'}).max(50, {message: 'O e-mail deve ter até 50 caracteres'}),
-  password: z.string().min(6, {message: 'A senha deve ter ao menos 6 caracteres'}).max(50, {message: 'A senha deve ter até 50 caracteres'}),
+  email: z
+    .string()
+    .email({message: 'O e-mail deve ser válido'})
+    .max(50, {message: 'O e-mail deve ter até 50 caracteres'}),
+  password: z
+    .string()
+    .min(6, {message: 'A senha deve ter ao menos 6 caracteres'})
+    .max(50, {message: 'A senha deve ter até 50 caracteres'}),
 })
 
 export const SignInForm = () => {
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
-    defaultValues: { email: '',password: '' },
+    defaultValues: { email: '', password: '' },
   })
 
   const values = form.watch();
