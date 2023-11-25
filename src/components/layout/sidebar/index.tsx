@@ -1,10 +1,8 @@
-import Link from 'next/link';
-import {Suspense} from 'react';
+import { Suspense } from 'react';
 
 import { logoutAction } from '@/actions/auth';
-import { LogoutButton } from '@/components/layout/sidebar/LogoutButton';
 import { SidebarItem } from '@/components/layout/sidebar/SidebarItem';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { UserRoutes } from '@/http/requests/server-side/users';
 
