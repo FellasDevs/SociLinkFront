@@ -1,9 +1,9 @@
 import {logoutAction} from "@/actions/auth";
 import {Button} from '@/components/ui/button';
-import {GetSelfRequest} from "@/http/requests/server-side/users";
+import { UserRoutes } from '@/http/requests/server-side/users';
 
 export const LogoutButton = async () => {
-  const user = GetSelfRequest();
+  const user = UserRoutes.getSelf();
 
   if (!user) return null;
 

@@ -1,4 +1,4 @@
-import { User } from '@/types/entities/User';
+import { User } from '@/types/models/User';
 
 export type Post = {
   Id: string;

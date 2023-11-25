@@ -1,8 +1,8 @@
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import Link from 'next/link';
 
-import { AuthErrorFallback } from '@/components/auth/AuthErrorFallback';
-import { SignInForm } from '@/components/auth/SignInForm';
+import { AuthErrorFallback } from '@/components/pages/auth/AuthErrorFallback';
+import { SignInForm } from '@/components/pages/auth/SignInForm';
 import { Button } from '@/components/ui/button';
 
 export default async function SignInPage() {

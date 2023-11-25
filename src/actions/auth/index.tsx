@@ -7,7 +7,7 @@ import { AuthRoutes, SignInProps, SignUpProps } from '@/http/requests/server-sid
 
 export const signInAction = async (props: SignInProps) => {
   try {
-    const { data } = await AuthRoutes.SignInRequest(props);
+    const { data } = await AuthRoutes.signInRequest(props);
 
     cookies().set('authToken', data.AuthToken);
     revalidateTag('getSelf');
@@ -19,7 +19,7 @@ export const signInAction = async (props: SignInProps) => {
 
 export const signUpAction = async (props: SignUpProps) => {
   try {
-    const { data } = await AuthRoutes.SignUpRequest(props);
+    const { data } = await AuthRoutes.signUpRequest(props);
 
     cookies().set('authToken', data.AuthToken);
     revalidateTag('getSelf');

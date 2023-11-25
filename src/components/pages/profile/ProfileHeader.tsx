@@ -4,11 +4,11 @@ import { Suspense } from 'react';
 
 import { User } from '@/types/models/User';
 
-import { FriendshipButton } from '@/components/profile/FriendshipButton';
+import { FriendshipButton } from '@/components/pages/profile/FriendshipButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { GetFriendshipByNicknameRequest } from '@/http/requests/server-side/friendships';
-import { GetSelfRequest } from '@/http/requests/server-side/users';
+import { FriendshipRoutes } from '@/http/requests/server-side/friendships';
+import { UserRoutes } from '@/http/requests/server-side/users';
 
 type Props = {
   user: User;
@@ -43,11 +43,11 @@ export const ProfileHeader = ({ user }: Props) => {
 }
 
 const GetFriendshipButton = async ({ user }: { user: User }) => {
-  const loggedUser = await GetSelfRequest();
+  const loggedUser = await UserRoutes.getSelf();
 
   if (!loggedUser || loggedUser.Id === user.Id) return null;
 
-  const friendship = await GetFriendshipByNicknameRequest(user.Nickname);
+  const friendship = await FriendshipRoutes.getFriendshipByNickname(user.Nickname);
 
   return <FriendshipButton user={loggedUser} friend={user} friendship={friendship} />;
 }

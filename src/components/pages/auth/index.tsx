@@ -2,8 +2,8 @@
 
 import { FC, useState } from 'react';
 
-import { SignInForm } from '@/components/auth/SignInForm';
-import { SignUpForm } from '@/components/auth/SignUpForm';
+import { SignInForm } from '@/components/pages/auth/SignInForm';
+import { SignUpForm } from '@/components/pages/auth/SignUpForm';
 import { Button } from '@/components/ui/button';
 
 export const AuthComponent: FC = () => {

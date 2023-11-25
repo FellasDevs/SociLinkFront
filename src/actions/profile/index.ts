@@ -2,26 +2,22 @@
 
 import { revalidateTag } from 'next/cache';
 
-import {Friendship} from "@/types/models/Friendship";
+import { Friendship } from '@/types/models/Friendship';
 import { User } from '@/types/models/User';
 
-import {
-  AnswerFriendshipRequestRequest,
-  DeleteFriendshipRequest,
-  RequestFriendshipRequest,
-} from '@/http/requests/server-side/friendships';
+import { FriendshipRoutes } from '@/http/requests/server-side/friendships';
 
 export const requestFriendshipAction = async (friend: User) => {
-  await RequestFriendshipRequest(friend.Id);
+  await FriendshipRoutes.requestFriendship(friend.Id);
   revalidateTag(`friendship-${friend.Nickname}`);
 }
 
 export const deleteFriendshipAction = async (friendship: Friendship) => {
-  await DeleteFriendshipRequest(friendship.Id);
+  await FriendshipRoutes.deleteFriendship(friendship.Id);
   revalidateTag(`friendship-${friendship.Friend.Nickname}`);
 }
 
 export const answerFriendshipAction = async (friendship: Friendship, accepted: boolean) => {
-  await AnswerFriendshipRequestRequest({requestId: friendship.Id, answer: accepted});
+  await FriendshipRoutes.answerFriendshipRequest({requestId: friendship.Id, answer: accepted});
   revalidateTag(`friendship-${friendship.Friend.Nickname}`);
 }

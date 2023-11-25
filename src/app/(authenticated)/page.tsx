@@ -20,7 +20,7 @@ export default function Home() {
 }
 
 const Timeline = async () => {
-  const posts = await PostRoutes.GetOwnTimelineRequest();
+  const posts = await PostRoutes.getOwnTimeline();
 
   const a = async () => {
     'use server'

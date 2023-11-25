@@ -1,9 +1,9 @@
 import {Suspense} from 'react';
 
-import {LogoutButton} from '@/components/layout/sidebar/LogoutButton';
-import {SidebarItem} from '@/components/layout/sidebar/SidebarItem';
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {GetSelfRequest} from '@/http/requests/server-side/users';
+import { LogoutButton } from '@/components/layout/sidebar/LogoutButton';
+import { SidebarItem } from '@/components/layout/sidebar/SidebarItem';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserRoutes } from '@/http/requests/server-side/users';
 
 export const Sidebar = () => {
   return (
@@ -31,7 +31,7 @@ export const Sidebar = () => {
 }
 
 const GetUserArea = async () => {
-  const user = await GetSelfRequest();
+  const user = await UserRoutes.getSelf();
 
   if (!user) return null;
 
@@ -52,7 +52,7 @@ const GetUserArea = async () => {
 }
 
 const GetLinks = async () => {
-  const user = await GetSelfRequest();
+  const user = await UserRoutes.getSelf();
 
   if (!user) return null;
 

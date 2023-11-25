@@ -21,11 +21,11 @@ export type AuthResponse = {
 }
 
 export const AuthRoutes = {
-  SignInRequest: async (props: SignInProps) => {
+  signInRequest: async (props: SignInProps) => {
     return fetchClient<AuthResponse>('/auth/sign_in', { method: 'POST', body: JSON.stringify(props) });
   },
 
-  SignUpRequest: async (props: SignUpProps) => {
+  signUpRequest: async (props: SignUpProps) => {
     return fetchClient<AuthResponse>('/auth/sign_up', { method: 'POST', body: JSON.stringify(props) });
   },
 }
