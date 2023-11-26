@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useRef } from 'react';
+import { ReactNode } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { Loader } from '@/components/global/Loader';
