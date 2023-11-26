@@ -15,23 +15,29 @@ export type SearchUsersParams = {
 export type SearchUsersResponse = { Users: User[] }
 
 export const UserRoutes = {
-  getSelf: async () => {
+  getSelf: async (): Promise<User | null> => {
     try {
-      const { data } = await fetchClient<GetSelfResponse>('/users/self', { next: { tags: ['getSelf'], revalidate: 60 * 10 }});
+      const { data } = await fetchClient<GetSelfResponse>(
+        '/users/self',
+        { next: { tags: ['get-self'], revalidate: 60 * 5 }},
+      );
 
       return data.User;
     } catch (e) {
+      console.error(e);
+
       return null;
     }
   },
 
-  searchUsers: async ({ query, pagination }: SearchUsersParams): Promise<SearchUsersResponse | null> => {
+  searchUsers: async ({ query, pagination }: SearchUsersParams): Promise<User[] | null> => {
     try {
       const { data } = await fetchClient<SearchUsersResponse>(
         `/users/search?search=${query}&page=${pagination.page}&pageSize=${pagination.pageSize}`,
+        { next: { tags: [`search-users-${query}`], revalidate: 60 * 5 }},
       );
 
-      return data;
+      return data.Users;
     } catch (e) {
       console.error(e);
 

@@ -1,17 +1,9 @@
 'use client';
 
-import { Post } from '@/types/models/Post';
-
 import { InfiniteScroll } from '@/components/global/InfiniteScroll';
-import { useHomeTimeline } from '@/hooks/queries/useHomeTimeline';
-import { GetHomeTimelineParams } from '@/http/requests/server-side/posts';
+import { useHomeTimeline, useHomeTimelineProps } from '@/hooks/queries/useHomeTimeline';
 
-type Props = {
-  initialData: Post[];
-  params: GetHomeTimelineParams;
-}
-
-export const HomeTimeline = ({ initialData, params }: Props) => {
+export const HomeTimeline = ({ initialData, params }: useHomeTimelineProps) => {
   const { data: posts, ...queryParams } = useHomeTimeline({
     initialData,
     params,

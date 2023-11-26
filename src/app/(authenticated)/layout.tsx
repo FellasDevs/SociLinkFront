@@ -6,9 +6,8 @@ import { ReactNode } from 'react';
 
 import { UserRoutes } from '@/http/requests/server-side/users';
 
-
 const logout = () => {
-  revalidateTag('getSelf');
+  revalidateTag('get-self');
   redirect('/auth/signin');
 }
 

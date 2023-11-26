@@ -7,10 +7,12 @@ import { AuthRoutes, SignInProps, SignUpProps } from '@/http/requests/server-sid
 
 export const signInAction = async (props: SignInProps) => {
   try {
-    const { data } = await AuthRoutes.signInRequest(props);
+    const data = await AuthRoutes.signInRequest(props);
+
+    if (!data) return;
 
     cookies().set('authToken', data.AuthToken);
-    revalidateTag('getSelf');
+    revalidateTag('get-self');
   } catch (e: any) {
     const errorMsg = e.response?.data?.message || 'Aconteceu um erro ao tentar entrar em sua conta, tente novamente mais tarde.';
     throw new Error(errorMsg);
@@ -19,10 +21,12 @@ export const signInAction = async (props: SignInProps) => {
 
 export const signUpAction = async (props: SignUpProps) => {
   try {
-    const { data } = await AuthRoutes.signUpRequest(props);
+    const data = await AuthRoutes.signUpRequest(props);
+
+    if (!data) return;
 
     cookies().set('authToken', data.AuthToken);
-    revalidateTag('getSelf');
+    revalidateTag('get-self');
   } catch (e: any) {
     let errorMsg = e.response?.data?.message || 'Aconteceu um erro ao tentar criar a sua conta, tente novamente mais tarde.'
 
@@ -41,5 +45,5 @@ export const signUpAction = async (props: SignUpProps) => {
 
 export const logoutAction = async () => {
   cookies().set('authToken', '');
-  revalidateTag('getSelf');
+  revalidateTag('get-self');
 }

@@ -1,17 +1,9 @@
-'use client'
-
-import { Post } from '@/types/models/Post';
+'use client';
 
 import { InfiniteScroll } from '@/components/global/InfiniteScroll';
-import { useProfileTimeline } from '@/hooks/queries/useProfileTimeline';
-import { GetProfileTimelineParams } from '@/http/requests/server-side/posts';
+import { useProfileTimeline, useProfileTimelineProps } from '@/hooks/queries/useProfileTimeline';
 
-type Props = {
-  initialData: Post[];
-  params: GetProfileTimelineParams;
-}
-
-export const ProfileTimeline = ({ initialData, params }: Props) => {
+export const ProfileTimeline = ({ initialData, params }: useProfileTimelineProps) => {
   const { data: posts, ...queryParams } = useProfileTimeline({
     initialData,
     params,

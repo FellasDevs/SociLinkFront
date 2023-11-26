@@ -4,12 +4,12 @@ import { ClientSidePostRoutes } from '@/http/requests/client-side/posts';
 import { GetHomeTimelineParams } from '@/http/requests/server-side/posts';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-type Props = {
+export type useHomeTimelineProps = {
   initialData: Post[];
   params: GetHomeTimelineParams;
 }
 
-export const useHomeTimeline = ({ initialData, params: { page, pageSize } }: Props) => {
+export const useHomeTimeline = ({ initialData, params: { page, pageSize } }: useHomeTimelineProps) => {
   return useInfiniteQuery({
     queryKey: ['home-timeline'],
     queryFn: async ({ pageParam }): Promise<Post[]> => {
