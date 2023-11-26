@@ -25,22 +25,20 @@ const GetUsers = async ({ params }: { params: PageQueryParams }) => {
   const page = isNaN(Number(params.page)) ? 1 : Number(params.page);
   const pageSize = isNaN(Number(params.pageSize)) ? 3 : Number(params.pageSize);
 
-  const response = await UserRoutes.searchUsers({
+  const users = await UserRoutes.searchUsers({
     query: params.search as string ?? '',
     pagination: { page, pageSize },
   });
 
-  if (!response || !response.Users)
+  if (!users)
     return <div className='text-2xl'>Ocorreu um problema ao procurar os usuários. Tente novamente mais tarde</div>;
 
-  if (!response.Users.length)
+  if (!users.length)
     return <div className='text-2xl'>Nenhum usuário encontrado</div>;
-
-  const { Users } = response;
 
   return (
     <div className='flex flex-col gap-3'>
-      {Users.map((user) => (
+      {users.map((user) => (
         <Link key={user.Id} href={'/profile/' + user.Nickname} passHref>
           <Button variant='outline' className='w-full text-2xl'>
             {user.Name}

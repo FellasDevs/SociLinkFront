@@ -2,16 +2,16 @@
 
 import { Post } from '@/types/models/Post';
 
-import { ClientSidePostRoutes } from '@/http/requests/server-side/client-side/posts';
+import { ClientSidePostRoutes } from '@/http/requests/client-side/posts';
 import { GetProfileTimelineParams } from '@/http/requests/server-side/posts';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-type Props = {
+export type UseProfileTimelineProps = {
   initialData: Post[];
   params: GetProfileTimelineParams;
 }
 
-export const useProfileTimeline = ({ initialData, params: { nickname, page, pageSize } }: Props) => {
+export const useProfileTimeline = ({ initialData, params: { nickname, page, pageSize } }: UseProfileTimelineProps) => {
   return useInfiniteQuery({
     queryKey: ['profile-timeline'],
     queryFn: async ({ pageParam }): Promise<Post[]> => {

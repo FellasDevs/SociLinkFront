@@ -1,24 +1,24 @@
-import { Post } from '@/types/models/Post';
+import { Friendship } from '@/types/models/Friendship';
 
-import { ClientSidePostRoutes } from '@/http/requests/client-side/posts';
-import { GetHomeTimelineParams } from '@/http/requests/server-side/posts';
+import { ClientSideFriendsRoutes } from '@/http/requests/client-side/friends';
+import { GetFriendsParams } from '@/http/requests/server-side/friends';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export type UseHomeTimelineProps = {
-  initialData: Post[];
-  params: GetHomeTimelineParams;
+export type UseFriendshipRequestsProps = {
+  initialData: Friendship[];
+  params: GetFriendsParams;
 }
 
-export const useHomeTimeline = ({ initialData, params: { page, pageSize } }: UseHomeTimelineProps) => {
+export const useFriendshipRequests = ({ initialData, params: { page, pageSize } }: UseFriendshipRequestsProps) => {
   return useInfiniteQuery({
-    queryKey: ['home-timeline'],
-    queryFn: async ({ pageParam }): Promise<Post[]> => {
-      const posts = await ClientSidePostRoutes.getHomeTimeline({
+    queryKey: ['friendship-requests'],
+    queryFn: async ({ pageParam }): Promise<Friendship[]> => {
+      const friends = await ClientSideFriendsRoutes.getFriendshipRequests({
         page: pageParam,
         pageSize,
       });
 
-      return posts ?? [];
+      return friends ?? [];
     },
     initialPageParam: page,
     initialData: {

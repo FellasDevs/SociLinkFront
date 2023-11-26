@@ -7,7 +7,7 @@ import { User } from '@/types/models/User';
 import { FriendshipButton } from '@/components/pages/profile/FriendshipButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { FriendshipRoutes } from '@/http/requests/server-side/friendships';
+import { ServerSideFriendsRoutes } from '@/http/requests/server-side/friends';
 import { UserRoutes } from '@/http/requests/server-side/users';
 
 type Props = {
@@ -47,7 +47,7 @@ const GetFriendshipButton = async ({ user }: { user: User }) => {
 
   if (!loggedUser || loggedUser.Id === user.Id) return null;
 
-  const friendship = await FriendshipRoutes.getFriendshipByNickname(user.Nickname);
+  const friendship = await ServerSideFriendsRoutes.getFriendshipByNickname(user.Nickname);
 
   return <FriendshipButton user={loggedUser} friend={user} friendship={friendship} />;
 }

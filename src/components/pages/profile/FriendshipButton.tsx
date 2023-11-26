@@ -53,7 +53,7 @@ const GetButton = ({ text, isRed }: { text: string; isRed?: boolean }) => {
     const { pending } = useFormStatus();
 
     return (
-        <Button isLoading={pending} type='submit' variant={isRed ? 'error' : 'outline'} className='rounded-2xl'>
+        <Button isLoading={pending} type='submit' variant={isRed ? 'error' : 'outline'}>
             {text}
         </Button>
     )

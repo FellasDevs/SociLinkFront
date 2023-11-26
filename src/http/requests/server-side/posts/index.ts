@@ -39,7 +39,7 @@ export const ServerSidePostRoutes = {
     try {
       const { data } = await fetchClient<GetHomeTimelineResponse>(
         `/timeline?page=${page}&pageSize=${pageSize}`,
-        { next: { tags: ['timeline'], revalidate: 30 } }
+        { next: { tags: ['timeline'], revalidate: 60 } }
       );
 
       return data.Posts;
@@ -65,13 +65,14 @@ export const ServerSidePostRoutes = {
     }
   },
 
-  searchPosts: async ({ query, pagination: { page, pageSize } }: SearchPostsParams): Promise<SearchPostsResponse | null> => {
+  searchPosts: async ({ query, pagination: { page, pageSize } }: SearchPostsParams): Promise<Post[] | null> => {
     try {
       const { data } = await fetchClient<SearchPostsResponse>(
         `/posts/search?search=${query}&page=${page}&pageSize=${pageSize}`,
+        { next: { tags: [`search-posts-${query}`], revalidate: 60 * 5 } }
       );
 
-      return data;
+      return data.Posts;
     } catch (e) {
       console.error(e);
 

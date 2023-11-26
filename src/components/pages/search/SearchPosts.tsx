@@ -23,22 +23,20 @@ const GetPosts = async ({ params }: { params: PageQueryParams }) => {
   const page = isNaN(Number(params.page)) ? 1 : Number(params.page);
   const pageSize = isNaN(Number(params.pageSize)) ? 3 : Number(params.pageSize);
 
-  const response = await ServerSidePostRoutes.searchPosts({
+  const posts = await ServerSidePostRoutes.searchPosts({
     query: params.search as string ?? '',
     pagination: { page, pageSize },
   });
 
-  if (!response || !response.Posts)
+  if (!posts)
     return <div className='text-2xl'>Ocorreu um problema ao procurar as postagens. Tente novamente mais tarde</div>;
 
-  if (!response.Posts.length)
+  if (!posts.length)
     return <div className='text-2xl'>Nenhuma postagem encontrada</div>;
-
-  const { Posts } = response;
 
   return (
     <div>
-      {Posts.map((post, i) => (
+      {posts.map((post, i) => (
         <div key={post.Id}>
           {i + 1}: {post.Content}
         </div>
