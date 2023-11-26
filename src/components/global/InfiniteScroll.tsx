@@ -43,7 +43,7 @@ export const InfiniteScroll = (
   return (
     <div className='flex flex-col gap-3'>
       <div ref={previousRef}>
-        { isFetchingPreviousPage && <div className='flex'><Loader /> Carregando...</div> }
+        { isFetchingPreviousPage && <LoadingComponent /> }
       </div>
 
       <div className='flex flex-col gap-2'>
@@ -51,12 +51,17 @@ export const InfiniteScroll = (
       </div>
 
       <div ref={nextRef}>
-        {
-          isFetchingNextPage
-            ? <div className='flex'><Loader /> Carregando...</div>
-            : !hasNextPage ? <div className='text-lg'>Não há mais posts</div> : null
-        }
+        { isFetchingNextPage && <LoadingComponent /> }
       </div>
+    </div>
+  )
+}
+
+const LoadingComponent = () => {
+  return (
+    <div className='m-3 flex items-center justify-center text-2xl'>
+      <Loader />
+      Carregando...
     </div>
   )
 }
