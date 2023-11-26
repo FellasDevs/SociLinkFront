@@ -4,11 +4,17 @@ import { User } from '@/types/models/User';
 
 import { fetchClient } from '@/http/http-client/fetch';
 
-export type GetOwnTimelineResponse = {
+export type GetHomeTimelineParams = PaginationRequestParams;
+
+export type GetHomeTimelineResponse = {
   Posts: Post[];
 }
 
-export type GetUserTimelineResponse = {
+export type GetProfileTimelineParams = PaginationRequestParams & {
+  nickname: string;
+}
+
+export type GetProfileTimelineResponse = {
   Posts: Post[];
   User: User;
 }
@@ -29,9 +35,9 @@ export type CreatePostParams = {
 export type SearchPostsResponse = { Posts: Post[] };
 
 export const ServerSidePostRoutes = {
-  getOwnTimeline: async ({ page, pageSize }: PaginationRequestParams): Promise<Post[]> => {
+  getOwnTimeline: async ({ page, pageSize }: GetHomeTimelineParams): Promise<Post[] | null> => {
     try {
-      const { data } = await fetchClient<GetOwnTimelineResponse>(
+      const { data } = await fetchClient<GetHomeTimelineResponse>(
         `/timeline?page=${page}&pageSize=${pageSize}`,
         { next: { tags: ['timeline'], revalidate: 30 } }
       );
@@ -40,14 +46,14 @@ export const ServerSidePostRoutes = {
     } catch (e) {
       console.error(e);
 
-      return [];
+      return null;
     }
   },
 
-  getUserTimeline: async (nickname: string): Promise<GetUserTimelineResponse | null> => {
+  getUserTimeline: async ({ nickname, page, pageSize }: GetProfileTimelineParams): Promise<GetProfileTimelineResponse | null> => {
     try {
-      const { data } = await fetchClient<GetUserTimelineResponse>(
-        `/timeline/${nickname}`,
+      const { data } = await fetchClient<GetProfileTimelineResponse>(
+        `/timeline/${nickname}?page=${page}&pageSize=${pageSize}`,
         { next: { tags: [`timeline-${nickname}`], revalidate: 60 } }
       );
 

@@ -1,11 +1,9 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { PaginationRequestParams } from '@/types/http/Pagination';
-
 import { CreatePostForm } from '@/components/pages/home/CreatePostForm';
-import { OwnTimelineComponent } from '@/components/pages/home/OwnTimelineComponent';
-import { ServerSidePostRoutes } from '@/http/requests/server-side/posts';
+import { HomeTimeline } from '@/components/pages/home/HomeTimeline';
+import { GetHomeTimelineParams, ServerSidePostRoutes } from '@/http/requests/server-side/posts';
 
 export const metadata: Metadata = {
   title: 'Início',
@@ -25,12 +23,14 @@ export default function Home() {
 }
 
 const Timeline = async () => {
-  const params: PaginationRequestParams = {
+  const params: GetHomeTimelineParams = {
     page: 1,
-    pageSize: 5,
+    pageSize: 10,
   }
 
   const posts = await ServerSidePostRoutes.getOwnTimeline(params);
 
-  return <OwnTimelineComponent initialData={posts} params={params} />
+  if (!posts) return <div>Erro ao carregar timeline. Tente novamente mais tarde.</div>;
+
+  return <HomeTimeline initialData={posts} params={params} />
 }

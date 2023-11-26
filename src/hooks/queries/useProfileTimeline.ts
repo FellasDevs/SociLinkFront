@@ -1,22 +1,27 @@
-import { PaginationRequestParams } from '@/types/http/Pagination';
+'use client'
+
 import { Post } from '@/types/models/Post';
 
 import { ClientSidePostRoutes } from '@/http/requests/server-side/client-side/posts';
+import { GetProfileTimelineParams } from '@/http/requests/server-side/posts';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 type Props = {
   initialData: Post[];
-  params: PaginationRequestParams;
+  params: GetProfileTimelineParams;
 }
 
-export const useOwnTimeline = ({ initialData, params: { page, pageSize } }: Props) => {
+export const useProfileTimeline = ({ initialData, params: { nickname, page, pageSize } }: Props) => {
   return useInfiniteQuery({
-    queryKey: ['own-timeline'],
+    queryKey: ['profile-timeline'],
     queryFn: async ({ pageParam }): Promise<Post[]> => {
-      return await ClientSidePostRoutes.getOwnTimeline({
+      const response = await ClientSidePostRoutes.getProfileTimeline({
+        nickname,
         page: pageParam,
         pageSize,
       });
+
+      return response?.Posts ?? [];
     },
     initialPageParam: page,
     initialData: {

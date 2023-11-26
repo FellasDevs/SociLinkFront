@@ -1,14 +1,18 @@
 import { BaseResponse } from '@/types/http/BaseResponse';
-import { PaginationRequestParams } from '@/types/http/Pagination';
 import { Post } from '@/types/models/Post';
 
 import { httpClient } from '@/http/http-client/axios';
-import { GetOwnTimelineResponse } from '@/http/requests/server-side/posts';
+import {
+  GetHomeTimelineParams,
+  GetHomeTimelineResponse,
+  GetProfileTimelineParams,
+  GetProfileTimelineResponse,
+} from '@/http/requests/server-side/posts';
 
 export const ClientSidePostRoutes = {
-  getOwnTimeline: async (params: PaginationRequestParams): Promise<Post[]> => {
+  getHomeTimeline: async (params: GetHomeTimelineParams): Promise<Post[] | null> => {
     try {
-      const { data } = await httpClient.get<BaseResponse<GetOwnTimelineResponse>>(
+      const { data } = await httpClient.get<BaseResponse<GetHomeTimelineResponse>>(
         '/timeline',
         { params },
       );
@@ -17,7 +21,22 @@ export const ClientSidePostRoutes = {
     } catch (e) {
       console.error(e);
 
-      return [];
+      return null;
+    }
+  },
+
+  getProfileTimeline: async ({ nickname, ...params }: GetProfileTimelineParams): Promise<GetProfileTimelineResponse | null> => {
+    try {
+      const { data } = await httpClient.get<BaseResponse<GetProfileTimelineResponse>>(
+        `/timeline/${nickname}`,
+        { params },
+      );
+
+      return data.data;
+    } catch (e) {
+      console.error(e);
+
+      return null;
     }
   },
 }

@@ -1,27 +1,21 @@
 'use client';
 
-import { useEffect } from 'react';
-
-import { PaginationRequestParams } from '@/types/http/Pagination';
 import { Post } from '@/types/models/Post';
 
 import { InfiniteScroll } from '@/components/global/InfiniteScroll';
-import { useOwnTimeline } from '@/hooks/useOwnTimeline';
+import { useHomeTimeline } from '@/hooks/queries/useHomeTimeline';
+import { GetHomeTimelineParams } from '@/http/requests/server-side/posts';
 
 type Props = {
   initialData: Post[];
-  params: PaginationRequestParams;
+  params: GetHomeTimelineParams;
 }
 
-export const OwnTimelineComponent = ({ initialData, params }: Props) => {
-  const { data: posts, ...queryParams } = useOwnTimeline({
+export const HomeTimeline = ({ initialData, params }: Props) => {
+  const { data: posts, ...queryParams } = useHomeTimeline({
     initialData,
     params,
-  })
-
-  useEffect(() => {
-    console.log(posts?.pageParams);
-  }, [posts?.pageParams]);
+  });
 
   return (
     <InfiniteScroll {...queryParams} rootMargin='1000px'>

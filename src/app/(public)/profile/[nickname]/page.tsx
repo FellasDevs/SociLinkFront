@@ -3,8 +3,9 @@ import { Suspense } from 'react';
 
 import { Loader } from '@/components/global/Loader';
 import { ProfileHeader } from '@/components/pages/profile/ProfileHeader';
+import { ProfileTimeline } from '@/components/pages/profile/ProfileTimeline';
 import { Separator } from '@/components/ui/separator';
-import { ServerSidePostRoutes } from '@/http/requests/server-side/posts';
+import { GetProfileTimelineParams, ServerSidePostRoutes } from '@/http/requests/server-side/posts';
 
 export const metadata: Metadata = {
   title: 'Perfil',
@@ -35,26 +36,23 @@ const UserLoading = () => {
 }
 
 const GetProfile = async ({ nickname }: { nickname: string }) => {
-  const response = await ServerSidePostRoutes.getUserTimeline(nickname);
+  const params: GetProfileTimelineParams = {
+    nickname,
+    page: 1,
+    pageSize: 10,
+  }
+
+  const response = await ServerSidePostRoutes.getUserTimeline(params);
 
   if (!response) return <div className='m-auto text-2xl'>Usuário não encontrado.</div>;
 
   return (
-    <div>
+    <>
       <ProfileHeader user={response.User} />
 
       <Separator />
 
-      <div className='m-3 flex flex-col items-center gap-5'>
-        {response.Posts.map(post => (
-          <div key={post.Id} className='min-w-[20em] rounded border-2 p-5'>
-            <div className='flex items-center'>
-              <div>{post.User.Name}</div>
-            </div>
-            <div>{post.Content}</div>
-          </div>
-        ))}
-      </div>
-    </div>
+      <ProfileTimeline initialData={response.Posts} params={params} />
+    </>
   )
 }
