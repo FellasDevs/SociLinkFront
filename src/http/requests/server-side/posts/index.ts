@@ -1,4 +1,4 @@
-import { PaginationRequest, PaginationResponse } from '@/types/http/Pagination';
+import { PaginationRequestParams } from '@/types/http/Pagination';
 import { Post } from '@/types/models/Post';
 import { User } from '@/types/models/User';
 
@@ -14,7 +14,7 @@ export type GetUserTimelineResponse = {
 }
 
 export type SearchPostsParams = {
-  pagination: PaginationRequest;
+  pagination: PaginationRequestParams;
   query: string;
 }
 
@@ -26,13 +26,13 @@ export type CreatePostParams = {
   images: string[];
 }
 
-export type SearchPostsResponse = PaginationResponse & { Posts: Post[] };
+export type SearchPostsResponse = { Posts: Post[] };
 
-export const PostRoutes = {
-  getOwnTimeline: async (): Promise<Post[]> => {
+export const ServerSidePostRoutes = {
+  getOwnTimeline: async ({ page, pageSize }: PaginationRequestParams): Promise<Post[]> => {
     try {
       const { data } = await fetchClient<GetOwnTimelineResponse>(
-        '/timeline',
+        `/timeline?page=${page}&pageSize=${pageSize}`,
         { next: { tags: ['timeline'], revalidate: 30 } }
       );
 

@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 
 import { PageQueryParams } from '@/types/next/Page';
 
-import { PaginationComponent } from '@/components/pages/search/client-side/PaginationComponent';
 import { SearchArea } from '@/components/pages/search/client-side/SearchArea';
 import { UserRoutes } from '@/http/requests/server-side/users';
 
@@ -35,16 +34,16 @@ const GetUsers = async ({ params }: { params: PageQueryParams }) => {
   if (!response.Users.length)
     return <div className='text-2xl'>Nenhum usuário encontrado</div>;
 
-  const { Users, PageSize, Page, TotalCount } = response;
+  const { Users } = response;
 
   return (
-    <PaginationComponent paginationProps={{ TotalCount, Page, PageSize }}>
+    <div>
       {Users.map((user, i) => (
         <div key={user.Id}>
           {i + 1}: {user.Name}
         </div>
       ))}
-    </PaginationComponent>
+    </div>
   )
 }
 

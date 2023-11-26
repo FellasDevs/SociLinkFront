@@ -3,7 +3,7 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { CreatePostParams, PostRoutes } from '@/http/requests/server-side/posts';
+import { CreatePostParams, ServerSidePostRoutes } from '@/http/requests/server-side/posts';
 
 export const searchPostsAction = async (basePath: string, newQueryString: string) => {
   revalidatePath(basePath, 'page');
@@ -11,7 +11,7 @@ export const searchPostsAction = async (basePath: string, newQueryString: string
 }
 
 export const createPostAction = async (params: CreatePostParams) => {
-  const createdPost = await PostRoutes.createPost(params);
+  const createdPost = await ServerSidePostRoutes.createPost(params);
 
   if (!createdPost) return;
 

@@ -31,7 +31,7 @@ const CreatePostSchema = z.object({
   images: z.array(z.string().url())
 })
 
-export const CreatePostComponent = () => {
+export const CreatePostForm = () => {
     const form = useForm<z.infer<typeof CreatePostSchema>>({
       resolver: zodResolver(CreatePostSchema),
       defaultValues: { content: '', visibility: 'public', images: [] },

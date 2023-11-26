@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { Loader } from '@/components/global/Loader';
 import { ProfileHeader } from '@/components/pages/profile/ProfileHeader';
 import { Separator } from '@/components/ui/separator';
-import { PostRoutes } from '@/http/requests/server-side/posts';
+import { ServerSidePostRoutes } from '@/http/requests/server-side/posts';
 
 export const metadata: Metadata = {
   title: 'Perfil',
@@ -35,7 +35,7 @@ const UserLoading = () => {
 }
 
 const GetProfile = async ({ nickname }: { nickname: string }) => {
-  const response = await PostRoutes.getUserTimeline(nickname);
+  const response = await ServerSidePostRoutes.getUserTimeline(nickname);
 
   if (!response) return <div className='m-auto text-2xl'>Usuário não encontrado.</div>;
 
