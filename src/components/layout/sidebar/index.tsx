@@ -3,7 +3,6 @@ import { Suspense } from 'react';
 import { logoutAction } from '@/actions/auth';
 import { UserButton } from '@/components/global/UserButton';
 import { SidebarItem } from '@/components/layout/sidebar/SidebarItem';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { UserRoutes } from '@/http/requests/server-side/users';
 
