@@ -6,12 +6,12 @@ import { ClientSidePostRoutes } from '@/http/requests/client-side/posts';
 import { GetProfileTimelineParams } from '@/http/requests/server-side/posts';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export type useProfileTimelineProps = {
+export type UseProfileTimelineProps = {
   initialData: Post[];
   params: GetProfileTimelineParams;
 }
 
-export const useProfileTimeline = ({ initialData, params: { nickname, page, pageSize } }: useProfileTimelineProps) => {
+export const useProfileTimeline = ({ initialData, params: { nickname, page, pageSize } }: UseProfileTimelineProps) => {
   return useInfiniteQuery({
     queryKey: ['profile-timeline'],
     queryFn: async ({ pageParam }): Promise<Post[]> => {

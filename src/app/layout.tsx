@@ -1,11 +1,13 @@
 import '../styles/globals.css';
 
-import {Metadata} from 'next';
-import {ReactNode} from 'react';
+import { Metadata } from 'next';
+import { ReactNode, Suspense } from 'react';
 
-import {Sidebar} from '@/components/layout/sidebar';
-import {Providers} from '@/providers';
-import {GeistSans} from 'geist/font/sans';
+import { FriendshipsBar } from '@/components/layout/friendships-bar';
+import { Sidebar } from '@/components/layout/sidebar';
+import { UserRoutes } from '@/http/requests/server-side/users';
+import { Providers } from '@/providers';
+import { GeistSans } from 'geist/font/sans';
 
 export const metadata: Metadata = {
   title: 'SociLink',
@@ -25,9 +27,21 @@ export default async function RootLayout({ children }: Props) {
             <div className='w-full'>
               {children}
             </div>
+
+            <Suspense>
+              <GetFriendshipsBar />
+            </Suspense>
           </div>
         </Providers>
       </body>
     </html>
   )
+}
+
+const GetFriendshipsBar = async () => {
+  const user = await UserRoutes.getSelf();
+
+  if (!user) return null;
+
+  return <FriendshipsBar />
 }

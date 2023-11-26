@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 
 import { logoutAction } from '@/actions/auth';
+import { UserButton } from '@/components/global/UserButton';
 import { SidebarItem } from '@/components/layout/sidebar/SidebarItem';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -8,27 +9,25 @@ import { UserRoutes } from '@/http/requests/server-side/users';
 
 export const Sidebar = () => {
   return (
-    <div className='sticky left-0 top-0 h-screen p-7 shadow-2xl dark:border-r dark:border-r-amber-50'>
-        <div className='flex h-full flex-col justify-between'>
-          <div className='mx-auto mb-5 text-2xl'>SociLink</div>
+    <div className='sticky left-0 top-0 flex h-screen w-full max-w-[13em] flex-col justify-between p-7 shadow-2xl dark:border-r dark:border-r-amber-50'>
+      <div className='mx-auto mb-5 text-2xl'>SociLink</div>
 
-          <Suspense>
-            <GetUserArea />
-          </Suspense>
+      <Suspense>
+        <GetUserArea />
+      </Suspense>
 
-          <div className='[&>div]:hover:bg-info flex flex-col gap-4 pt-7'>
-            <Suspense>
-              <GetLinks />
-            </Suspense>
-            <SidebarItem href='/search'>Pesquisa</SidebarItem>
-          </div>
+      <div className='[&>div]:hover:bg-info flex flex-col gap-4 pt-7'>
+        <Suspense>
+          <GetLinks />
+        </Suspense>
+        <SidebarItem href='/search'>Pesquisa</SidebarItem>
+      </div>
 
-          <div className='mt-auto'>
-            <Suspense>
-              <GetLogoutButton />
-            </Suspense>
-          </div>
-        </div>
+      <div className='mt-auto'>
+        <Suspense>
+          <GetLogoutButton />
+        </Suspense>
+      </div>
     </div>
   )
 }
@@ -38,20 +37,7 @@ const GetUserArea = async () => {
 
   if (!user) return null;
 
-  return (
-      <SidebarItem href={`/profile/${user.Nickname}`}>
-          <div className='my-2 flex items-center gap-2'>
-              <Avatar>
-                  <AvatarImage src={user.Picture} />
-                  <AvatarFallback>{user.Name[0]}</AvatarFallback>
-              </Avatar>
-
-              <div className='text-lg'>
-                  {user.Name.split(' ')[0]}
-              </div>
-          </div>
-      </SidebarItem>
-  )
+  return <UserButton user={user} showFirstNameOnly />
 }
 
 const GetLinks = async () => {
