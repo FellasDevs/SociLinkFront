@@ -1,6 +1,6 @@
 import { Post } from '@/types/models/Post';
 
-import { ClientSidePostRoutes } from '@/http/requests/server-side/client-side/posts';
+import { ClientSidePostRoutes } from '@/http/requests/client-side/posts';
 import { GetHomeTimelineParams } from '@/http/requests/server-side/posts';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
