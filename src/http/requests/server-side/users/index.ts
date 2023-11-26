@@ -1,4 +1,4 @@
-import { PaginationRequest, PaginationResponse } from '@/types/http/Pagination';
+import { PaginationRequestParams } from '@/types/http/Pagination';
 import { User } from '@/types/models/User';
 
 import { fetchClient } from '@/http/http-client/fetch';
@@ -8,11 +8,11 @@ type GetSelfResponse = {
 }
 
 export type SearchUsersParams = {
-  pagination: PaginationRequest;
+  pagination: PaginationRequestParams;
   query: string;
 }
 
-export type SearchUsersResponse = PaginationResponse & { Users: User[] }
+export type SearchUsersResponse = { Users: User[] }
 
 export const UserRoutes = {
   getSelf: async () => {

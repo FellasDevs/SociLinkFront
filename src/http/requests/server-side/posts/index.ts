@@ -1,20 +1,26 @@
-import { PaginationRequest, PaginationResponse } from '@/types/http/Pagination';
+import { PaginationRequestParams } from '@/types/http/Pagination';
 import { Post } from '@/types/models/Post';
 import { User } from '@/types/models/User';
 
 import { fetchClient } from '@/http/http-client/fetch';
 
-export type GetOwnTimelineResponse = {
+export type GetHomeTimelineParams = PaginationRequestParams;
+
+export type GetHomeTimelineResponse = {
   Posts: Post[];
 }
 
-export type GetUserTimelineResponse = {
+export type GetProfileTimelineParams = PaginationRequestParams & {
+  nickname: string;
+}
+
+export type GetProfileTimelineResponse = {
   Posts: Post[];
   User: User;
 }
 
 export type SearchPostsParams = {
-  pagination: PaginationRequest;
+  pagination: PaginationRequestParams;
   query: string;
 }
 
@@ -26,13 +32,13 @@ export type CreatePostParams = {
   images: string[];
 }
 
-export type SearchPostsResponse = PaginationResponse & { Posts: Post[] };
+export type SearchPostsResponse = { Posts: Post[] };
 
-export const PostRoutes = {
-  getOwnTimeline: async (): Promise<Post[]> => {
+export const ServerSidePostRoutes = {
+  getOwnTimeline: async ({ page, pageSize }: GetHomeTimelineParams): Promise<Post[] | null> => {
     try {
-      const { data } = await fetchClient<GetOwnTimelineResponse>(
-        '/timeline',
+      const { data } = await fetchClient<GetHomeTimelineResponse>(
+        `/timeline?page=${page}&pageSize=${pageSize}`,
         { next: { tags: ['timeline'], revalidate: 30 } }
       );
 
@@ -40,14 +46,14 @@ export const PostRoutes = {
     } catch (e) {
       console.error(e);
 
-      return [];
+      return null;
     }
   },
 
-  getUserTimeline: async (nickname: string): Promise<GetUserTimelineResponse | null> => {
+  getUserTimeline: async ({ nickname, page, pageSize }: GetProfileTimelineParams): Promise<GetProfileTimelineResponse | null> => {
     try {
-      const { data } = await fetchClient<GetUserTimelineResponse>(
-        `/timeline/${nickname}`,
+      const { data } = await fetchClient<GetProfileTimelineResponse>(
+        `/timeline/${nickname}?page=${page}&pageSize=${pageSize}`,
         { next: { tags: [`timeline-${nickname}`], revalidate: 60 } }
       );
 

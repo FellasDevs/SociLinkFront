@@ -1,8 +1,9 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { CreatePostComponent } from '@/components/pages/home/CreatePostComponent';
-import { PostRoutes } from '@/http/requests/server-side/posts';
+import { CreatePostForm } from '@/components/pages/home/CreatePostForm';
+import { HomeTimeline } from '@/components/pages/home/HomeTimeline';
+import { GetHomeTimelineParams, ServerSidePostRoutes } from '@/http/requests/server-side/posts';
 
 export const metadata: Metadata = {
   title: 'Início',
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
       <div className='flex flex-col items-center gap-10 p-5'>
-        <CreatePostComponent />
+        <CreatePostForm />
         
         <Suspense fallback={'loading'}>
           <Timeline />
@@ -22,15 +23,14 @@ export default function Home() {
 }
 
 const Timeline = async () => {
-  const posts = await PostRoutes.getOwnTimeline();
+  const params: GetHomeTimelineParams = {
+    page: 1,
+    pageSize: 10,
+  }
 
-  return (
-    <div className='flex flex-col gap-2'>
-      {posts.map((post, i) => (
-        <div key={post.Id} className='rounde-xl border'>
-          {i}: {post.User.Name.split(' ')[0]} - {post.Content} - {post.Visibility}
-        </div>
-      ))}
-    </div>
-  )
+  const posts = await ServerSidePostRoutes.getOwnTimeline(params);
+
+  if (!posts) return <div>Erro ao carregar timeline. Tente novamente mais tarde.</div>;
+
+  return <HomeTimeline initialData={posts} params={params} />
 }
