@@ -1,8 +1,10 @@
+import Link from 'next/link';
 import { Suspense } from 'react';
 
 import { PageQueryParams } from '@/types/next/Page';
 
 import { SearchArea } from '@/components/pages/search/client-side/SearchArea';
+import { Button } from '@/components/ui/button';
 import { UserRoutes } from '@/http/requests/server-side/users';
 
 export const SearchUsers = ({ params }: { params: PageQueryParams }) => {
@@ -37,11 +39,13 @@ const GetUsers = async ({ params }: { params: PageQueryParams }) => {
   const { Users } = response;
 
   return (
-    <div>
-      {Users.map((user, i) => (
-        <div key={user.Id}>
-          {i + 1}: {user.Name}
-        </div>
+    <div className='flex flex-col gap-3'>
+      {Users.map((user) => (
+        <Link key={user.Id} href={'/profile/' + user.Nickname} passHref>
+          <Button variant='outline' className='w-full text-2xl'>
+            {user.Name}
+          </Button>
+        </Link>
       ))}
     </div>
   )
