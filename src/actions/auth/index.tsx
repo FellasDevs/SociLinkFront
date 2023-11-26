@@ -2,6 +2,7 @@
 
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 import { AuthRoutes, SignInProps, SignUpProps } from '@/http/requests/server-side/auth';
 
@@ -46,4 +47,5 @@ export const signUpAction = async (props: SignUpProps) => {
 export const logoutAction = async () => {
   cookies().set('authToken', '');
   revalidateTag('get-self');
+  redirect('/auth/signin');
 }
