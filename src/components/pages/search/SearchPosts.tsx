@@ -4,6 +4,7 @@ import { PageQueryParams } from '@/types/next/Page';
 
 import { SearchArea } from '@/components/pages/search/client-side/SearchArea';
 import { ServerSidePostRoutes } from '@/http/requests/server-side/posts';
+import {PostCard} from "@/components/global/timeline/postCard";
 
 export const SearchPosts = ({ params }: { params: PageQueryParams }) => {
   return (
@@ -35,11 +36,9 @@ const GetPosts = async ({ params }: { params: PageQueryParams }) => {
     return <div className='text-2xl'>Nenhuma postagem encontrada</div>;
 
   return (
-    <div>
+      <div className='m-3 flex flex-col items-center gap-5'>
       {posts.map((post, i) => (
-        <div key={post.Id}>
-          {i + 1}: {post.Content}
-        </div>
+          <PostCard post={post}/>
       ))}
     </div>
   )

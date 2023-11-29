@@ -42,7 +42,7 @@ export const CreatePostForm = () => {
     return (
       <form
         action={createPostAction.bind(null, values)}
-        className='flex w-full max-w-[50em] flex-col gap-3 rounded-xl p-6 shadow-xl '
+        className='flex w-full max-w-[50em] flex-col gap-3 rounded-xl p-6 shadow-lg '
       >
         <PostForm form={form} />
       </form>

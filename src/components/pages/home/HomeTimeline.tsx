@@ -2,6 +2,7 @@
 
 import { InfiniteScroll } from '@/components/global/InfiniteScroll';
 import { useHomeTimeline, UseHomeTimelineProps } from '@/hooks/queries/useHomeTimeline';
+import {PostCard} from "@/components/global/timeline/postCard";
 
 export const HomeTimeline = ({ initialData, params }: UseHomeTimelineProps) => {
   const { data: posts, ...queryParams } = useHomeTimeline({
@@ -11,13 +12,13 @@ export const HomeTimeline = ({ initialData, params }: UseHomeTimelineProps) => {
 
   return (
     <InfiniteScroll {...queryParams} rootMargin='1000px'>
-      {
-        posts.pages.flat().map((post, i) => (
-          <div key={post.Id} className='h-[30em] w-[50em] rounded-lg border'>
-            <div>{i}: {post.User.Name.split(' ')[0]} - {post.Content} - {post.Visibility}</div>
-          </div>
-        ))
-      }
+      <div className='m-3 flex flex-col items-center gap-5'>
+        {
+          posts.pages.flat().map(post => (
+              <PostCard post={post}/>
+          ))
+        }
+      </div>
     </InfiniteScroll>
   )
 }

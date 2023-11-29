@@ -6,4 +6,5 @@ export type Post = {
   Content: string;
   Images: string[];
   Visibility: string;
+  CreatedAt: string;
 }
