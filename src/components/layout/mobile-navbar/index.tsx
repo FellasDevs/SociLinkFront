@@ -3,14 +3,7 @@ import Link from 'next/link';
 import { UserButton } from '@/components/global/UserButton';
 import { UserOptions } from '@/components/layout/user-options';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { UserRoutes } from '@/http/requests/server-side/users';
 import { Menu } from 'lucide-react';
 
