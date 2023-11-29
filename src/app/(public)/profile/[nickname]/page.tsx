@@ -52,7 +52,9 @@ const GetProfile = async ({ nickname }: { nickname: string }) => {
 
       <Separator />
 
-      <ProfileTimeline initialData={response.Posts} params={params} />
+      <div className='p-5'>
+        <ProfileTimeline initialData={response.Posts} params={params} />
+      </div>
     </>
   )
 }

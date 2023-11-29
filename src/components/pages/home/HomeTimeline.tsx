@@ -11,7 +11,7 @@ export const HomeTimeline = ({initialData, params}: UseHomeTimelineProps) => {
     });
 
     return (
-        <div className='w-full'>
+        <div className='w-full max-w-[50em]'>
           <InfiniteScroll {...queryParams} rootMargin='1000px'>
             <div className='m-3 flex flex-col items-center gap-5'>
               {

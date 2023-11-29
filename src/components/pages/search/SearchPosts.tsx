@@ -15,9 +15,11 @@ export const SearchPosts = ({params}: { params: PageQueryParams }) => {
                 </Suspense>
             </div>
 
-            <Suspense>
-                <GetPosts params={params}/>
-            </Suspense>
+            <div className='mx-auto w-full max-w-[50em]'>
+                <Suspense>
+                    <GetPosts params={params}/>
+                </Suspense>
+            </div>
         </div>
     )
 }

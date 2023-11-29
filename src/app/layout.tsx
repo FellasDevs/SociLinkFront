@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { ReactNode, Suspense } from 'react';
 
 import { FriendshipsBar } from '@/components/layout/friendships-bar';
+import { MobileNavbar } from '@/components/layout/mobile-navbar';
 import { Sidebar } from '@/components/layout/sidebar';
 import { UserRoutes } from '@/http/requests/server-side/users';
 import { Providers } from '@/providers';
@@ -21,6 +22,8 @@ export default async function RootLayout({ children }: Props) {
     <html lang="pt" className={GeistSans.className}>
       <body>
         <Providers>
+          <MobileNavbar />
+
           <div className='flex min-h-screen w-full'>
             <Sidebar />
 
