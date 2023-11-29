@@ -37,7 +37,7 @@ const GetPosts = async ({ params }: { params: PageQueryParams }) => {
 
   return (
       <div className='m-3 flex flex-col items-center gap-5'>
-      {posts.map((post, i) => (
+      {posts.map((post) => (
           <PostCard post={post}/>
       ))}
     </div>
