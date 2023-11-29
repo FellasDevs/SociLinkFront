@@ -8,7 +8,7 @@ export default function SearchPage({ searchParams }: PageProps) {
   return (
     <div className='flex flex-col items-center p-10'>
       <div className='w-full max-w-[30em]'>
-        <Tabs defaultValue="posts" className="w-[400px]">
+        <Tabs defaultValue="posts" className="max-w-[50em]">
           <TabsList className='mb-10 flex'>
             <TabsTrigger value='posts' className='w-full'>Postagens</TabsTrigger>
             <TabsTrigger value='users' className='w-full'>Usuários</TabsTrigger>
