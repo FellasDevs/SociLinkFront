@@ -43,7 +43,7 @@ const GetFriendsList = async () => {
 
   if (!friends?.length) {
     return (
-      <div className='text-lg'>
+      <div className='m-5 text-lg'>
         <div>Parece que você ainda não tem nenhum amigo.</div>
         <Link href='/search'>
           <div>Clique aqui para encontrar pessoas.</div>

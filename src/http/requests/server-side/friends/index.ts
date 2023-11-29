@@ -38,7 +38,7 @@ export const ServerSideFriendsRoutes = {
         try {
             const { data } = await fetchClient<GetFriendshipRequestsResponse>(
               `/friendships/requests?page=${page}&pageSize=${pageSize}`,
-              { next: { tags: ['friendships'], revalidate: 60 * 5 } },
+              { next: { tags: ['friendship-requests'], revalidate: 60 * 5 } },
             );
 
             return data.Requests;
@@ -53,6 +53,7 @@ export const ServerSideFriendsRoutes = {
         try {
             const { data } = await fetchClient<GetFriendshipByNicknameResponse>(
               `/friendships/${nickname}`,
+              { next: { tags: [`friendship-${nickname}`] } }
             );
 
             return data.Friendship;
