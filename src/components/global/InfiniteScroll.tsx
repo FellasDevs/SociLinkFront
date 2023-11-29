@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { Loader } from '@/components/global/Loader';
+import { LoaderWithText } from '@/components/global/Loader';
 
 type Props = {
     children: ReactNode;
@@ -60,8 +60,7 @@ export const InfiniteScroll = (
 const LoadingComponent = () => {
   return (
     <div className='m-3 flex items-center justify-center text-2xl'>
-      <Loader />
-      Carregando...
+      <LoaderWithText />
     </div>
   )
 }
