@@ -1,12 +1,10 @@
-import Image from "next/image";
+import { Post } from '@/types/models/Post';
 
-import {Post} from "@/types/models/Post";
-
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card";
-import {timeSince} from "@/utils/dateToTime";
-import {MessageCircle, Send, ThumbsUp} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { timeSince } from '@/utils/dateToTime';
+import { MessageCircle, Send, ThumbsUp } from 'lucide-react';
 
 type PostCardProps = { post: Post }
 export const PostCard = ({post}: PostCardProps) => {
