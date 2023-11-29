@@ -1,17 +1,19 @@
-import {Suspense} from 'react';
+import { Suspense } from 'react';
 
-import {PageQueryParams} from '@/types/next/Page';
+import { PageQueryParams } from '@/types/next/Page';
 
-import {SearchArea} from '@/components/pages/search/client-side/SearchArea';
-import {ServerSidePostRoutes} from '@/http/requests/server-side/posts';
-import {PostCard} from "@/components/global/timeline/postCard";
+import { PostCard } from '@/components/global/timeline/postCard';
+import { SearchArea } from '@/components/pages/search/client-side/SearchArea';
+import { ServerSidePostRoutes } from '@/http/requests/server-side/posts';
 
 export const SearchPosts = ({params}: { params: PageQueryParams }) => {
     return (
         <div className='flex flex-col gap-10'>
-            <Suspense>
-                <SearchArea initialSearch={params.search as string ?? ''}/>
-            </Suspense>
+            <div className='mx-auto w-full max-w-[50em]'>
+                <Suspense>
+                    <SearchArea initialSearch={params.search as string ?? ''}/>
+                </Suspense>
+            </div>
 
             <Suspense>
                 <GetPosts params={params}/>
