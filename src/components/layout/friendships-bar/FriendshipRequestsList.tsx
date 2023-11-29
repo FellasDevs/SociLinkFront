@@ -2,16 +2,10 @@
 
 import { InfiniteScroll } from '@/components/global/InfiniteScroll';
 import { UserButton } from '@/components/global/UserButton';
-import { useFriendshipRequests } from '@/hooks/queries/useFriendshipRequests';
+import { useFriendshipRequests, UseFriendshipRequestsProps } from '@/hooks/queries/useFriendshipRequests';
 
-export const FriendshipRequestsList = () => {
-  const { data: requests, ...queryParams  } = useFriendshipRequests({
-    page: 1,
-    pageSize: 10,
-  });
-
-  if (!requests?.pages.flat().length)
-    return <div className='m-5 text-lg'>Não há nenhuma solicitação de amizade no momento.</div>
+export const FriendshipRequestsList = (props: UseFriendshipRequestsProps) => {
+  const { data: requests, ...queryParams  } = useFriendshipRequests(props);
 
   return (
     <InfiniteScroll {...queryParams}>

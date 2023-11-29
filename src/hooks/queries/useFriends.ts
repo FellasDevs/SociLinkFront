@@ -4,9 +4,12 @@ import { ClientSideFriendsRoutes } from '@/http/requests/client-side/friends';
 import { GetFriendsParams } from '@/http/requests/server-side/friends';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export type UseFriendsProps = GetFriendsParams;
+export type UseFriendsProps = {
+  initialData: Friendship[];
+  params: GetFriendsParams;
+}
 
-export const useFriends = ({ page, pageSize }: UseFriendsProps) => {
+export const useFriends = ({ initialData, params: { page, pageSize } }: UseFriendsProps) => {
   return useInfiniteQuery({
     queryKey: ['friends'],
     queryFn: async ({ pageParam }): Promise<Friendship[]> => {
@@ -18,6 +21,10 @@ export const useFriends = ({ page, pageSize }: UseFriendsProps) => {
       return friends ?? [];
     },
     initialPageParam: page,
+    initialData: {
+      pages: [initialData],
+      pageParams: [page],
+    },
     getNextPageParam: (lastPage, _allPages, lastPageParam) => {
       if (lastPage.length < pageSize) return null;
       return lastPageParam + 1;
@@ -26,6 +33,7 @@ export const useFriends = ({ page, pageSize }: UseFriendsProps) => {
       if (firstPageParam <= 1) return undefined;
       return firstPageParam - 1;
     },
+    enabled: !initialData.length,
     maxPages: 3,
   });
 }
