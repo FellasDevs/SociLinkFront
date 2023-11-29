@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-      <div className='flex flex-col items-center gap-10 p-5'>
+      <div className='flex flex-col items-center gap-2 p-5'>
         <CreatePostForm />
         
         <Suspense fallback={'loading'}>
@@ -30,7 +30,9 @@ const Timeline = async () => {
 
   const posts = await ServerSidePostRoutes.getOwnTimeline(params);
 
-  if (!posts) return <div>Erro ao carregar timeline. Tente novamente mais tarde.</div>;
+  if (!posts) return <div className='text-xl'>Erro ao carregar timeline. Tente novamente mais tarde.</div>;
+
+  if (!posts.length) return <div className='text-xl'>Nenhum post encontrado.</div>;
 
   return <HomeTimeline initialData={posts} params={params} />
 }
