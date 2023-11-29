@@ -17,10 +17,12 @@ export default async function PublicLayout({ children }: Props) {
 
   return (
     <div className='flex min-h-screen items-center justify-center'>
-      <div className='w-[80vw] max-w-[25em] text-xl'>
-        <div className='mb-10 font-bold'>SociLink</div>
+      <div className='w-full max-w-[30em] text-2xl'>
+        <div className='mb-5 font-bold'>SociLink</div>
 
-        {children}
+        <div className='w-full max-w-[70em] rounded-xl p-5 shadow-lg dark:border dark:border-input'>
+          {children}
+        </div>
       </div>
     </div>
   )

@@ -9,7 +9,7 @@ import { UserRoutes } from '@/http/requests/server-side/users';
 
 export const Sidebar = () => {
   return (
-    <div className='sticky left-0 top-0 flex h-screen w-full max-w-[13em] flex-col justify-between p-7 shadow-2xl dark:border-r dark:border-r-amber-50'>
+    <div className='sticky left-0 top-0 flex h-screen w-full max-w-[13em] flex-col justify-between p-7 shadow-2xl dark:border-r dark:border-r-input'>
       <div className='mx-auto mb-5 text-2xl'>SociLink</div>
 
       <Suspense>
