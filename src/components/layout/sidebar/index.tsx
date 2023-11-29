@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { logoutAction } from '@/actions/auth';
 import { UserButton } from '@/components/global/UserButton';
 import { SidebarItem } from '@/components/layout/sidebar/SidebarItem';
+import { ThemeButton } from '@/components/layout/theme-button';
 import { Button } from '@/components/ui/button';
 import { UserRoutes } from '@/http/requests/server-side/users';
 
@@ -47,9 +48,8 @@ const GetLinks = async () => {
   return (
       <>
         <SidebarItem href='/'>Início</SidebarItem>
-        <SidebarItem href='/messages'>Mensagens</SidebarItem>
-        <SidebarItem href='/friends'>Amigos</SidebarItem>
-        <SidebarItem href='/configs'>Configurações</SidebarItem>
+        {/*<SidebarItem href='/messages'>Mensagens</SidebarItem>*/}
+        {/*<SidebarItem href='/configs'>Configurações</SidebarItem>*/}
       </>
   )
 }
@@ -57,14 +57,16 @@ const GetLinks = async () => {
 const GetLogoutButton = async () => {
   const user = await UserRoutes.getSelf();
 
-  if (!user)
-    return <SidebarItem href='/auth/signin'>Entrar</SidebarItem>;
-
   return (
-    <form action={logoutAction}>
-      <Button type='submit' className='w-full rounded shadow'>
-        Sair
-      </Button>
+    <form action={logoutAction} className='flex flex-col gap-2'>
+      <ThemeButton />
+      {
+        !user
+          ? <SidebarItem href='/auth/signin'>Entrar</SidebarItem>
+          : <Button type='submit' className='w-full rounded shadow'>
+            Sair
+          </Button>
+      }
     </form>
   )
 }
