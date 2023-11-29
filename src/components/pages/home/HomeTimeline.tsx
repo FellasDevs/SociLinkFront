@@ -1,7 +1,7 @@
 'use client';
 
 import {InfiniteScroll} from '@/components/global/InfiniteScroll';
-import {PostCard} from "@/components/global/timeline/postCard"; 
+import {PostCard} from "@/components/global/PostCard";
 import {useHomeTimeline, UseHomeTimelineProps} from '@/hooks/queries/useHomeTimeline';
 
 export const HomeTimeline = ({initialData, params}: UseHomeTimelineProps) => {
