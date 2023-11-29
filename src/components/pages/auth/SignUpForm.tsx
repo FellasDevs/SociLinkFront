@@ -45,13 +45,17 @@ export const SignUpForm = () => {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: { email: '', name: '', nickname: '', birthdate: '', password: '', confirmPassword: '' },
+    mode: 'onBlur',
   })
 
   const values = form.watch();
 
   return (
     <form
-      action={signUpAction.bind(null, values)}
+      action={async () => {
+        if (!form.formState.isValid) return;
+        await (signUpAction.bind(null, values))();
+      }}
       className='flex flex-col space-y-6'
     >
       <GetForm form={form} />
