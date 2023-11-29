@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 export default async function SignInPage() {
   return (
-    <div>
+    <>
       <ErrorBoundary errorComponent={AuthErrorFallback}>
         <SignInForm />
       </ErrorBoundary>
@@ -21,6 +21,6 @@ export default async function SignInPage() {
           </Button>
         </Link>
       </div>
-    </div>
+    </>
   )
 }

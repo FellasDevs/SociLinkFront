@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 export default async function SignUpPage() {
   return (
-    <div>
+    <>
       <ErrorBoundary errorComponent={AuthErrorFallback}>
         <SignUpForm />
       </ErrorBoundary>
@@ -21,6 +21,6 @@ export default async function SignUpPage() {
           </Button>
         </Link>
       </div>
-    </div>
+    </>
   )
 }

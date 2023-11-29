@@ -13,7 +13,7 @@ import {
 
 export const FriendshipsBar = () => {
   return (
-    <div className='sticky right-0 top-0 flex h-screen w-full max-w-[15em] flex-col p-2 shadow-2xl dark:border-r dark:border-r-amber-50'>
+    <div className='sticky right-0 top-0 flex h-screen w-full max-w-[15em] flex-col p-3 shadow-2xl dark:border-l dark:border-l-input'>
       <div className='text-2xl'>Amizades</div>
       <ScrollArea className='grow'>
         <Suspense>
