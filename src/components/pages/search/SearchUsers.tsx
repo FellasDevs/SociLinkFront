@@ -15,9 +15,11 @@ export const SearchUsers = ({ params }: { params: PageQueryParams }) => {
         </Suspense>
       </div>
 
-      <Suspense>
-        <GetUsers params={params} />
-      </Suspense>
+      <div className='mx-auto w-full max-w-[50em]'>
+        <Suspense>
+          <GetUsers params={params} />
+        </Suspense>
+      </div>
     </div>
   )
 }

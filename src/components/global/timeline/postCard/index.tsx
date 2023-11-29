@@ -11,7 +11,7 @@ export const PostCard = ({post}: PostCardProps) => {
     const buttonClasses = "flex w-1/3 gap-1"
 
     return (
-        <Card className="flex w-full max-w-[40em] flex-col gap-4 p-6">
+        <Card className="flex w-full flex-col gap-4 p-6">
             <CardHeader>
                 <div className="flex items-center gap-3">
                     <Avatar>
@@ -36,17 +36,17 @@ export const PostCard = ({post}: PostCardProps) => {
                 <div className="flex w-full gap-4">
                     <Button className={buttonClasses}>
                         <ThumbsUp/>
-                        Curtir
+                        <div className='hidden md:flex'>Curtir</div>
                     </Button>
 
                     <Button className={buttonClasses}>
                         <MessageCircle/>
-                        Comentar
+                        <div className='hidden md:flex'>Comentar</div>
                     </Button>
 
                     <Button className={buttonClasses}>
                         <Send/>
-                        Compartilhar
+                        <div className='hidden md:flex'>Compartilhar</div>
                     </Button>
                 </div>
             </CardFooter>
