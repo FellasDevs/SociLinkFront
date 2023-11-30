@@ -15,9 +15,12 @@ export const requestFriendshipAction = async (friend: User) => {
 export const deleteFriendshipAction = async (friendship: Friendship) => {
   await ServerSideFriendsRoutes.deleteFriendship(friendship.Id);
   revalidateTag(`friendship-${friendship.Friend.Nickname}`);
+  revalidateTag('friendships');
 }
 
 export const answerFriendshipAction = async (friendship: Friendship, accepted: boolean) => {
   await ServerSideFriendsRoutes.answerFriendshipRequest({requestId: friendship.Id, answer: accepted});
   revalidateTag(`friendship-${friendship.Friend.Nickname}`);
+  revalidateTag('friendships');
+  revalidateTag('friendship-requests');
 }

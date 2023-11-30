@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
+import {useToast} from "@/components/ui/use-toast";
 import { CreatePostParams } from '@/http/requests/server-side/posts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Globe2, ImagePlus, Tag, User, Users } from 'lucide-react';
@@ -35,13 +36,30 @@ export const CreatePostForm = () => {
     const form = useForm<z.infer<typeof CreatePostSchema>>({
       resolver: zodResolver(CreatePostSchema),
       defaultValues: { content: '', visibility: 'public', images: [] },
-    })
+    });
 
-    const values = form.watch();
+    const { toast } = useToast();
+
+    const action = async () => {
+        await form.trigger();
+        if (!form.formState.isValid) return;
+
+        const values = form.getValues();
+
+        const error = await (createPostAction.bind(null, values))();
+
+        if (!error) return;
+
+        toast({
+            title: 'Ocorreu um erro ao criar a sua postagem',
+            description: error,
+            variant: 'destructive',
+        })
+    }
 
     return (
       <form
-        action={createPostAction.bind(null, values)}
+        action={action}
         className='flex w-full max-w-[50em] flex-col gap-3 rounded-xl p-6 shadow-lg dark:border dark:border-input'
       >
         <PostForm form={form} />

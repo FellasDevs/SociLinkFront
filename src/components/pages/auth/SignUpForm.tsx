@@ -1,14 +1,15 @@
 'use client';
 
-import { useFormStatus } from 'react-dom';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import {useFormStatus} from 'react-dom';
+import {useForm, UseFormReturn} from 'react-hook-form';
 
-import { signUpAction } from '@/actions/auth';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { SignUpProps } from '@/http/requests/server-side/auth';
-import { zodResolver } from '@hookform/resolvers/zod';
+import {signUpAction} from '@/actions/auth';
+import {Button} from '@/components/ui/button';
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
+import {Input} from '@/components/ui/input';
+import {useToast} from "@/components/ui/use-toast";
+import {SignUpProps} from '@/http/requests/server-side/auth';
+import {zodResolver} from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const signUpSchema = z
@@ -45,13 +46,30 @@ export const SignUpForm = () => {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: { email: '', name: '', nickname: '', birthdate: '', password: '', confirmPassword: '' },
-  })
+    mode: 'onBlur',
+  });
 
-  const values = form.watch();
+  const { toast } = useToast();
+
+  const action = async () => {
+    await form.trigger();
+    if (!form.formState.isValid) return;
+
+    const values = form.getValues();
+    const error = await (signUpAction.bind(null, values))();
+
+    if (!error) return;
+
+    toast({
+      title: 'Ocorreu um erro ao entrar em sua conta.',
+      description: error,
+      variant: 'destructive',
+    });
+  }
 
   return (
     <form
-      action={signUpAction.bind(null, values)}
+      action={action}
       className='flex flex-col space-y-6'
     >
       <GetForm form={form} />

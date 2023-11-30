@@ -15,7 +15,7 @@ export const ProfileTimeline = ({initialData, params}: UseProfileTimelineProps) 
           <InfiniteScroll {...queryParams}>
             <div className='flex flex-col gap-5'>
               {
-                posts.pages.flat().map((post, i) => (
+                posts?.pages.flat().map((post, i) => (
                   <PostCard post={post} key={i}/>
                 ))
               }

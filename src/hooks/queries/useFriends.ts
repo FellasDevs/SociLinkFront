@@ -21,7 +21,7 @@ export const useFriends = ({ initialData, params: { page, pageSize } }: UseFrien
       return friends ?? [];
     },
     initialPageParam: page,
-    initialData: {
+    placeholderData: {
       pages: [initialData],
       pageParams: [page],
     },

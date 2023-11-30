@@ -24,7 +24,7 @@ export const useProfileTimeline = ({ initialData, params: { nickname, page, page
       return response?.Posts ?? [];
     },
     initialPageParam: page,
-    initialData: {
+    placeholderData: {
       pages: [initialData],
       pageParams: [page],
     },

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { Loader } from '@/components/global/Loader';
+import { LoaderWithText } from '@/components/global/Loader';
 import { ProfileHeader } from '@/components/pages/profile/ProfileHeader';
 import { ProfileTimeline } from '@/components/pages/profile/ProfileTimeline';
 import { Separator } from '@/components/ui/separator';
@@ -29,8 +29,7 @@ export default function ProfilePage({ params: { nickname } }: Props) {
 const UserLoading = () => {
   return (
     <div className='m-auto flex items-center'>
-      <Loader size={50} />
-      <span className='text-2xl'>Carregando usuário...</span>
+      <LoaderWithText size={50} />
     </div>
   )
 }
