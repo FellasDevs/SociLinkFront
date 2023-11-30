@@ -12,7 +12,7 @@ export default async function SignInPage() {
         <SignInForm />
       </ErrorBoundary>
 
-      <div className='mt-10 flex items-center justify-end space-x-3 text-center'>
+      <div className='mt-10 flex items-center justify-end space-x-3 text-center text-start'>
         <h3>Ainda não possúi uma conta?</h3>
 
         <Link href={'/auth/signup'} passHref>

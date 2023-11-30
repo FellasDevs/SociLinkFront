@@ -7,6 +7,7 @@ import { signInAction } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {useToast} from "@/components/ui/use-toast";
 import { SignInProps } from '@/http/requests/server-side/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -27,16 +28,30 @@ export const SignInForm = () => {
     resolver: zodResolver(signInSchema),
     defaultValues: { email: '', password: '' },
     mode: 'onBlur',
-  })
+  });
 
-  const values = form.watch();
+  const { toast } = useToast();
+
+  const action = async () => {
+      await form.trigger();
+      if (!form.formState.isValid) return;
+
+      const values = form.getValues();
+
+      const error = await (signInAction.bind(null, values))();
+
+      if (!error) return;
+
+      toast({
+          title: 'Ocorreu um erro ao entrar em sua conta.',
+          description: error,
+          variant: 'destructive',
+      });
+  }
 
   return (
     <form
-      action={async () => {
-        if (!form.formState.isValid) return;
-        await (signInAction.bind(null, values))();
-      }}
+      action={action}
       className='flex flex-col space-y-6'
     >
       <GetForm form={form} />
