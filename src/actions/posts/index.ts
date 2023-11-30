@@ -10,12 +10,12 @@ export const searchPostsAction = async (basePath: string, newQueryString: string
   redirect(basePath + '?' + newQueryString)
 }
 
-export const createPostAction = async (params: CreatePostParams) => {
+export const createPostAction = async (params: CreatePostParams): Promise<string | null> => {
   const createdPost = await ServerSidePostRoutes.createPost(params);
 
-  if (!createdPost) return;
+  if (!createdPost) return 'Não foi possível criar a postagem';
 
   revalidateTag('timeline');
-  // revalidatePath('/', 'page');
-  // revalidatePath('/timeline', 'page');
+
+  return null;
 }

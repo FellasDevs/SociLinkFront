@@ -28,7 +28,6 @@ export const InfiniteScroll = (
   const { ref: previousRef } = useInView({
     rootMargin,
     onChange: (inView) => {
-      console.log(inView);
       if (inView && hasPreviousPage && !isFetchingPreviousPage) fetchPreviousPage();
     }
   })

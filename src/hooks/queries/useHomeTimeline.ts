@@ -21,7 +21,7 @@ export const useHomeTimeline = ({ initialData, params: { page, pageSize } }: Use
       return posts ?? [];
     },
     initialPageParam: page,
-    initialData: {
+    placeholderData: {
       pages: [initialData],
       pageParams: [page],
     },
