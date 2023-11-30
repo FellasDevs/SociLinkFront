@@ -1,15 +1,15 @@
 'use client';
 
-import { useFormStatus } from 'react-dom';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import {useFormStatus} from 'react-dom';
+import {useForm, UseFormReturn} from 'react-hook-form';
 
-import {signInAction, signUpAction} from '@/actions/auth';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import {signUpAction} from '@/actions/auth';
+import {Button} from '@/components/ui/button';
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
+import {Input} from '@/components/ui/input';
 import {useToast} from "@/components/ui/use-toast";
-import { SignUpProps } from '@/http/requests/server-side/auth';
-import { zodResolver } from '@hookform/resolvers/zod';
+import {SignUpProps} from '@/http/requests/server-side/auth';
+import {zodResolver} from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const signUpSchema = z
