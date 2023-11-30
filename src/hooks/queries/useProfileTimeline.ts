@@ -13,7 +13,7 @@ export type UseProfileTimelineProps = {
 
 export const useProfileTimeline = ({ initialData, params: { nickname, page, pageSize } }: UseProfileTimelineProps) => {
   return useInfiniteQuery({
-    queryKey: ['profile-timeline'],
+    queryKey: ['timeline', 'home'],
     queryFn: async ({ pageParam }): Promise<Post[]> => {
       const response = await ClientSidePostRoutes.getProfileTimeline({
         nickname,

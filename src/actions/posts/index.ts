@@ -19,3 +19,23 @@ export const createPostAction = async (params: CreatePostParams): Promise<string
 
   return null;
 }
+
+export const likePostAction = async (id: string) => {
+  try {
+    await ServerSidePostRoutes.likePost(id);
+
+    revalidateTag('timeline');
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export const dislikePostAction = async (id: string) => {
+  try {
+    await ServerSidePostRoutes.dislikePost(id);
+
+    revalidateTag('timeline');
+  } catch (e) {
+    console.log(e);
+  }
+}

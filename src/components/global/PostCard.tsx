@@ -1,10 +1,11 @@
-import { Post } from '@/types/models/Post';
+import {Post} from '@/types/models/Post';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { timeSince } from '@/utils/dateToTime';
-import { MessageCircle, Send, ThumbsUp } from 'lucide-react';
+import {dislikePostAction, likePostAction} from "@/actions/posts";
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
+import {Button} from '@/components/ui/button';
+import {Card, CardContent, CardFooter, CardHeader} from '@/components/ui/card';
+import {timeSince} from '@/utils/dateToTime';
+import {MessageCircle, Send, ThumbsUp} from 'lucide-react';
 
 type Props = { post: Post }
 
@@ -32,14 +33,17 @@ export const PostCard = ({ post }: Props) => {
             </CardContent>
 
             <CardFooter>
-                <div className="flex w-full gap-4 [&>*]:flex [&>*]:w-1/3 [&>*]:gap-1 [&>*]:text-lg">
-                    <Button className={post.Liked ? 'opacity-80' : ''}>
-                        <ThumbsUp />
-                        <div className='hidden md:flex'>
+                <div className="flex w-full gap-4 [&>*]:w-1/3 [&_button]:flex [&_button]:gap-1 [&_button]:text-lg">
+                    <form
+                        action={(post.Liked ? dislikePostAction : likePostAction).bind(null, post.Id)}
+                        className='hidden md:flex'
+                    >
+                        <Button type='submit' className={`w-full ${post.Liked ? 'opacity-80' : ''}`}>
+                            <ThumbsUp />
                             { post.Liked ? 'Descurtir' : 'Curtir' }
-                        </div>
-                        { !!post.Likes ? <div>({post.Likes})</div> : null }
-                    </Button>
+                            { !!post.Likes ? <div>({post.Likes})</div> : null }
+                        </Button>
+                    </form>
 
                     <Button>
                         <MessageCircle/>
