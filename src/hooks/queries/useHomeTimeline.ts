@@ -11,7 +11,7 @@ export type UseHomeTimelineProps = {
 
 export const useHomeTimeline = ({ initialData, params: { page, pageSize } }: UseHomeTimelineProps) => {
   return useInfiniteQuery({
-    queryKey: ['home-timeline'],
+    queryKey: ['timeline', 'profile'],
     queryFn: async ({ pageParam }): Promise<Post[]> => {
       const posts = await ClientSidePostRoutes.getHomeTimeline({
         page: pageParam,
@@ -26,7 +26,7 @@ export const useHomeTimeline = ({ initialData, params: { page, pageSize } }: Use
       pageParams: [page],
     },
     getNextPageParam: (lastPage, _allPages, lastPageParam) => {
-      if (lastPage.length < pageSize) return null;
+      if (lastPage.length < pageSize) return undefined;
       return lastPageParam + 1;
     },
     getPreviousPageParam: (_firstPage, _allPages, firstPageParam) => {

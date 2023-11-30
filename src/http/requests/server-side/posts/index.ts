@@ -54,7 +54,7 @@ export const ServerSidePostRoutes = {
     try {
       const { data } = await fetchClient<GetProfileTimelineResponse>(
         `/timeline/${nickname}?page=${page}&pageSize=${pageSize}`,
-        { next: { tags: [`timeline-${nickname}`], revalidate: 60 } }
+        { next: { tags: ['timeline', nickname], revalidate: 60 } }
       );
 
       return data;
@@ -93,5 +93,13 @@ export const ServerSidePostRoutes = {
 
       return false;
     }
+  },
+
+  likePost: async (postId: string) => {
+    await fetchClient(`/posts/like/${postId}`, { method: 'POST' });
+  },
+
+  dislikePost: async (postId: string) => {
+    await fetchClient(`/posts/like/${postId}`, { method: 'DELETE' });
   },
 }

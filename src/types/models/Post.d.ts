@@ -6,5 +6,7 @@ export type Post = {
   Content: string;
   Images: string[];
   Visibility: string;
+  Likes: number;
+  Liked: boolean;
   CreatedAt: string;
 }
