@@ -12,7 +12,7 @@ export default async function SignUpPage() {
         <SignUpForm />
       </ErrorBoundary>
 
-      <div className='mt-10 flex items-center justify-end space-x-3 text-center'>
+      <div className='mt-10 flex items-center justify-end space-x-3 text-start'>
         <h3>Já possúi uma conta?</h3>
 
         <Link href={'/auth/signin'} passHref>

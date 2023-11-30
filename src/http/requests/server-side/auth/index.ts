@@ -22,25 +22,12 @@ export type AuthResponse = {
 
 export const AuthRoutes = {
   signInRequest: async (props: SignInProps): Promise<AuthResponse | null> => {
-    try {
-      const { data } =  await fetchClient<AuthResponse>('/auth/sign_in', { method: 'POST', body: JSON.stringify(props) });
-
-      return data;
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
+    const { data } =  await fetchClient<AuthResponse>('/auth/sign_in', { method: 'POST', body: JSON.stringify(props) });
+    return data;
   },
 
   signUpRequest: async (props: SignUpProps): Promise<AuthResponse | null> => {
-    try {
-      const { data } = await fetchClient<AuthResponse>('/auth/sign_up', { method: 'POST', body: JSON.stringify(props) });
-
-      return data;
-    } catch (e) {
-      console.error(e);
-
-      return null;
-    }
+    const { data } = await fetchClient<AuthResponse>('/auth/sign_up', { method: 'POST', body: JSON.stringify(props) });
+    return data;
   },
 }

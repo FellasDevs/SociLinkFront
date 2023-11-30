@@ -16,7 +16,7 @@ export default async function PublicLayout({ children }: Props) {
   }
 
   return (
-    <div className='flex min-h-screen items-center justify-center'>
+    <div className='flex min-h-screen items-center justify-center p-5'>
       <div className='w-full max-w-[30em] text-2xl'>
         <div className='mb-5 font-bold'>SociLink</div>
 

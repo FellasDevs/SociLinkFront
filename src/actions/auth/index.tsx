@@ -6,28 +6,31 @@ import { redirect } from 'next/navigation';
 
 import { AuthRoutes, SignInProps, SignUpProps } from '@/http/requests/server-side/auth';
 
-export const signInAction = async (props: SignInProps) => {
+export const signInAction = async (props: SignInProps): Promise<string | null> => {
   try {
     const data = await AuthRoutes.signInRequest(props);
 
-    if (!data) return;
+    if (!data) return 'Não foi possível entrar em sua conta, tente novamente mais tarde.';
 
     cookies().set('authToken', data.AuthToken);
     revalidateTag('get-self');
+
+    return null;
   } catch (e: any) {
-    const errorMsg = e.response?.data?.message || 'Aconteceu um erro ao tentar entrar em sua conta, tente novamente mais tarde.';
-    throw new Error(errorMsg);
+    return e.response?.data?.message || 'Aconteceu um erro ao tentar entrar em sua conta, tente novamente mais tarde.';
   }
 };
 
-export const signUpAction = async (props: SignUpProps) => {
+export const signUpAction = async (props: SignUpProps): Promise<string | null> => {
   try {
     const data = await AuthRoutes.signUpRequest(props);
 
-    if (!data) return;
+    if (!data) return 'Não foi possível entrar em sua conta, tente novamente mais tarde.';
 
     cookies().set('authToken', data.AuthToken);
     revalidateTag('get-self');
+
+    return null;
   } catch (e: any) {
     let errorMsg = e.response?.data?.message || 'Aconteceu um erro ao tentar criar a sua conta, tente novamente mais tarde.'
 
@@ -40,7 +43,7 @@ export const signUpAction = async (props: SignUpProps) => {
         break;
     }
 
-    throw new Error(errorMsg);
+    return errorMsg;
   }
 };
 
