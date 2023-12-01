@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 
 import { PageQueryParams } from '@/types/next/Page';
 
-import { PostCard } from '@/components/global/PostCard';
+import { PostCard } from '@/components/global/post/PostCard';
 import { SearchArea } from '@/components/pages/search/client-side/SearchArea';
 import { ServerSidePostRoutes } from '@/http/requests/server-side/posts';
 

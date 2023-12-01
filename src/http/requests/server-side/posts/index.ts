@@ -1,8 +1,8 @@
-import { PaginationRequestParams } from '@/types/http/Pagination';
-import { Post } from '@/types/models/Post';
-import { User } from '@/types/models/User';
+import {PaginationRequestParams} from '@/types/http/Pagination';
+import {Post} from '@/types/models/Post';
+import {User} from '@/types/models/User';
 
-import { fetchClient } from '@/http/http-client/fetch';
+import {fetchClient} from '@/http/http-client/fetch';
 
 export type GetHomeTimelineParams = PaginationRequestParams;
 
@@ -33,6 +33,16 @@ export type CreatePostParams = {
 }
 
 export type SearchPostsResponse = { Posts: Post[] };
+
+export type CreateCommentParams = {
+  postId: string;
+  content: string;
+}
+
+export type EditCommentParams = {
+  commentId: string;
+  content: string;
+}
 
 export const ServerSidePostRoutes = {
   getOwnTimeline: async ({ page, pageSize }: GetHomeTimelineParams): Promise<Post[] | null> => {
@@ -92,6 +102,47 @@ export const ServerSidePostRoutes = {
       console.error(e);
 
       return false;
+    }
+  },
+
+  createComment: async (params: CreateCommentParams) => {
+    try {
+      await fetchClient(
+          '/comments',
+          {
+            method: 'POST',
+            body: JSON.stringify(params),
+          },
+      );
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  editComment: async ({ commentId, content }: EditCommentParams) => {
+    try {
+      await fetchClient(
+          `/comments/${commentId}`,
+          {
+            method: 'POST',
+            body: JSON.stringify({ content }),
+          },
+      );
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  deleteComment: async (commentId: string) => {
+    try {
+      await fetchClient(
+          `/comments/${commentId}`,
+          {
+            method: 'DELETE',
+          },
+      );
+    } catch (e) {
+      console.error(e);
     }
   },
 
