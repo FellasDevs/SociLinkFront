@@ -1,7 +1,8 @@
 import {Post} from '@/types/models/Post';
 
+import {CommentDialog} from "./comment-dialog";
+
 import {dislikePostAction, likePostAction} from "@/actions/posts";
-import {CommentDialog} from "@/components/global/comment-dialog";
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardFooter, CardHeader} from '@/components/ui/card';

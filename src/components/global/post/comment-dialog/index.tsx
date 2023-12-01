@@ -2,10 +2,11 @@
 
 import {ReactNode} from "react";
 
-import {CommentCard} from "@/components/global/comment-dialog/CommentCard";
-import {CommentForm} from "@/components/global/comment-dialog/CommentForm";
 import {LoaderWithText} from "@/components/global/Loader";
+import {CommentCard} from "@/components/global/post/comment-dialog/CommentCard";
+import {CommentForm} from "@/components/global/post/comment-dialog/CommentForm";
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {ScrollArea} from "@/components/ui/scroll-area";
 import {usePostComments} from "@/hooks/queries/usePostComments";
 
 type Props = {
@@ -20,7 +21,7 @@ export const CommentDialog = async ({ postId, children }: Props) => {
                 {children}
             </DialogTrigger>
 
-            <DialogContent className='flex h-[80vh] w-full max-w-[80vw] flex-col justify-between'>
+            <DialogContent className='flex h-[90vh] w-full max-w-[70vw] flex-col justify-between'>
                 <DialogHeader>
                     <DialogTitle>Comentários</DialogTitle>
                 </DialogHeader>
@@ -48,11 +49,11 @@ const CommentList = ({ postId }: { postId: string }) => {
         return <div className='text-center text-xl'>Ainda não há nenhum comentário nessa publicação.</div>;
 
     return (
-        <div className='flex h-full w-full flex-col gap-3'>
+        <ScrollArea className='flex h-full flex-col gap-3 p-3'>
             {
                 comments.map((comment) =>
                     <CommentCard key={comment.Id} comment={comment} />)
             }
-        </div>
+        </ScrollArea>
     )
 }

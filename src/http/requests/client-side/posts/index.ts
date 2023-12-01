@@ -13,6 +13,8 @@ import {
 
 export type GetPostCommentsParams = PaginationRequestParams & { postId: string };
 
+export type GetPostCommentsResponse = BaseResponse<{ Comments: Comment[] }>;
+
 export const ClientSidePostRoutes = {
   getHomeTimeline: async (params: GetHomeTimelineParams): Promise<Post[] | null> => {
     try {
@@ -46,12 +48,12 @@ export const ClientSidePostRoutes = {
 
   getPostComments: async (params: GetPostCommentsParams): Promise<Comment[] | null> => {
     try {
-      const { data } = await httpClient.get<BaseResponse<Comment[]>>(
+      const { data } = await httpClient.get<GetPostCommentsResponse>(
           '/comments',
           { params },
       );
 
-      return data.data;
+      return data.data.Comments;
     } catch (e) {
       console.error(e);
 
