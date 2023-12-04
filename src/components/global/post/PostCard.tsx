@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import {Post} from '@/types/models/Post';
 
 import {CommentDialog} from "./comment-dialog";
@@ -33,19 +35,19 @@ export const PostCard = ({ post }: Props) => {
 
 const GetCardHeader = ({ post }: { post: Post }) => {
     return (
-        <div className="flex items-center gap-3">
+        <Link href={'/profile/' + post.User.Nickname} className="flex w-fit items-center gap-3">
             <Avatar>
-                <AvatarImage src={post.User.Picture}/>
-                <AvatarFallback>
-                    {post.User.Name.split(' ')[0]}
-                </AvatarFallback>
+              <AvatarImage src={post.User.Picture}/>
+              <AvatarFallback>
+                {post.User.Name.split(' ')[0]}
+              </AvatarFallback>
             </Avatar>
 
             <div>
-                <div>{post.User.Name}</div>
-                <div>{timeSince(new Date(post.CreatedAt))}</div>
+              <div>{post.User.Name}</div>
+              <div>{timeSince(new Date(post.CreatedAt))}</div>
             </div>
-        </div>
+        </Link>
     )
 }
 

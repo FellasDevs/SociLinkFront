@@ -35,7 +35,7 @@ export const CommentDialog = async ({ postId, children }: Props) => {
     }
 
     return (
-        <Dialog key='comment-dialog'>
+        <Dialog>
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
@@ -68,7 +68,7 @@ const CommentList = ({ postId }: { postId: string }) => {
         return <div className='text-center text-xl'>Ainda não há nenhum comentário nessa publicação.</div>;
 
     return (
-        <ScrollArea>
+        <ScrollArea className='mb-auto'>
             <div className='flex h-full flex-col gap-3 p-3'>
                 {
                     comments.map((comment) =>
