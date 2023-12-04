@@ -1,36 +1,33 @@
-'use client'
-
 import {FormEvent} from "react";
 import {useForm} from "react-hook-form";
 
 import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/ui/form";
 import {Textarea} from "@/components/ui/textarea";
-import {useToast} from "@/components/ui/use-toast";
-import {useCreateComment} from "@/hooks/mutations/comments/useCreateComment";
 import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-const CommentSchema = z.object({
-    content: z
-        .string()
-        .min(1, {message: 'Conteúdo do comentário não pode estar vazio'})
-        .max(500, {message: 'Comentário deve conter no máximo 500 caracteres'}),
-})
-
 type Props = {
-    postId: string;
+    action: (content: string) => Promise<void>;
+    isLoading: boolean;
+    initialValue?: string;
 }
 
-export const CommentForm = ({ postId }: Props) => {
-    const { mutateAsync: createComment, isPending } = useCreateComment();
+export const CommentForm = ({ action, isLoading, initialValue }: Props) => {
+    const CommentSchema = z.object({
+        content: z
+            .string()
+            .min(1, {message: 'Conteúdo do comentário não pode estar vazio'})
+            .max(500, {message: 'Comentário deve conter no máximo 500 caracteres'}),
+    }).refine((data) => data.content !== initialValue, {
+        message: 'O conteúdo do comentário não mudou',
+        path: ['content'],
+    });
 
     const form = useForm<z.infer<typeof CommentSchema>>({
         resolver: zodResolver(CommentSchema),
-        defaultValues: { content: '' },
+        defaultValues: { content: initialValue ?? '' },
     });
-
-    const { toast } = useToast();
 
     const onSubmit = async (event: FormEvent) => {
         event.preventDefault();
@@ -38,24 +35,12 @@ export const CommentForm = ({ postId }: Props) => {
         await form.trigger()
         if (!form.formState.isValid) return
 
-
-        const data = await createComment({
-            postId,
-            content: form.getValues().content,
-        });
-
-        if (!!data) return;
-
-        toast({
-           title: "Erro",
-           description: 'Ocorreu um erro ao criar seu comentário',
-           variant: 'destructive',
-        });
+        await action(form.getValues().content);
     };
 
     return (
         <Form {...form}>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} className='flex h-full w-full flex-col gap-2'>
                 <FormField
                     control={form.control}
                     name='content'
@@ -73,7 +58,7 @@ export const CommentForm = ({ postId }: Props) => {
                     )}
                 />
 
-                <Button type='submit' isLoading={isPending} className='rounded-xl'>
+                <Button type='submit' isLoading={isLoading} className='rounded-xl'>
                     Enviar
                 </Button>
             </form>

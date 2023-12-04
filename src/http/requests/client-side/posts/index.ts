@@ -83,7 +83,7 @@ export const ClientSidePostRoutes = {
   },
 
   editComment: async ({ commentId, content }: EditCommentParams) => {
-    return httpClient.post<EditCommentResponse>(
+    return httpClient.put<EditCommentResponse>(
         `/comments/${commentId}`,
         { content },
     );
