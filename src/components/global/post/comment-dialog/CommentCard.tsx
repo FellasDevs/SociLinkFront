@@ -1,23 +1,28 @@
-import {useMemo, useState} from "react";
+'use client'
 
-import {Comment} from '@/types/models/Comment'
+import { useMemo, useState } from 'react';
 
-import {CommentForm} from "@/components/global/post/comment-dialog/CommentForm";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardHeader} from "@/components/ui/card";
-import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import {useToast} from "@/components/ui/use-toast";
-import {useDeleteComment} from "@/hooks/mutations/comments/useDeleteComment";
-import {useEditComment} from "@/hooks/mutations/comments/useEditComment";
-import {timeSince} from "@/utils/dateToTime";
-import {Edit, Trash} from "lucide-react";
+import { Comment } from '@/types/models/Comment';
+
+import { CommentForm } from '@/components/global/post/comment-dialog/CommentForm';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useToast } from '@/components/ui/use-toast';
+import { useDeleteComment } from '@/hooks/mutations/comments/useDeleteComment';
+import { useEditComment } from '@/hooks/mutations/comments/useEditComment';
+import { useUserStore } from '@/stores/userStore';
+import { timeSince } from '@/utils/dateToTime';
+import { Edit, Trash } from 'lucide-react';
 
 type Props = {
     comment: Comment;
 }
 
 export const CommentCard = ({ comment }: Props) => {
+    const { user } = useUserStore();
+
     return (
         <Card className="flex w-full flex-col gap-4 p-6">
             <CardHeader>
@@ -36,7 +41,7 @@ export const CommentCard = ({ comment }: Props) => {
                         </div>
                     </div>
 
-                    <ActionArea comment={comment} />
+                    { user?.Id === comment.User.Id && <ActionArea comment={comment} /> }
                 </div>
             </CardHeader>
 

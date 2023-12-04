@@ -3,6 +3,7 @@ import '../styles/globals.css';
 import { Metadata } from 'next';
 import { ReactNode, Suspense } from 'react';
 
+import { SetUserStore } from '@/components/global/SetUser';
 import { FriendshipsBar } from '@/components/layout/friendships-bar';
 import { MobileNavbar } from '@/components/layout/mobile-navbar';
 import { Sidebar } from '@/components/layout/sidebar';
@@ -46,5 +47,10 @@ const GetFriendshipsBar = async () => {
 
   if (!user) return null;
 
-  return <FriendshipsBar />
+  return (
+    <>
+      <SetUserStore user={user} />
+      <FriendshipsBar />
+    </>
+  )
 }
