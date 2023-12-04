@@ -1,13 +1,13 @@
 'use client'
 
-import {useFormStatus} from "react-dom";
-import {useForm, UseFormReturn} from "react-hook-form";
+import {FormEvent} from "react";
+import {useForm} from "react-hook-form";
 
-import {createCommentAction} from "@/actions/posts";
 import {Button} from "@/components/ui/button";
 import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/ui/form";
 import {Textarea} from "@/components/ui/textarea";
 import {useToast} from "@/components/ui/use-toast";
+import {useCreateComment} from "@/hooks/mutations/comments/useCreateComment";
 import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
 
@@ -23,6 +23,8 @@ type Props = {
 }
 
 export const CommentForm = ({ postId }: Props) => {
+    const { mutateAsync: createComment, isPending } = useCreateComment();
+
     const form = useForm<z.infer<typeof CommentSchema>>({
         resolver: zodResolver(CommentSchema),
         defaultValues: { content: '' },
@@ -30,58 +32,51 @@ export const CommentForm = ({ postId }: Props) => {
 
     const { toast } = useToast();
 
-    const action = async () => {
-        await form.trigger();
-        if (!form.formState.isValid) return;
+    const onSubmit = async (event: FormEvent) => {
+        event.preventDefault();
 
-        const { content } = form.getValues();
+        await form.trigger()
+        if (!form.formState.isValid) return
 
-        const error = await (createCommentAction.bind(null, { postId, content }))();
 
-        if (!error) return;
+        const data = await createComment({
+            postId,
+            content: form.getValues().content,
+        });
+
+        if (!!data) return;
 
         toast({
-            title: 'Ocorreu um erro ao criar a sua postagem',
-            description: error,
-            variant: 'destructive',
+           title: "Erro",
+           description: 'Ocorreu um erro ao criar seu comentário',
+           variant: 'destructive',
         });
-    }
-
-    return (
-        <form
-            action={action}
-            className='flex w-full flex-col gap-3 '
-        >
-            <GetForm form={form} />
-        </form>
-    )
-}
-
-const GetForm = ({ form }: { form: UseFormReturn<{ content: string }> }) => {
-    const { pending } = useFormStatus();
+    };
 
     return (
         <Form {...form}>
-            <FormField
-                control={form.control}
-                name='content'
-                render={({ field }) => (
-                    <FormItem>
-                        <FormControl>
-                            <Textarea
-                                placeholder='Escreva seu comentário aqui'
-                                className='h-full resize-none rounded-xl border-2 text-lg'
-                                {...field}
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
+            <form onSubmit={onSubmit}>
+                <FormField
+                    control={form.control}
+                    name='content'
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormControl>
+                                <Textarea
+                                    placeholder='Escreva seu comentário aqui'
+                                    className='h-full resize-none rounded-xl border-2 text-lg'
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
-            <Button type='submit' isLoading={pending} className='rounded-xl'>
-                Enviar
-            </Button>
+                <Button type='submit' isLoading={isPending} className='rounded-xl'>
+                    Enviar
+                </Button>
+            </form>
         </Form>
     )
 }

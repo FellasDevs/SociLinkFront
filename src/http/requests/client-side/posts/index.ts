@@ -6,7 +6,7 @@ import {Post} from '@/types/models/Post';
 import {httpClient} from '@/http/http-client/axios';
 import {
   GetHomeTimelineParams,
-  GetHomeTimelineResponse, 
+  GetHomeTimelineResponse,
   GetProfileTimelineParams,
   GetProfileTimelineResponse,
 } from '@/http/requests/server-side/posts';
@@ -14,6 +14,20 @@ import {
 export type GetPostCommentsParams = PaginationRequestParams & { postId: string };
 
 export type GetPostCommentsResponse = BaseResponse<{ Comments: Comment[] }>;
+
+export type CreateCommentParams = {
+  postId: string;
+  content: string;
+};
+
+export type CreateCommentResponse = BaseResponse<{ Comment: Comment }>;
+
+export type EditCommentParams = {
+  commentId: string;
+  content: string;
+};
+
+export type EditCommentResponse = BaseResponse<{ Comment: Comment }>;
 
 export const ClientSidePostRoutes = {
   getHomeTimeline: async (params: GetHomeTimelineParams): Promise<Post[] | null> => {
@@ -59,5 +73,23 @@ export const ClientSidePostRoutes = {
 
       return null;
     }
+  },
+
+  createComment: async (params: CreateCommentParams) => {
+    return httpClient.post<CreateCommentResponse>(
+        '/comments',
+        params,
+    );
+  },
+
+  editComment: async ({ commentId, content }: EditCommentParams) => {
+    return httpClient.post<EditCommentResponse>(
+        `/comments/${commentId}`,
+        { content },
+    );
+  },
+
+  deleteComment: async (commentId: string) => {
+    return httpClient.delete(`/comments/${commentId}`);
   },
 }
