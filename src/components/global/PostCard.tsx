@@ -6,10 +6,15 @@ import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardFooter, CardHeader} from '@/components/ui/card';
 import {timeSince} from '@/utils/dateToTime';
 import {MessageCircle, Send, ThumbsUp} from 'lucide-react';
+import {Carousel} from "@/components/global/Carousel";
+import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
+import {Preview} from "@/components/global/Preview";
 
 type Props = { post: Post }
 
-export const PostCard = ({ post }: Props) => {
+export const PostCard = ({post}: Props) => {
+    console.log('post', post)
+
     return (
         <Card className="flex w-full flex-col gap-4 p-6">
             <CardHeader>
@@ -30,6 +35,18 @@ export const PostCard = ({ post }: Props) => {
 
             <CardContent className="rounded-xl border-2 border-input p-2">
                 <p className="text-xl">{post.Content}</p>
+
+                <Dialog>
+                    <DialogTrigger>
+                        <div className="flex justify-center">
+                            <Preview className='w-full h-full mx-auto' images={post.Images}/>
+                        </div>
+                    </DialogTrigger>
+
+                    <DialogContent className="h-[80vh] max-w-[80vw] w-full p-8">
+                        <Carousel images={post.Images}/>
+                    </DialogContent>
+                </Dialog>
             </CardContent>
 
             <CardFooter>
@@ -39,9 +56,9 @@ export const PostCard = ({ post }: Props) => {
                         className='hidden md:flex'
                     >
                         <Button type='submit' className={`w-full ${post.Liked ? 'opacity-80' : ''}`}>
-                            <ThumbsUp />
-                            { post.Liked ? 'Descurtir' : 'Curtir' }
-                            { !!post.Likes ? <div>({post.Likes})</div> : null }
+                            <ThumbsUp/>
+                            {post.Liked ? 'Descurtir' : 'Curtir'}
+                            {!!post.Likes ? <div>({post.Likes})</div> : null}
                         </Button>
                     </form>
 
