@@ -14,7 +14,7 @@ type Props = { post: Post }
 
 export const PostCard = ({post}: Props) => {
     return (
-        <Card className="flex w-full flex-col gap-4 p-6">
+        <Card className="flex w-full flex-col gap-4 p-6 shadow-lg">
             <CardHeader>
                 <div className="flex items-center gap-3">
                     <Avatar>
