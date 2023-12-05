@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useFormStatus } from 'react-dom';
 
 import {Post} from '@/types/models/Post';
 
@@ -15,7 +16,7 @@ type Props = { post: Post }
 
 export const PostCard = ({ post }: Props) => {
     return (
-        <Card className="flex w-full flex-col gap-4 p-6">
+        <Card className="flex w-full flex-col gap-4 p-6 shadow-lg">
             <CardHeader>
                 <GetCardHeader post={post} />
             </CardHeader>
@@ -58,11 +59,7 @@ const GetCardFooter = ({ post }: { post: Post }) => {
                 action={(post.Liked ? dislikePostAction : likePostAction).bind(null, post.Id)}
                 className='flex'
             >
-                <Button type='submit' className={`action w-full ${post.Liked ? 'opacity-80' : ''}`}>
-                    <ThumbsUp />
-                    <div className='hidden md:flex'>{ post.Liked ? 'Descurtir' : 'Curtir' }</div>
-                    { !!post.Likes ? <div>({post.Likes})</div> : null }
-                </Button>
+                <GetLikeButton post={post} />
             </form>
 
             <CommentDialog postId={post.Id}>
@@ -78,4 +75,16 @@ const GetCardFooter = ({ post }: { post: Post }) => {
             </Button>
         </div>
     )
+}
+
+const GetLikeButton = ({ post }: { post: Post }) => {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type='submit' isLoading={pending} className={`action w-full ${post.Liked ? 'opacity-80' : ''}`}>
+      <ThumbsUp />
+      <div className='hidden md:flex'>{ post.Liked ? 'Descurtir' : 'Curtir' }</div>
+      { !!post.Likes ? <div>({post.Likes})</div> : null }
+    </Button>
+  )
 }
