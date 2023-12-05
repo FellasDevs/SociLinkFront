@@ -45,8 +45,8 @@ const GetFriendsList = async () => {
     return (
       <div className='m-5 text-lg'>
         <div>Parece que você ainda não tem nenhum amigo.</div>
-        <Link href='/search'>
-          <div>Clique aqui para encontrar pessoas.</div>
+        <Link href='/search' className='underline'>
+          Clique aqui para encontrar pessoas.
         </Link>
       </div>
     );

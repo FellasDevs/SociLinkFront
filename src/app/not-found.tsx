@@ -8,7 +8,7 @@ export default function ErrorPage() {
       <h2 className='text-4xl font-medium'>Oops... Página não encontrada!</h2>
 
       <Link href='/'>
-        <h2 className='text-3xl font-medium'>Clique aqui para voltar para o início</h2>
+        <h2 className='text-3xl font-medium underline'>Clique aqui para voltar para o início</h2>
       </Link>
     </div>
   )

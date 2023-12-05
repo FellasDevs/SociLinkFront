@@ -9,7 +9,7 @@ export default function ErrorPage() {
     <div className='flex h-max flex-col '>
       <h2 className='text-4xl font-medium'>Algo inesperado aconteceu...</h2>
 
-      <Link href='/'><h2 className='text-3xl font-medium'>Clique aqui para voltar para o início</h2></Link>
+      <Link href='/'><h2 className='text-3xl font-medium underline'>Clique aqui para voltar para o início</h2></Link>
     </div>
   )
 }
