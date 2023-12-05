@@ -1,8 +1,8 @@
-import { PaginationRequestParams } from '@/types/http/Pagination';
-import { Post } from '@/types/models/Post';
-import { User } from '@/types/models/User';
+import {PaginationRequestParams} from '@/types/http/Pagination';
+import {Post} from '@/types/models/Post';
+import {User} from '@/types/models/User';
 
-import { fetchClient } from '@/http/http-client/fetch';
+import {fetchClient} from '@/http/http-client/fetch';
 
 export type GetHomeTimelineParams = PaginationRequestParams;
 

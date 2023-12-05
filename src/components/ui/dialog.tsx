@@ -3,8 +3,6 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 

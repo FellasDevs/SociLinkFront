@@ -1,9 +1,10 @@
 'use server'
 
-import { revalidatePath, revalidateTag } from 'next/cache';
-import { redirect } from 'next/navigation';
+import {revalidatePath, revalidateTag} from 'next/cache';
+import {redirect} from 'next/navigation';
 
-import { CreatePostParams, ServerSidePostRoutes } from '@/http/requests/server-side/posts';
+
+import {CreatePostParams, ServerSidePostRoutes} from '@/http/requests/server-side/posts';
 
 export const searchPostsAction = async (basePath: string, newQueryString: string) => {
   revalidatePath(basePath, 'page');

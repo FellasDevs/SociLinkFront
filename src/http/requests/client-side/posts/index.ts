@@ -1,13 +1,33 @@
-import { BaseResponse } from '@/types/http/BaseResponse';
-import { Post } from '@/types/models/Post';
+import {BaseResponse} from '@/types/http/BaseResponse';
+import {PaginationRequestParams} from "@/types/http/Pagination";
+import {Comment} from "@/types/models/Comment";
+import {Post} from '@/types/models/Post';
 
-import { httpClient } from '@/http/http-client/axios';
+import {httpClient} from '@/http/http-client/axios';
 import {
   GetHomeTimelineParams,
   GetHomeTimelineResponse,
   GetProfileTimelineParams,
   GetProfileTimelineResponse,
 } from '@/http/requests/server-side/posts';
+
+export type GetPostCommentsParams = PaginationRequestParams & { postId: string };
+
+export type GetPostCommentsResponse = BaseResponse<{ Comments: Comment[] }>;
+
+export type CreateCommentParams = {
+  postId: string;
+  content: string;
+};
+
+export type CreateCommentResponse = BaseResponse<{ Comment: Comment }>;
+
+export type EditCommentParams = {
+  commentId: string;
+  content: string;
+};
+
+export type EditCommentResponse = BaseResponse<{ Comment: Comment }>;
 
 export const ClientSidePostRoutes = {
   getHomeTimeline: async (params: GetHomeTimelineParams): Promise<Post[] | null> => {
@@ -38,5 +58,38 @@ export const ClientSidePostRoutes = {
 
       return null;
     }
+  },
+
+  getPostComments: async (params: GetPostCommentsParams): Promise<Comment[] | null> => {
+    try {
+      const { data } = await httpClient.get<GetPostCommentsResponse>(
+          '/comments',
+          { params },
+      );
+
+      return data.data.Comments;
+    } catch (e) {
+      console.error(e);
+
+      return null;
+    }
+  },
+
+  createComment: async (params: CreateCommentParams) => {
+    return httpClient.post<CreateCommentResponse>(
+        '/comments',
+        params,
+    );
+  },
+
+  editComment: async ({ commentId, content }: EditCommentParams) => {
+    return httpClient.put<EditCommentResponse>(
+        `/comments/${commentId}`,
+        { content },
+    );
+  },
+
+  deleteComment: async (commentId: string) => {
+    return httpClient.delete(`/comments/${commentId}`);
   },
 }
