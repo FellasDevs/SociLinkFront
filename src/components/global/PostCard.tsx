@@ -13,8 +13,6 @@ import {Preview} from "@/components/global/Preview";
 type Props = { post: Post }
 
 export const PostCard = ({post}: Props) => {
-    console.log('post', post)
-
     return (
         <Card className="flex w-full flex-col gap-4 p-6">
             <CardHeader>
