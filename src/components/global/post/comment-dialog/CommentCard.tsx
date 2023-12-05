@@ -1,39 +1,34 @@
 'use client'
 
-import { useMemo, useState } from 'react';
+import {useMemo, useState} from 'react';
 
-import { Comment } from '@/types/models/Comment';
+import {Comment} from '@/types/models/Comment';
 
-import { CommentForm } from '@/components/global/post/comment-dialog/CommentForm';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useToast } from '@/components/ui/use-toast';
-import { useDeleteComment } from '@/hooks/mutations/comments/useDeleteComment';
-import { useEditComment } from '@/hooks/mutations/comments/useEditComment';
-import { useUserStore } from '@/stores/userStore';
-import { timeSince } from '@/utils/dateToTime';
-import { Edit, Trash } from 'lucide-react';
+import {CommentForm} from '@/components/global/post/comment-dialog/CommentForm';
+import {Button} from '@/components/ui/button';
+import {Card, CardContent, CardHeader} from '@/components/ui/card';
+import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from '@/components/ui/dialog';
+import {useToast} from '@/components/ui/use-toast';
+import {useDeleteComment} from '@/hooks/mutations/comments/useDeleteComment';
+import {useEditComment} from '@/hooks/mutations/comments/useEditComment';
+import {useUserStore} from '@/stores/userStore';
+import {timeSince} from '@/utils/dateToTime';
+import {Edit, Trash} from 'lucide-react';
+import {UserAvatar} from "@/components/global/UserAvatar";
 
 type Props = {
     comment: Comment;
 }
 
-export const CommentCard = ({ comment }: Props) => {
-    const { user } = useUserStore();
+export const CommentCard = ({comment}: Props) => {
+    const {user} = useUserStore();
 
     return (
         <Card className="flex w-full flex-col gap-4 p-6">
             <CardHeader>
                 <div className='flex justify-between'>
                     <div className="flex items-center gap-3">
-                        <Avatar>
-                            <AvatarImage src={comment.User.Picture}/>
-                            <AvatarFallback>
-                                {comment.User.Name.split(' ')[0]}
-                            </AvatarFallback>
-                        </Avatar>
+                        <UserAvatar user={comment.User}/>
 
                         <div>
                             <div>{comment.User.Name}</div>
@@ -41,7 +36,7 @@ export const CommentCard = ({ comment }: Props) => {
                         </div>
                     </div>
 
-                    { user?.Id === comment.User.Id && <ActionArea comment={comment} /> }
+                    {user?.Id === comment.User.Id && <ActionArea comment={comment}/>}
                 </div>
             </CardHeader>
 
@@ -52,15 +47,15 @@ export const CommentCard = ({ comment }: Props) => {
     )
 }
 
-const ActionArea = ({ comment }: { comment: Comment }) => {
-    const { mutateAsync: editComment, isPending: editLoading } = useEditComment();
-    const { mutateAsync: deleteComment, isPending: deleteLoading } = useDeleteComment();
+const ActionArea = ({comment}: { comment: Comment }) => {
+    const {mutateAsync: editComment, isPending: editLoading} = useEditComment();
+    const {mutateAsync: deleteComment, isPending: deleteLoading} = useDeleteComment();
 
     const isLoading = useMemo(() => editLoading || deleteLoading, [deleteLoading, editLoading]);
 
-    const [ open, setOpen ] = useState(false);
+    const [open, setOpen] = useState(false);
 
-    const { toast } = useToast();
+    const {toast} = useToast();
 
     const editAction = async (content: string) => {
         const data = await editComment({
@@ -110,12 +105,12 @@ const ActionArea = ({ comment }: { comment: Comment }) => {
                         <DialogTitle>Editar comentário</DialogTitle>
                     </DialogHeader>
 
-                    <CommentForm initialValue={comment.Content} action={editAction} isLoading={isLoading} />
+                    <CommentForm initialValue={comment.Content} action={editAction} isLoading={isLoading}/>
                 </DialogContent>
             </Dialog>
 
             <Button variant='ghost' className='text-destructive' onClick={deleteAction}>
-                <Trash />
+                <Trash/>
             </Button>
         </div>
     )
