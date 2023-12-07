@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
+import { LoaderWithText } from '@/components/global/Loader';
 import { CreatePostForm } from '@/components/pages/home/CreatePostForm';
 import { HomeTimeline } from '@/components/pages/home/HomeTimeline';
 import { GetHomeTimelineParams, ServerSidePostRoutes } from '@/http/requests/server-side/posts';
@@ -15,7 +16,7 @@ export default function Home() {
       <div className='flex flex-col items-center gap-2 p-5'>
         <CreatePostForm />
         
-        <Suspense fallback={'loading'}>
+        <Suspense fallback={<LoaderWithText />}>
           <Timeline />
         </Suspense>
       </div>

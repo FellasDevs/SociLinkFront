@@ -5,6 +5,7 @@ import {useMemo, useState} from 'react';
 import {Comment} from '@/types/models/Comment';
 
 import {CommentForm} from '@/components/global/post/comment-dialog/CommentForm';
+import {UserAvatar} from "@/components/global/UserAvatar";
 import {Button} from '@/components/ui/button';
 import {Card, CardContent, CardHeader} from '@/components/ui/card';
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from '@/components/ui/dialog';
@@ -14,7 +15,6 @@ import {useEditComment} from '@/hooks/mutations/comments/useEditComment';
 import {useUserStore} from '@/stores/userStore';
 import {timeSince} from '@/utils/dateToTime';
 import {Edit, Trash} from 'lucide-react';
-import {UserAvatar} from "@/components/global/UserAvatar";
 
 type Props = {
     comment: Comment;
@@ -92,8 +92,8 @@ const ActionArea = ({comment}: { comment: Comment }) => {
     }
 
     return (
-        <div className='flex p-2 '>
-            <Dialog key='edit-comment-dialog' open={open} onOpenChange={setOpen}>
+        <div className='flex p-2'>
+            <Dialog key={comment.Id + '-' + open} open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                     <Button variant='ghost' className='text-primary' isLoading={isLoading}>
                         <Edit/>

@@ -14,7 +14,7 @@ type Props = {
     children: ReactNode;
 }
 
-export const CommentDialog = async ({ postId, children }: Props) => {
+export const CommentDialog = ({ postId, children }: Props) => {
     const { mutateAsync: createComment, isPending } = useCreateComment();
 
     const { toast } = useToast();

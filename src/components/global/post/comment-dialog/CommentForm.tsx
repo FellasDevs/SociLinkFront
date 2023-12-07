@@ -1,11 +1,10 @@
-import {FormEvent} from "react";
-import {useForm} from "react-hook-form";
+import { useForm } from 'react-hook-form';
 
-import {Button} from "@/components/ui/button";
-import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/ui/form";
-import {Textarea} from "@/components/ui/textarea";
-import {zodResolver} from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 
 type Props = {
     action: (content: string) => Promise<void>;
@@ -29,14 +28,7 @@ export const CommentForm = ({ action, isLoading, initialValue }: Props) => {
         defaultValues: { content: initialValue ?? '' },
     });
 
-    const onSubmit = async (event: FormEvent) => {
-        event.preventDefault();
-
-        await form.trigger()
-        if (!form.formState.isValid) return
-
-        await action(form.getValues().content);
-    };
+    const onSubmit = form.handleSubmit(async (data) => await action(data.content));
 
     return (
         <Form {...form}>

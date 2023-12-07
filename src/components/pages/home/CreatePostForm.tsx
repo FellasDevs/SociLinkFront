@@ -43,7 +43,7 @@ export const CreatePostForm = ({ originalPostId, onCreate }: Props) => {
         defaultValues: {content: '', visibility: 'public', images: []},
     });
 
-    const {toast} = useToast();
+    const { toast } = useToast();
 
     const action = async () => {
         await form.trigger();
@@ -62,7 +62,7 @@ export const CreatePostForm = ({ originalPostId, onCreate }: Props) => {
             title: 'Ocorreu um erro ao criar a sua postagem',
             description: error,
             variant: 'destructive',
-        })
+        });
     }
 
     return (
@@ -76,7 +76,7 @@ export const CreatePostForm = ({ originalPostId, onCreate }: Props) => {
 }
 
 const PostForm = ({form}: { form: UseFormReturn<CreatePostParams> }) => {
-    const {pending} = useFormStatus();
+    const { pending } = useFormStatus();
 
     return (
         <Form {...form}>
@@ -109,7 +109,7 @@ const PostForm = ({form}: { form: UseFormReturn<CreatePostParams> }) => {
                 <VisibilityDropdown form={form}/>
             </div>
 
-            <Button type='submit' isLoading={pending} className='rounded-xl'>
+            <Button type='submit' isLoading={pending} className='rounded-xl text-lg'>
                 Enviar
             </Button>
         </Form>

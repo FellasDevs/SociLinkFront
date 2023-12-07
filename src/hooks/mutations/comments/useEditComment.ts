@@ -8,11 +8,7 @@ export const useEditComment = () => {
 
     return useMutation({
         mutationFn: async (params: EditCommentParams) => {
-            try {
-                return await ClientSidePostRoutes.editComment(params);
-            } catch (e) {
-                console.error(e);
-            }
+            return await ClientSidePostRoutes.editComment(params);
         },
         onSuccess: (data) => {
             if (!data?.data?.data?.Comment) return;
@@ -24,12 +20,8 @@ export const useEditComment = () => {
                 (oldData?: Comment[]) => {
                     if (!oldData) return [ newComment ];
 
-                    const oldCommentIndex = oldData.findIndex((comment) => comment.Id === newComment.Id)
-
-                    if (oldCommentIndex !== -1)
-                        oldData[oldCommentIndex] = newComment;
-
-                    return oldData;
+                    return oldData.map((comment) =>
+                      comment.Id === newComment.Id ? newComment : comment);
                 },
             );
         },

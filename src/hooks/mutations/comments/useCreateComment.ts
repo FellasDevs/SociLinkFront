@@ -8,19 +8,15 @@ export const useCreateComment = () => {
 
     return useMutation({
        mutationFn: async (params: CreateCommentParams) => {
-           try {
-               return await ClientSidePostRoutes.createComment(params);
-           } catch (e) {
-               console.error(e);
-           }
+         return await ClientSidePostRoutes.createComment(params);
        },
-       onSuccess: (data) => {
+       onSuccess: (data, { postId }) => {
            if (!data?.data?.data?.Comment) return;
 
            const newComment = data.data.data.Comment;
 
            queryClient.setQueriesData(
-               { queryKey: ['comments'] },
+               { queryKey: ['comments', postId] },
                (oldData?: Comment[]) => {
                    if (!oldData) return [ newComment ];
                    return [ newComment, ...oldData ];

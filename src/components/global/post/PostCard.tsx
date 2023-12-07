@@ -17,9 +17,12 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { timeSince } from '@/utils/dateToTime';
 import { MessageCircle, Send, ThumbsUp } from 'lucide-react';
 
-type Props = { post: Post }
+type Props = {
+  post: Post;
+  hasFooter?: boolean;
+}
 
-export const PostCard = ({post}: Props) => {
+export const PostCard = ({ post, hasFooter = true }: Props) => {
     return (
         <Card className="flex w-full flex-col gap-4 p-6 shadow-lg">
             <CardHeader>
@@ -27,16 +30,30 @@ export const PostCard = ({post}: Props) => {
             </CardHeader>
 
             <CardContent className="rounded-xl border-2 border-input p-2">
-                <p className="text-xl">
-                    {post.Content}
-                </p>
+                <GetCardContent post={post} />
             </CardContent>
 
-            <CardFooter>
-                <GetCardFooter post={post}/>
-            </CardFooter>
+            {
+                hasFooter && (
+                    <CardFooter>
+                        <GetCardFooter post={post}/>
+                    </CardFooter>
+                )
+            }
         </Card>
     )
+}
+
+const GetCardContent = ({ post }: { post: Post }) => {
+  return (
+    <>
+      <p className="text-xl">
+        {post.Content}
+      </p>
+
+      { !!post.OriginalPost && <PostCard post={post.OriginalPost} hasFooter={false} /> }
+    </>
+  )
 }
 
 const GetCardHeader = ({post}: { post: Post }) => {
