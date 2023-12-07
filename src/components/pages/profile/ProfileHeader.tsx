@@ -1,4 +1,5 @@
-import {ErrorBoundary} from 'next/dist/client/components/error-boundary';
+'use server'
+
 import Image from 'next/image';
 import {Suspense} from 'react';
 
@@ -9,6 +10,7 @@ import {Button} from '@/components/ui/button';
 import {ServerSideFriendsRoutes} from '@/http/requests/server-side/friends';
 import {UserRoutes} from '@/http/requests/server-side/users';
 import {UserAvatar} from "@/components/global/UserAvatar";
+import {UserName} from "@/components/pages/profile/UserName";
 
 type Props = {
     user: User;
@@ -24,16 +26,15 @@ export const ProfileHeader = ({user}: Props) => {
             <div className='m-4 gap-2 items-center flex'>
                 <UserAvatar user={user}/>
 
-                <div className='mr-5'>
-                    <div className='text-xl'>{user.Name}</div>
+                <div className='mr-2'>
+                    <UserName userName={user.Name}/>
+
                     <div className='text-sm'>{user.Nickname}</div>
                 </div>
 
-                <ErrorBoundary errorComponent={FriendshipErrorFallback}>
-                    <Suspense>
-                        <GetFriendshipButton user={user}/>
-                    </Suspense>
-                </ErrorBoundary>
+                <Suspense>
+                    <GetFriendshipButton user={user}/>
+                </Suspense>
             </div>
         </div>
     )
