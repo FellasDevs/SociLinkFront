@@ -6,7 +6,6 @@ import {Suspense} from 'react';
 import {User} from '@/types/models/User';
 
 import {FriendshipButton} from '@/components/pages/profile/FriendshipButton';
-import {Button} from '@/components/ui/button';
 import {ServerSideFriendsRoutes} from '@/http/requests/server-side/friends';
 import {UserRoutes} from '@/http/requests/server-side/users';
 import {UserAvatar} from "@/components/global/UserAvatar";
@@ -48,17 +47,4 @@ const GetFriendshipButton = async ({user}: { user: User }) => {
     const friendship = await ServerSideFriendsRoutes.getFriendshipByNickname(user.Nickname);
 
     return <FriendshipButton user={loggedUser} friend={user} friendship={friendship}/>;
-}
-
-const FriendshipErrorFallback = async ({reset}: { error: Error; reset: () => void }) => {
-    'use server'
-
-    return (
-        <div>
-            <div>Ocorreu um erro</div>
-            <Button onClick={reset}>
-                Tentar novamente
-            </Button>
-        </div>
-    )
 }
