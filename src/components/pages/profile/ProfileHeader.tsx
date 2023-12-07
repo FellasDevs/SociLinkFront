@@ -1,14 +1,15 @@
-import {ErrorBoundary} from 'next/dist/client/components/error-boundary';
+'use server'
+
 import Image from 'next/image';
 import {Suspense} from 'react';
 
 import {User} from '@/types/models/User';
 
 import {FriendshipButton} from '@/components/pages/profile/FriendshipButton';
-import {Button} from '@/components/ui/button';
 import {ServerSideFriendsRoutes} from '@/http/requests/server-side/friends';
 import {UserRoutes} from '@/http/requests/server-side/users';
 import {UserAvatar} from "@/components/global/UserAvatar";
+import {UserName} from "@/components/pages/profile/UserName";
 
 type Props = {
     user: User;
@@ -24,16 +25,15 @@ export const ProfileHeader = ({user}: Props) => {
             <div className='m-4 gap-2 items-center flex'>
                 <UserAvatar user={user}/>
 
-                <div className='mr-5'>
-                    <div className='text-xl'>{user.Name}</div>
+                <div className='mr-2'>
+                    <UserName userName={user.Name}/>
+
                     <div className='text-sm'>{user.Nickname}</div>
                 </div>
 
-                <ErrorBoundary errorComponent={FriendshipErrorFallback}>
-                    <Suspense>
-                        <GetFriendshipButton user={user}/>
-                    </Suspense>
-                </ErrorBoundary>
+                <Suspense>
+                    <GetFriendshipButton user={user}/>
+                </Suspense>
             </div>
         </div>
     )
@@ -47,17 +47,4 @@ const GetFriendshipButton = async ({user}: { user: User }) => {
     const friendship = await ServerSideFriendsRoutes.getFriendshipByNickname(user.Nickname);
 
     return <FriendshipButton user={loggedUser} friend={user} friendship={friendship}/>;
-}
-
-const FriendshipErrorFallback = async ({reset}: { error: Error; reset: () => void }) => {
-    'use server'
-
-    return (
-        <div>
-            <div>Ocorreu um erro</div>
-            <Button onClick={reset}>
-                Tentar novamente
-            </Button>
-        </div>
-    )
 }
