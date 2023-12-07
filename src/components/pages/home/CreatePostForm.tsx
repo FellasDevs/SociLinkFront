@@ -1,11 +1,11 @@
 'use client';
 
-import {useMemo} from 'react';
-import {useFormStatus} from 'react-dom';
-import {useForm, UseFormReturn} from 'react-hook-form';
+import { useMemo } from 'react';
+import { useFormStatus } from 'react-dom';
+import { useForm, UseFormReturn } from 'react-hook-form';
 
-import {createPostAction} from '@/actions/posts';
-import {Button} from '@/components/ui/button';
+import { createPostAction } from '@/actions/posts';
+import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -15,12 +15,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {Form, FormControl, FormField, FormItem, FormMessage} from '@/components/ui/form';
-import {Textarea} from '@/components/ui/textarea';
-import {useToast} from "@/components/ui/use-toast";
-import {CreatePostParams} from '@/http/requests/server-side/posts';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {Globe2, ImagePlus, Tag, User, Users} from 'lucide-react';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
+import { CreatePostParams } from '@/http/requests/server-side/posts';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Globe2, ImagePlus, Tag, User, Users } from 'lucide-react';
 import * as z from 'zod';
 
 const CreatePostSchema = z.object({
@@ -32,7 +32,12 @@ const CreatePostSchema = z.object({
     images: z.array(z.string().url())
 })
 
-export const CreatePostForm = () => {
+type Props = {
+    originalPostId?: string;
+    onCreate?: () => void;
+}
+
+export const CreatePostForm = ({ originalPostId, onCreate }: Props) => {
     const form = useForm<z.infer<typeof CreatePostSchema>>({
         resolver: zodResolver(CreatePostSchema),
         defaultValues: {content: '', visibility: 'public', images: []},
@@ -46,9 +51,12 @@ export const CreatePostForm = () => {
 
         const values = form.getValues();
 
-        const error = await (createPostAction.bind(null, values))();
+        const error = await (createPostAction.bind(null, { originalPostId, ...values }))();
 
-        if (!error) return;
+        if (!error) {
+            onCreate?.();
+            return;
+        }
 
         toast({
             title: 'Ocorreu um erro ao criar a sua postagem',
@@ -60,7 +68,7 @@ export const CreatePostForm = () => {
     return (
         <form
             action={action}
-            className='flex w-full max-w-[50em] flex-col gap-3 rounded-xl p-6 shadow-lg dark:border dark:border-input bg-card'
+            className='flex w-full max-w-[50em] flex-col gap-3 rounded-xl bg-card p-6 shadow-lg dark:border dark:border-input'
         >
             <PostForm form={form}/>
         </form>

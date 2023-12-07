@@ -1,18 +1,21 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
-import {useFormStatus} from 'react-dom';
+import { useState } from 'react';
+import { useFormStatus } from 'react-dom';
 
-import {Post} from '@/types/models/Post';
+import { Post } from '@/types/models/Post';
 
-import {CommentDialog} from "./comment-dialog";
+import { CommentDialog } from './comment-dialog';
 
-import {dislikePostAction, likePostAction} from "@/actions/posts";
-import {Button} from '@/components/ui/button';
-import {Card, CardContent, CardFooter, CardHeader} from '@/components/ui/card';
-import {timeSince} from '@/utils/dateToTime';
-import {MessageCircle, Send, ThumbsUp} from 'lucide-react';
-import {UserAvatar} from "@/components/global/UserAvatar";
+import { dislikePostAction, likePostAction } from '@/actions/posts';
+import { UserAvatar } from '@/components/global/UserAvatar';
+import { CreatePostForm } from '@/components/pages/home/CreatePostForm';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { timeSince } from '@/utils/dateToTime';
+import { MessageCircle, Send, ThumbsUp } from 'lucide-react';
 
 type Props = { post: Post }
 
@@ -49,7 +52,9 @@ const GetCardHeader = ({post}: { post: Post }) => {
     )
 }
 
-const GetCardFooter = ({post}: { post: Post }) => {
+const GetCardFooter = ({ post }: { post: Post }) => {
+    const [ shareModalOpen, setShareModalOpen ] = useState(false);
+
     return (
         <div className="flex w-full gap-4 [&>*]:w-1/3 [&_.action]:flex [&_.action]:gap-1 [&_.action]:text-lg">
             <form
@@ -66,10 +71,18 @@ const GetCardFooter = ({post}: { post: Post }) => {
                 </Button>
             </CommentDialog>
 
-            <Button type='button' className='action'>
-                <Send/>
-                <div className='hidden md:flex'>Compartilhar</div>
-            </Button>
+            <Dialog open={shareModalOpen} onOpenChange={setShareModalOpen}>
+              <DialogTrigger asChild>
+                <Button type='button' className='action'>
+                  <Send/>
+                  <div className='hidden md:flex'>Compartilhar</div>
+                </Button>
+              </DialogTrigger>
+
+              <DialogContent className='min-w-[50em] p-3 pt-10'>
+                <CreatePostForm originalPostId={post.Id} onCreate={() => setShareModalOpen(false)} />
+              </DialogContent>
+            </Dialog>
         </div>
     )
 }
