@@ -19,27 +19,22 @@ import { MessageCircle, Send, ThumbsUp } from 'lucide-react';
 
 type Props = {
   post: Post;
-  hasFooter?: boolean;
 }
 
-export const PostCard = ({ post, hasFooter = true }: Props) => {
+export const PostCard = ({ post }: Props) => {
     return (
-        <Card className="flex w-full flex-col gap-4 p-6 shadow-lg">
+        <Card key={'post-card-' + post.Id} className="flex w-full flex-col gap-4 p-6 shadow-lg">
             <CardHeader>
                 <GetCardHeader post={post}/>
             </CardHeader>
 
-            <CardContent className="rounded-xl border-2 border-input p-2">
+            <CardContent className="rounded-xl border-2 border-input p-5">
                 <GetCardContent post={post} />
             </CardContent>
 
-            {
-                hasFooter && (
-                    <CardFooter>
-                        <GetCardFooter post={post}/>
-                    </CardFooter>
-                )
-            }
+            <CardFooter>
+              <GetCardFooter post={post}/>
+            </CardFooter>
         </Card>
     )
 }
@@ -51,7 +46,11 @@ const GetCardContent = ({ post }: { post: Post }) => {
         {post.Content}
       </p>
 
-      { !!post.OriginalPost && <PostCard post={post.OriginalPost} hasFooter={false} /> }
+      { !!post.OriginalPost &&
+        <div className='p-5'>
+          <PostCard post={post.OriginalPost} />
+        </div>
+      }
     </>
   )
 }
