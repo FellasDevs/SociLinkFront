@@ -1,15 +1,13 @@
-import {Comment} from "@/types/models/Comment";
+import { Comment } from '@/types/models/Comment';
 
-import {ClientSidePostRoutes, CreateCommentParams} from "@/http/requests/client-side/posts";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import { ClientSidePostRoutes } from '@/http/requests/client-side/posts';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useCreateComment = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-       mutationFn: async (params: CreateCommentParams) => {
-         return await ClientSidePostRoutes.createComment(params);
-       },
+       mutationFn: ClientSidePostRoutes.createComment,
        onSuccess: (data, { postId }) => {
            if (!data?.data?.data?.Comment) return;
 

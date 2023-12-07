@@ -7,9 +7,7 @@ export const useDeleteComment = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (commentId: string) => {
-          return await ClientSidePostRoutes.deleteComment(commentId);
-        },
+        mutationFn: ClientSidePostRoutes.deleteComment,
         onSuccess: (_data, commentId) => {
             queryClient.setQueriesData(
                 { queryKey: ['comments'] },
