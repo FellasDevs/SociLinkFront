@@ -1,21 +1,22 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 
 import { Post } from '@/types/models/Post';
 
 import { CommentDialog } from './comment-dialog';
 
-import { dislikePostAction, likePostAction } from '@/actions/posts';
+import { createPostAction, deletePostAction, dislikePostAction, editPostAction, likePostAction } from '@/actions/posts';
+import { CreatePostForm } from '@/components/global/post/CreatePostForm';
 import { UserAvatar } from '@/components/global/UserAvatar';
-import { CreatePostForm } from '@/components/pages/home/CreatePostForm';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { CreatePostParams } from '@/http/requests/server-side/posts';
 import { timeSince } from '@/utils/dateToTime';
-import { MessageCircle, Send, ThumbsUp } from 'lucide-react';
+import { Edit, MessageCircle, Send, ThumbsUp, Trash } from 'lucide-react';
 
 type Props = {
   post: Post;
@@ -56,27 +57,71 @@ const GetCardContent = ({ post }: { post: Post }) => {
 }
 
 const GetCardHeader = ({post}: { post: Post }) => {
+    const [ modalOpen, setModalOpen ] = useState(false);
+
+    const editPost = useCallback((params: CreatePostParams) => {
+      return (editPostAction.bind(null, { ...params, id: post.Id }))();
+    }, [post]);
+
+    const deletePost = useCallback(async () => {
+      const confirmed = confirm('Tem certeza que deseja excluir esta postagem?');
+      if (!confirmed) return;
+
+      await (deletePostAction.bind(null, post.Id))();
+    }, [post]);
+
     return (
-        <Link href={'/profile/' + post.User.Nickname} className="flex w-fit items-center gap-3">
+        <div className='flex justify-between'>
+          <Link href={'/profile/' + post.User.Nickname} className="flex w-fit items-center gap-3">
             <UserAvatar user={post.User}/>
 
             <div>
-                <div>{post.User.Name}</div>
-                <div>{timeSince(new Date(post.CreatedAt))}</div>
+              <div>{post.User.Name}</div>
+              <div>{timeSince(new Date(post.CreatedAt))}</div>
             </div>
-        </Link>
+          </Link>
+
+          <div className='flex'>
+            <Dialog key={post.Id + '-' + modalOpen} open={modalOpen} onOpenChange={setModalOpen}>
+              <DialogTrigger asChild>
+                <Button variant='ghost' className='text-primary'>
+                  <Edit/>
+                </Button>
+              </DialogTrigger>
+
+              <DialogContent className='min-w-[50em] p-3 pt-10'>
+                <CreatePostForm post={post} createFunction={editPost} onCreate={() => setModalOpen(false)} />
+              </DialogContent>
+            </Dialog>
+
+            <form action={deletePost}>
+              <GetDeleteButton />
+            </form>
+          </div>
+        </div>
     )
 }
 
+const GetDeleteButton = () => {
+  const {pending} = useFormStatus();
+
+  return (
+    <Button type='submit' variant='ghost' className='text-destructive' isLoading={pending}>
+      <Trash/>
+    </Button>
+  )
+}
+
 const GetCardFooter = ({ post }: { post: Post }) => {
-    const [ shareModalOpen, setShareModalOpen ] = useState(false);
+    const [ modalOpen, setModalOpen ] = useState(false);
+
+    const createPost = useCallback(async (params: CreatePostParams) => {
+      return await (createPostAction.bind(null, { ...params, originalPostId: post.Id }))();
+    }, [post]);
 
     return (
         <div className="flex w-full gap-4 [&>*]:w-1/3 [&_.action]:flex [&_.action]:gap-1 [&_.action]:text-lg">
-            <form
-                action={(post.Liked ? dislikePostAction : likePostAction).bind(null, post.Id)}
-                className='flex'
-            >
+            <form action={(post.Liked ? dislikePostAction : likePostAction).bind(null, post.Id)}>
                 <GetLikeButton post={post}/>
             </form>
 
@@ -87,7 +132,7 @@ const GetCardFooter = ({ post }: { post: Post }) => {
                 </Button>
             </CommentDialog>
 
-            <Dialog open={shareModalOpen} onOpenChange={setShareModalOpen}>
+            <Dialog open={modalOpen} onOpenChange={setModalOpen}>
               <DialogTrigger asChild>
                 <Button type='button' className='action'>
                   <Send/>
@@ -96,7 +141,7 @@ const GetCardFooter = ({ post }: { post: Post }) => {
               </DialogTrigger>
 
               <DialogContent className='min-w-[50em] p-3 pt-10'>
-                <CreatePostForm originalPostId={post.Id} onCreate={() => setShareModalOpen(false)} />
+                <CreatePostForm createFunction={createPost} onCreate={() => setModalOpen(false)} />
               </DialogContent>
             </Dialog>
         </div>

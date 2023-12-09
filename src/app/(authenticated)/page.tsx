@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import { LoaderWithText } from '@/components/global/Loader';
-import { CreatePostForm } from '@/components/pages/home/CreatePostForm';
+import { CreatePostForm } from '@/components/global/post/CreatePostForm';
 import { HomeTimeline } from '@/components/pages/home/HomeTimeline';
 import { GetHomeTimelineParams, ServerSidePostRoutes } from '@/http/requests/server-side/posts';
 
@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 }
 
 export default function Home() {
+
   return (
       <div className='flex flex-col items-center gap-2 p-5'>
         <CreatePostForm />

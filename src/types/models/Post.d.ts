@@ -6,7 +6,7 @@ export type Post = {
   User: User;
   Content: string;
   Images: string[];
-  Visibility: string;
+  Visibility: 'public' | 'friends' | 'private';
   Likes: number;
   Liked: boolean;
   CreatedAt: string;

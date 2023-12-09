@@ -4,7 +4,7 @@ import {revalidatePath, revalidateTag} from 'next/cache';
 import {redirect} from 'next/navigation';
 
 
-import {CreatePostParams, ServerSidePostRoutes} from '@/http/requests/server-side/posts';
+import { CreatePostParams, EditPostParams, ServerSidePostRoutes } from '@/http/requests/server-side/posts';
 
 export const searchPostsAction = async (basePath: string, newQueryString: string) => {
   revalidatePath(basePath, 'page');
@@ -12,9 +12,29 @@ export const searchPostsAction = async (basePath: string, newQueryString: string
 }
 
 export const createPostAction = async (params: CreatePostParams): Promise<string | null> => {
-  const createdPost = await ServerSidePostRoutes.createPost(params);
+  const success = await ServerSidePostRoutes.createPost(params);
 
-  if (!createdPost) return 'Não foi possível criar a postagem';
+  if (!success) return 'Não foi possível criar a postagem';
+
+  revalidateTag('timeline');
+
+  return null;
+}
+
+export const editPostAction = async (params: EditPostParams): Promise<string | null> => {
+  const success = await ServerSidePostRoutes.editPost(params);
+
+  if (!success) return 'Não foi possível editar a postagem';
+
+  revalidateTag('timeline');
+
+  return null;
+}
+
+export const deletePostAction = async (postId: string): Promise<string | null> => {
+  const success = await ServerSidePostRoutes.deletePost(postId);
+
+  if (!success) return 'Não foi possível delete a postagem';
 
   revalidateTag('timeline');
 
