@@ -50,8 +50,8 @@ export const CommentForm = ({ action, isLoading, initialValue }: Props) => {
                     )}
                 />
 
-                <Button type='submit' isLoading={isLoading} className='rounded-xl'>
-                    Enviar
+                <Button type='submit' isLoading={isLoading} disabled={!form.formState.isValid}>
+                    Criar comentário
                 </Button>
             </form>
         </Form>

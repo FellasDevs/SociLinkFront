@@ -1,12 +1,13 @@
 import Link from 'next/link';
 
 import {User} from '@/types/models/User';
-import {Button, ButtonProps} from '@/components/ui/button';
+
 import {UserAvatar} from "@/components/global/UserAvatar";
+import {Button, ButtonProps} from '@/components/ui/button';
 
 type Props = ButtonProps & {
     user: User;
-    showFirstNameOnly?: boolean;
+    showFirstNameOnly?: boolean; 
 }
 
 export const UserButton = ({user, showFirstNameOnly, ...props}: Props) => {

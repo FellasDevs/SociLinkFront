@@ -16,7 +16,7 @@ export default async function SignInPage() {
         <h3>Ainda não possúi uma conta?</h3>
 
         <Link href={'/auth/signup'} passHref>
-          <Button>
+          <Button variant='outline'>
             Clique aqui!
           </Button>
         </Link>

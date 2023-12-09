@@ -25,15 +25,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Globe2, ImagePlus, Tag, User, Users } from 'lucide-react';
 import * as z from 'zod';
 
-const CreatePostSchema = z.object({
-    content: z
-        .string()
-        .min(1, {message: 'Conteúdo da postagem não pode estar vazio'})
-        .max(500, {message: 'Postagem deve conter no máximo 500 caracteres'}),
-    visibility: z.enum(['public', 'friends', 'private']),
-    images: z.array(z.string().url())
-})
-
 type Props = {
     post?: Post;
     createFunction?: (params: CreatePostParams) => Promise<string | null>;
@@ -41,6 +32,18 @@ type Props = {
 }
 
 export const CreatePostForm = ({ onCreate, post, createFunction }: Props) => {
+    const CreatePostSchema = z.object({
+        content: z
+          .string()
+          .min(1, {message: 'Conteúdo da postagem não pode estar vazio'})
+          .max(500, {message: 'Postagem deve conter no máximo 500 caracteres'}),
+        visibility: z.enum(['public', 'friends', 'private']),
+        images: z.array(z.string().url())
+    }).refine((data) => data.content !== post?.Content, {
+        message: 'O conteúdo da postagem não mudou',
+        path: ['content'],
+    });
+
     const form = useForm<z.infer<typeof CreatePostSchema>>({
         resolver: zodResolver(CreatePostSchema),
         defaultValues: { content: post?.Content ?? '', visibility: post?.Visibility ?? 'public', images: post?.Images ?? [] },
@@ -77,12 +80,12 @@ export const CreatePostForm = ({ onCreate, post, createFunction }: Props) => {
             action={action}
             className='flex w-full max-w-[50em] flex-col gap-3 rounded-xl bg-card p-6 shadow-lg dark:border dark:border-input'
         >
-            <PostForm form={form}/>
+            <PostForm form={form} isEdit={!!post} />
         </form>
     )
 }
 
-const PostForm = ({form}: { form: UseFormReturn<CreatePostParams> }) => {
+const PostForm = ({ form, isEdit }: { form: UseFormReturn<CreatePostParams>; isEdit: boolean }) => {
     const { pending } = useFormStatus();
 
     return (
@@ -116,8 +119,8 @@ const PostForm = ({form}: { form: UseFormReturn<CreatePostParams> }) => {
                 <VisibilityDropdown form={form}/>
             </div>
 
-            <Button type='submit' isLoading={pending} className='rounded-xl text-lg'>
-                Enviar
+            <Button type='submit' isLoading={pending} className='rounded-xl text-lg' disabled={!form.formState.isValid}>
+                {isEdit ? 'Editar' : 'Criar'} postagem
             </Button>
         </Form>
     )
