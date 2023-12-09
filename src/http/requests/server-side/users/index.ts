@@ -40,7 +40,6 @@ export const UserRoutes = {
         try {
             const {data} = await fetchClient<SearchUsersResponse>(
                 `/users/search?search=${query}&page=${pagination.page}&pageSize=${pagination.pageSize}`,
-                {next: {tags: [`search-users-${query}`], revalidate: 60 * 5}},
             );
 
             return data.Users;

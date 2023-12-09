@@ -40,7 +40,7 @@ export const ServerSidePostRoutes = {
     try {
       const { data } = await fetchClient<GetHomeTimelineResponse>(
         `/timeline?page=${page}&pageSize=${pageSize}`,
-        { next: { tags: ['timeline'], revalidate: 60 } }
+        { next: { tags: ['timeline'], revalidate: 30 } }
       );
 
       return data.Posts;
@@ -55,7 +55,7 @@ export const ServerSidePostRoutes = {
     try {
       const { data } = await fetchClient<GetProfileTimelineResponse>(
         `/timeline/${nickname}?page=${page}&pageSize=${pageSize}`,
-        { next: { tags: ['timeline', nickname], revalidate: 60 } }
+        { next: { tags: ['timeline', nickname], revalidate: 60 * 2 } }
       );
 
       return data;
@@ -70,7 +70,6 @@ export const ServerSidePostRoutes = {
     try {
       const { data } = await fetchClient<SearchPostsResponse>(
         `/posts/search?search=${query}&page=${page}&pageSize=${pageSize}`,
-        { next: { tags: [`search-posts-${query}`], revalidate: 60 * 5 } }
       );
 
       return data.Posts;
