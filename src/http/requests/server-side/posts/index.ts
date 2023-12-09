@@ -33,6 +33,8 @@ export type CreatePostParams = {
   images: string[];
 }
 
+export type EditPostParams = CreatePostParams & { id: string };
+
 export type SearchPostsResponse = { Posts: Post[] };
 
 export const ServerSidePostRoutes = {
@@ -88,6 +90,33 @@ export const ServerSidePostRoutes = {
       });
 
       return response.success;
+    } catch (e) {
+      console.error(e);
+
+      return false;
+    }
+  },
+
+  editPost: async (params: EditPostParams): Promise<boolean> => {
+    try {
+      const response = await fetchClient<Post>('/posts', {
+        method: 'PUT',
+        body: JSON.stringify(params),
+      });
+
+      return response.success;
+    } catch (e) {
+      console.error(e);
+
+      return false;
+    }
+  },
+
+  deletePost: async (postId: string): Promise<boolean> => {
+    try {
+      await fetchClient(`/posts/${postId}`, { method: 'DELETE' });
+
+      return true;
     } catch (e) {
       console.error(e);
 

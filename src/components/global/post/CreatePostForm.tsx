@@ -4,6 +4,8 @@ import { useMemo } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useForm, UseFormReturn } from 'react-hook-form';
 
+import { Post } from '@/types/models/Post';
+
 import { createPostAction } from '@/actions/posts';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,14 +35,15 @@ const CreatePostSchema = z.object({
 })
 
 type Props = {
-    originalPostId?: string;
+    post?: Post;
+    createFunction?: (params: CreatePostParams) => Promise<string | null>;
     onCreate?: () => void;
 }
 
-export const CreatePostForm = ({ originalPostId, onCreate }: Props) => {
+export const CreatePostForm = ({ onCreate, post, createFunction }: Props) => {
     const form = useForm<z.infer<typeof CreatePostSchema>>({
         resolver: zodResolver(CreatePostSchema),
-        defaultValues: {content: '', visibility: 'public', images: []},
+        defaultValues: { content: post?.Content ?? '', visibility: post?.Visibility ?? 'public', images: post?.Images ?? [] },
     });
 
     const { toast } = useToast();
@@ -51,10 +54,14 @@ export const CreatePostForm = ({ originalPostId, onCreate }: Props) => {
 
         const values = form.getValues();
 
-        const error = await (createPostAction.bind(null, { originalPostId, ...values }))();
+        const error =
+          createFunction
+            ? await createFunction(values)
+            : await (createPostAction.bind(null, values))();
 
         if (!error) {
             onCreate?.();
+            form.reset();
             return;
         }
 
