@@ -92,7 +92,9 @@ const GetForm = ({ form }: { form: UseFormReturn<SignInProps> }) => {
         )}
       />
 
-      <Button type="submit" isLoading={pending}>Enviar</Button>
+      <Button type="submit" isLoading={pending} disabled={!form.formState.isValid}>
+        Entrar
+      </Button>
     </Form>
   )
 }

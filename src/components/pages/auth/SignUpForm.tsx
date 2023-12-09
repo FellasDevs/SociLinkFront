@@ -166,7 +166,9 @@ const GetForm = ({ form }: { form: UseFormReturn<SignUpProps & {confirmPassword:
         )}
       />
 
-      <Button type="submit" isLoading={pending}>Enviar</Button>
+      <Button type="submit" isLoading={pending} disabled={!form.formState.isValid}>
+        Cadastrar
+      </Button>
     </Form>
   )
 }

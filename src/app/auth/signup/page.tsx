@@ -16,7 +16,7 @@ export default async function SignUpPage() {
         <h3>Já possúi uma conta?</h3>
 
         <Link href={'/auth/signin'} passHref>
-          <Button>
+          <Button variant='outline'>
             Clique aqui!
           </Button>
         </Link>

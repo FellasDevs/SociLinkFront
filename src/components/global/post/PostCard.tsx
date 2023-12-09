@@ -20,9 +20,10 @@ import { Edit, MessageCircle, Send, ThumbsUp, Trash } from 'lucide-react';
 
 type Props = {
   post: Post;
+  isRepost?: boolean;
 }
 
-export const PostCard = ({ post }: Props) => {
+export const PostCard = ({ post, isRepost }: Props) => {
     return (
         <Card key={'post-card-' + post.Id} className="flex w-full flex-col gap-4 p-6 shadow-lg">
             <CardHeader>
@@ -34,7 +35,7 @@ export const PostCard = ({ post }: Props) => {
             </CardContent>
 
             <CardFooter>
-              <GetCardFooter post={post}/>
+              <GetCardFooter post={post} isRepost={isRepost} />
             </CardFooter>
         </Card>
     )
@@ -49,7 +50,7 @@ const GetCardContent = ({ post }: { post: Post }) => {
 
       { !!post.OriginalPost &&
         <div className='p-5'>
-          <PostCard post={post.OriginalPost} />
+          <PostCard post={post.OriginalPost} isRepost={true} />
         </div>
       }
     </>
@@ -76,7 +77,7 @@ const GetCardHeader = ({post}: { post: Post }) => {
             <UserAvatar user={post.User}/>
 
             <div>
-              <div>{post.User.Name}</div>
+              <div className='text-xl'>{post.User.Name}</div>
               <div>{timeSince(new Date(post.CreatedAt))}</div>
             </div>
           </Link>
@@ -112,7 +113,7 @@ const GetDeleteButton = () => {
   )
 }
 
-const GetCardFooter = ({ post }: { post: Post }) => {
+const GetCardFooter = ({ post, isRepost }: { post: Post; isRepost?: boolean }) => {
     const [ modalOpen, setModalOpen ] = useState(false);
 
     const createPost = useCallback(async (params: CreatePostParams) => {
@@ -122,11 +123,11 @@ const GetCardFooter = ({ post }: { post: Post }) => {
     return (
         <div className="flex w-full gap-4 [&>*]:w-1/3 [&_.action]:flex [&_.action]:gap-1 [&_.action]:text-lg">
             <form action={(post.Liked ? dislikePostAction : likePostAction).bind(null, post.Id)}>
-                <GetLikeButton post={post}/>
+                <GetLikeButton post={post} isRepost={isRepost}/>
             </form>
 
             <CommentDialog postId={post.Id}>
-                <Button type='button' className='action'>
+                <Button type='button' className='action' variant={isRepost ? 'secondary' : 'default'}>
                     <MessageCircle/>
                     <div className='hidden md:flex'>Comentar</div>
                 </Button>
@@ -134,7 +135,7 @@ const GetCardFooter = ({ post }: { post: Post }) => {
 
             <Dialog open={modalOpen} onOpenChange={setModalOpen}>
               <DialogTrigger asChild>
-                <Button type='button' className='action'>
+                <Button type='button' className='action' variant={isRepost ? 'secondary' : 'default'}>
                   <Send/>
                   <div className='hidden md:flex'>Compartilhar</div>
                 </Button>
@@ -148,11 +149,16 @@ const GetCardFooter = ({ post }: { post: Post }) => {
     )
 }
 
-const GetLikeButton = ({post}: { post: Post }) => {
+const GetLikeButton = ({ post, isRepost }: { post: Post; isRepost?: boolean }) => {
     const {pending} = useFormStatus();
 
     return (
-        <Button type='submit' isLoading={pending} className={`action w-full ${post.Liked ? 'opacity-80' : ''}`}>
+        <Button
+          type='submit'
+          isLoading={pending}
+          variant={isRepost ? 'secondary' : 'default'}
+          className={`action w-full ${post.Liked ? 'opacity-80' : ''}`}
+        >
             <ThumbsUp/>
             <div className='hidden md:flex'>{post.Liked ? 'Descurtir' : 'Curtir'}</div>
             {!!post.Likes ? <div>({post.Likes})</div> : null}

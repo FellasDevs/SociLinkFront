@@ -10,15 +10,12 @@ import { Label } from '@/components/ui/label';
 
 export const SearchArea = ({ initialSearch }: { initialSearch: string }) => {
   const pathName = usePathname();
-  // const initialParams = useSearchParams();
 
   const [ search, setSearch ] = useState(initialSearch);
 
   const newParams = useMemo(() => {
       const params = new URLSearchParams();
       search ? params.set('search', search) : params.delete('search');
-
-      // params.delete('page');
 
       return params.toString();
     },
@@ -36,7 +33,9 @@ export const SearchArea = ({ initialSearch }: { initialSearch: string }) => {
         onChange={(e) => setSearch(e.currentTarget.value)}
       />
 
-      <Button type='submit'>Pesquisar</Button>
+      <Button type='submit' disabled={search === initialSearch}>
+        Pesquisar
+      </Button>
     </form>
   )
 }

@@ -1,6 +1,7 @@
-import {GetFriendsParams, ServerSideFriendsRoutes} from "@/http/requests/server-side/friends";
 import Link from "next/link";
+
 import {FriendshipList} from "@/components/layout/friendships-bar/FriendshipList";
+import {GetFriendsParams, ServerSideFriendsRoutes} from "@/http/requests/server-side/friends";
 
 export const FriendsList = async () => {
     const params: GetFriendsParams = {
@@ -14,7 +15,7 @@ export const FriendsList = async () => {
         return (
             <div className='m-5 text-lg'>
                 <div>Parece que você ainda não tem nenhum amigo.</div>
-                <Link href='/search'>
+                <Link href='/search' className='font-bold underline'>
                     <div>Clique aqui para encontrar pessoas.</div>
                 </Link>
             </div>
