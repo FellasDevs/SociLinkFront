@@ -28,7 +28,10 @@ export const CommentForm = ({ action, isLoading, initialValue }: Props) => {
         defaultValues: { content: initialValue ?? '' },
     });
 
-    const onSubmit = form.handleSubmit(async (data) => await action(data.content));
+    const onSubmit = form.handleSubmit(async (data) => {
+        await action(data.content);
+        form.reset();
+    });
 
     return (
         <Form {...form}>
