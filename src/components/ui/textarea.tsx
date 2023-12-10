@@ -15,6 +15,11 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         )}
         ref={ref}
         {...props}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && e.ctrlKey) {
+            e.currentTarget.form?.requestSubmit();
+          }
+        }}
       />
     )
   }
