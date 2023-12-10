@@ -10,17 +10,17 @@ type Props = ButtonProps & {
     showFirstNameOnly?: boolean; 
 }
 
-export const UserButton = ({user, showFirstNameOnly, ...props}: Props) => {
+export const UserButton = ({user, showFirstNameOnly, className,  ...props}: Props) => {
     const name = showFirstNameOnly ? user.Name.split(' ')[0] : user.Name;
 
     return (
         <Link href={`/profile/` + user.Nickname} passHref>
-            <Button className='flex h-max w-full gap-1 px-2 py-1' {...props}>
+            <Button className={'flex h-max w-full gap-2 justify-center px-2 py-1' + className} {...props}>
                 <UserAvatar user={user}/>
 
-                <span className='mx-auto truncate text-lg'>
-          {name}
-        </span>
+                <span className='truncate text-lg'>
+                  {name}
+                </span>
             </Button>
         </Link>
     )
