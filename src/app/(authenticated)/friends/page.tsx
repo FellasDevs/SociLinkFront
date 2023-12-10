@@ -1,8 +1,15 @@
+import { Metadata } from 'next';
+
 import {FriendsArea} from "@/components/global/friends";
+
+export const metadata: Metadata = {
+  title: 'Amizades',
+  description: 'Página de amizades',
+}
 
 export default function FriendshipPage() {
     return (
-        <div className='flex-col flex mx-auto max-w-[50em] max-h-[100vw] p-8'>
+        <div className='mx-auto flex max-h-[100vw] max-w-[50em] flex-col p-8'>
             <FriendsArea/>
         </div>
     )

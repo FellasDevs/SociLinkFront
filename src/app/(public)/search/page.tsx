@@ -1,8 +1,15 @@
+import { Metadata } from 'next';
+
 import { PageProps } from '@/types/next/Page';
 
 import { SearchPosts } from '@/components/pages/search/SearchPosts';
 import { SearchUsers } from '@/components/pages/search/SearchUsers';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+export const metadata: Metadata = {
+  title: 'Pesquisa',
+  description: 'Pesquise por postagens e usuários',
+}
 
 export default function SearchPage({ searchParams }: PageProps) {
   return (

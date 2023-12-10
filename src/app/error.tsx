@@ -2,7 +2,13 @@
 
 import '../styles/globals.css';
 
+import { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Socilink',
+  description: 'Ocorreu um problema em sua requisição',
+}
 
 export default function ErrorPage() {
   return (

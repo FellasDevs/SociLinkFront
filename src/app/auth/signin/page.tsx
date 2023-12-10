@@ -1,9 +1,15 @@
+import { Metadata } from 'next';
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import Link from 'next/link';
 
 import { AuthErrorFallback } from '@/components/pages/auth/AuthErrorFallback';
 import { SignInForm } from '@/components/pages/auth/SignInForm';
 import { Button } from '@/components/ui/button';
+
+export const metadata: Metadata = {
+  title: 'Login',
+  description: 'Entre em sua conta',
+}
 
 export default async function SignInPage() {
   return (

@@ -1,6 +1,12 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import '../styles/globals.css';
+
+export const metadata: Metadata = {
+  title: 'Página não encontrada',
+  description: 'Página inexistente',
+}
 
 export default function ErrorPage() {
   return (
