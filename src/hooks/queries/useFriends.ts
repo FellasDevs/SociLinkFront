@@ -7,15 +7,19 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 export type UseFriendsProps = {
   initialData: Friendship[];
   params: GetFriendsParams;
-}
+};
 
-export const useFriends = ({ initialData, params: { page, pageSize } }: UseFriendsProps) => {
+export const useFriends = ({
+  initialData,
+  params: { page, pageSize, nickname },
+}: UseFriendsProps) => {
   return useInfiniteQuery({
     queryKey: ['friends'],
     queryFn: async ({ pageParam }): Promise<Friendship[]> => {
       const friends = await ClientSideFriendsRoutes.getFriends({
         page: pageParam,
         pageSize,
+        nickname,
       });
 
       return friends ?? [];
@@ -36,4 +40,4 @@ export const useFriends = ({ initialData, params: { page, pageSize } }: UseFrien
     enabled: !initialData.length,
     maxPages: 3,
   });
-}
+};

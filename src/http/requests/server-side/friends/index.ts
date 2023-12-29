@@ -9,7 +9,7 @@ export type AnswerFriendshipParams = {
 };
 
 export type GetFriendsParams = PaginationRequestParams & {
-  nickname?: string;
+  nickname: string;
 };
 
 export type GetFriendsResponse = { Friends: Friendship[] };

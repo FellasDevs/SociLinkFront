@@ -11,7 +11,9 @@ export const FriendsArea = () => {
     <>
       <div className="text-2xl">Amizades</div>
       <ScrollArea className="grow">
-        <Suspense></Suspense>
+        <Suspense>
+          <GetFriendsArea />
+        </Suspense>
       </ScrollArea>
 
       <Separator className="my-5" />
