@@ -11,9 +11,10 @@ import {
 type Props = {
   user: User;
   isSelf: boolean;
+  showCreatedAt?: boolean;
 };
 
-export const FriendsList = async ({ user, isSelf }: Props) => {
+export const FriendsList = async ({ user, isSelf, showCreatedAt }: Props) => {
   const params: GetFriendsParams = {
     page: 1,
     pageSize: 10,
@@ -39,5 +40,11 @@ export const FriendsList = async ({ user, isSelf }: Props) => {
     );
   }
 
-  return <FriendshipList initialData={friends} params={params} />;
+  return (
+    <FriendshipList
+      initialData={friends}
+      params={params}
+      showCreatedAt={showCreatedAt}
+    />
+  );
 };

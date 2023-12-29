@@ -7,7 +7,7 @@ import { Suspense } from 'react';
 import { User } from '@/types/models/User';
 
 import { UserAvatar } from '@/components/global/UserAvatar';
-import { FriendshipButton } from '@/components/pages/profile/FriendshipButton';
+import { FriendshipRequestButton } from '@/components/pages/profile/FriendshipRequestButton';
 import { UserName } from '@/components/pages/profile/UserName';
 import { Button } from '@/components/ui/button';
 import { ServerSideFriendsRoutes } from '@/http/requests/server-side/friends';
@@ -68,6 +68,10 @@ const GetFriendshipButton = async ({ user }: { user: User }) => {
   );
 
   return (
-    <FriendshipButton user={loggedUser} friend={user} friendship={friendship} />
+    <FriendshipRequestButton
+      user={loggedUser}
+      friend={user}
+      friendship={friendship}
+    />
   );
 };

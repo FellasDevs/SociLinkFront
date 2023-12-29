@@ -40,7 +40,7 @@ export default async function FriendsPage({ params: { nickname } }: Props) {
 
       <ScrollArea className="grow">
         <Suspense>
-          <FriendsList user={user} isSelf={isSelf} />
+          <FriendsList user={user} isSelf={isSelf} showCreatedAt={true} />
         </Suspense>
       </ScrollArea>
     </div>
