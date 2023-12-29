@@ -1,6 +1,7 @@
 'use server';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Suspense } from 'react';
 
 import { User } from '@/types/models/User';
@@ -8,6 +9,7 @@ import { User } from '@/types/models/User';
 import { UserAvatar } from '@/components/global/UserAvatar';
 import { FriendshipButton } from '@/components/pages/profile/FriendshipButton';
 import { UserName } from '@/components/pages/profile/UserName';
+import { Button } from '@/components/ui/button';
 import { ServerSideFriendsRoutes } from '@/http/requests/server-side/friends';
 import { UserWithFriendsCount } from '@/http/requests/server-side/posts';
 import { UserRoutes } from '@/http/requests/server-side/users';
@@ -34,17 +36,23 @@ export const ProfileHeader = async ({ user }: Props) => {
         ) : null}
       </div>
 
-      <div className="m-4 flex items-center gap-2">
-        <UserAvatar user={user} />
+      <div className="mx-6 my-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <UserAvatar user={user} />
 
-        <div className="mr-2">
-          <UserName userName={user.Name} canEdit={canEdit} />
-          <div>{user.Nickname}</div>
+          <div className="mr-2">
+            <UserName userName={user.Name} canEdit={canEdit} />
+            <div>{user.Nickname}</div>
+          </div>
+
+          <Suspense>
+            <GetFriendshipButton user={user} />
+          </Suspense>
         </div>
 
-        <Suspense>
-          <GetFriendshipButton user={user} />
-        </Suspense>
+        <Link href={'/friends/' + user.Nickname} passHref>
+          <Button variant="outline">Amizades: {user.FriendsCount}</Button>
+        </Link>
       </div>
     </div>
   );
