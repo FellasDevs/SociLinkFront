@@ -4,15 +4,14 @@ import { FriendsList } from '@/components/global/friends/FriendsList';
 import { FriendsRequestsList } from '@/components/global/friends/FriendsRequestsList';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { UserRoutes } from '@/http/requests/server-side/users';
 
 export const FriendsArea = () => {
   return (
     <>
       <div className="text-2xl">Amizades</div>
       <ScrollArea className="grow">
-        <Suspense>
-          <FriendsList />
-        </Suspense>
+        <Suspense></Suspense>
       </ScrollArea>
 
       <Separator className="my-5" />
@@ -25,4 +24,12 @@ export const FriendsArea = () => {
       </ScrollArea>
     </>
   );
+};
+
+const GetFriendsArea = async () => {
+  const self = await UserRoutes.getSelf();
+
+  if (!self) return null;
+
+  return <FriendsList user={self} isSelf={true} />;
 };
