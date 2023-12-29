@@ -1,21 +1,28 @@
 'use client';
 
-import {InfiniteScroll} from '@/components/global/InfiniteScroll';
-import {UserButton} from '@/components/global/UserButton';
-import {useFriends, UseFriendsProps} from '@/hooks/queries/useFriends';
+import { FriendshipButton } from '@/components/global/FriendshipButton';
+import { InfiniteScroll } from '@/components/global/InfiniteScroll';
+import { useFriends, UseFriendsProps } from '@/hooks/queries/useFriends';
 
-export const FriendshipList = (props: UseFriendsProps) => {
-    const {data: friendships, ...queryParams} = useFriends(props);
+type Props = UseFriendsProps & { showCreatedAt?: boolean };
 
-    return (
-        <InfiniteScroll {...queryParams}>
-            <div className='flex flex-col gap-2'>
-                {
-                    friendships?.pages.flat().map(({Id, Friend}) => (
-                        <UserButton key={Id} user={Friend} variant='secondary'/>
-                    ))
-                }
-            </div>
-        </InfiniteScroll>
-    )
-}
+export const FriendshipList = ({ showCreatedAt, ...params }: Props) => {
+  const { data: friendships, ...queryParams } = useFriends(params);
+
+  return (
+    <InfiniteScroll {...queryParams}>
+      <div className="flex flex-col gap-2">
+        {friendships?.pages
+          .flat()
+          .map((friendship) => (
+            <FriendshipButton
+              key={friendship.Id}
+              friendship={friendship}
+              showCreatedAt={showCreatedAt}
+              variant="secondary"
+            />
+          ))}
+      </div>
+    </InfiniteScroll>
+  );
+};
