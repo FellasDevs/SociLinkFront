@@ -9,6 +9,7 @@ type FriendshipButtonProps = ButtonProps & {
   friendship: Friendship;
   showCreatedAt?: boolean;
 };
+
 export const FriendshipButton = ({
   friendship,
   showCreatedAt,
@@ -16,15 +17,16 @@ export const FriendshipButton = ({
 }: FriendshipButtonProps) => {
   return (
     <Link href={`/profile/` + friendship.Friend.Nickname} passHref>
-      <Button className="flex h-max w-full gap-1 px-2 py-1" {...props}>
-        <UserAvatar user={friendship.Friend} />
+      <Button
+        className="flex h-max w-full justify-start gap-3 px-2 py-1"
+        {...props}
+      >
+        <UserAvatar user={friendship.Friend} className="h-10 w-10" />
 
-        <span className="mx-auto truncate text-lg">
-          {friendship.Friend.Name}
-        </span>
+        <span className="truncate text-sm">{friendship.Friend.Name}</span>
 
         {showCreatedAt && (
-          <span>
+          <span className="w-fit text-sm">
             Amigos desde {new Date(friendship.CreatedAt).toLocaleDateString()}
           </span>
         )}

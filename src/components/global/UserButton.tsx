@@ -19,10 +19,13 @@ export const UserButton = ({
 
   return (
     <Link href={`/profile/` + user.Nickname} passHref>
-      <Button className="flex h-max w-full gap-1 px-2 py-1" {...props}>
-        <UserAvatar user={user} />
+      <Button
+        className="flex h-max w-full justify-start gap-3 px-2 py-1"
+        {...props}
+      >
+        <UserAvatar user={user} className="h-12 w-12" />
 
-        <span className="mx-auto truncate text-lg">{name}</span>
+        <span className="truncate">{name}</span>
       </Button>
     </Link>
   );

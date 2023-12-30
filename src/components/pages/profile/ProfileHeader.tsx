@@ -56,7 +56,7 @@ export const ProfileHeader = async ({ user }: Props) => {
             canEdit={canEdit}
             action={profilePicAction}
           >
-            <UserAvatar user={user} />
+            <UserAvatar user={user} className="h-16 w-16" />
           </GetImageUploadModal>
 
           <div className="mr-2">

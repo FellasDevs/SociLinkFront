@@ -5,11 +5,12 @@ import { UserCircle } from 'lucide-react';
 
 type Props = {
   user: user;
+  className?: string;
 };
 
-export const UserAvatar = ({ user }: Props) => {
+export const UserAvatar = ({ user, className = '' }: Props) => {
   return (
-    <Avatar>
+    <Avatar className={className}>
       {user.Picture ? (
         <AvatarImage src={user.Picture} />
       ) : (
