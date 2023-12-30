@@ -9,10 +9,8 @@ import { Post } from '@/types/models/Post';
 import { CommentDialog } from './comment-dialog';
 
 import {
-  createPostAction,
   deletePostAction,
   dislikePostAction,
-  editPostAction,
   likePostAction,
 } from '@/actions/posts';
 import { CreatePostForm } from '@/components/global/post/CreatePostForm';
@@ -25,7 +23,6 @@ import {
   CardHeader,
 } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { CreatePostParams } from '@/http/requests/server-side/posts';
 import { timeSince } from '@/utils/dateToTime';
 import { Edit, MessageCircle, Send, ThumbsUp, Trash } from 'lucide-react';
 
@@ -72,13 +69,6 @@ const GetCardContent = ({ post }: { post: Post }) => {
 const GetCardHeader = ({ post }: { post: Post }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const editPost = useCallback(
-    (params: CreatePostParams) => {
-      return editPostAction.bind(null, { ...params, id: post.Id })();
-    },
-    [post]
-  );
-
   const deletePost = useCallback(async () => {
     const confirmed = confirm('Tem certeza que deseja excluir esta postagem?');
     if (!confirmed) return;
@@ -115,7 +105,7 @@ const GetCardHeader = ({ post }: { post: Post }) => {
           <DialogContent className="min-w-[50em] p-3 pt-10">
             <CreatePostForm
               post={post}
-              createFunction={editPost}
+              isEdit={true}
               onCreate={() => setModalOpen(false)}
             />
           </DialogContent>
@@ -153,16 +143,6 @@ const GetCardFooter = ({
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const createPost = useCallback(
-    async (params: CreatePostParams) => {
-      return await createPostAction.bind(null, {
-        ...params,
-        originalPostId: post.Id,
-      })();
-    },
-    [post]
-  );
-
   return (
     <div className="flex w-full gap-4 [&>*]:w-1/3 [&_.action]:flex [&_.action]:gap-1 [&_.action]:text-lg">
       <form
@@ -199,7 +179,7 @@ const GetCardFooter = ({
 
         <DialogContent className="min-w-[50em] p-3 pt-10">
           <CreatePostForm
-            createFunction={createPost}
+            originalPostId={post.Id}
             onCreate={() => setModalOpen(false)}
           />
         </DialogContent>
