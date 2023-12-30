@@ -1,13 +1,19 @@
-'use server';
-
-import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
 import { User } from '@/types/models/User';
 
+import {
+  sendBannerPictureAction,
+  sendProfilePictureAction,
+} from '@/actions/profile';
 import { UserAvatar } from '@/components/global/UserAvatar';
 import { FriendshipRequestButton } from '@/components/pages/profile/FriendshipRequestButton';
+import {
+  ImageUploadModal,
+  ImageUploadModalProps,
+} from '@/components/pages/profile/ImageUploadModal';
+import { ProfileBanner } from '@/components/pages/profile/ProfileBanner';
 import { UserName } from '@/components/pages/profile/UserName';
 import { Button } from '@/components/ui/button';
 import { ServerSideFriendsRoutes } from '@/http/requests/server-side/friends';
@@ -23,22 +29,35 @@ export const ProfileHeader = async ({ user }: Props) => {
 
   const canEdit = loggedUser?.Id === user.Id;
 
+  const profilePicAction = async (formData: FormData) => {
+    'use server';
+    return await sendProfilePictureAction(formData, user.Picture);
+  };
+
+  const bannerAction = async (formData: FormData) => {
+    'use server';
+    return await sendBannerPictureAction(formData, user.Banner);
+  };
+
   return (
     <div>
-      <div className="relative h-[20em] w-full bg-cyan-800">
-        {user.Banner ? (
-          <Image
-            src={user.Banner}
-            fill
-            className="object-cover"
-            alt="Profile banner"
-          />
-        ) : null}
-      </div>
+      <GetImageUploadModal
+        title="Enviar foto de perfil"
+        canEdit={canEdit}
+        action={bannerAction}
+      >
+        <ProfileBanner banner={user.Banner} />
+      </GetImageUploadModal>
 
       <div className="mx-6 my-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <UserAvatar user={user} />
+          <GetImageUploadModal
+            title="Enviar imagem do banner"
+            canEdit={canEdit}
+            action={profilePicAction}
+          >
+            <UserAvatar user={user} className="h-16 w-16" />
+          </GetImageUploadModal>
 
           <div className="mr-2">
             <UserName userName={user.Name} canEdit={canEdit} />
@@ -73,5 +92,22 @@ const GetFriendshipButton = async ({ user }: { user: User }) => {
       friend={user}
       friendship={friendship}
     />
+  );
+};
+
+const GetImageUploadModal = ({
+  canEdit,
+  children,
+  action,
+  title,
+}: ImageUploadModalProps & {
+  canEdit: boolean;
+}) => {
+  if (!canEdit) return children;
+
+  return (
+    <ImageUploadModal action={action} title={title}>
+      <div className="cursor-pointer hover:opacity-70">{children}</div>
+    </ImageUploadModal>
   );
 };

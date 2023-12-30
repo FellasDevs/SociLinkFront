@@ -19,7 +19,7 @@ export const FriendsArea = () => {
       <Separator className="my-5" />
 
       <div className="text-2xl">Solicitações</div>
-      <ScrollArea className="shrink">
+      <ScrollArea className="min-h-[7em] shrink">
         <Suspense>
           <FriendsRequestsList />
         </Suspense>

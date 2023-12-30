@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 
 import { FriendsList } from '@/components/global/friends/FriendsList';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { UserRoutes } from '@/http/requests/server-side/users';
 
 export const metadata: Metadata = {
@@ -38,11 +37,9 @@ export default async function FriendsPage({ params: { nickname } }: Props) {
         {isSelf ? 'Meus amigos' : `Amizades de ${user.Name}`}
       </div>
 
-      <ScrollArea className="grow">
-        <Suspense>
-          <FriendsList user={user} isSelf={isSelf} showCreatedAt={true} />
-        </Suspense>
-      </ScrollArea>
+      <Suspense>
+        <FriendsList user={user} isSelf={isSelf} showCreatedAt={true} />
+      </Suspense>
     </div>
   );
 }
