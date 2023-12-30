@@ -16,6 +16,8 @@ export type EditUserParams = {
   name?: string;
   nickname?: string;
   birthdate?: Date;
+  picture?: string;
+  banner?: string;
 };
 
 export type SearchUsersResponse = { Users: User[] };

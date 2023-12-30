@@ -1,8 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['static.wikia.nocookie.net'],
-  }
-}
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname:
+          process.env.S3_BUCKET +
+          '.s3.' +
+          process.env.S3_REGION +
+          '.amazonaws.com',
+        port: '',
+        pathname: '**',
+      },
+    ],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
