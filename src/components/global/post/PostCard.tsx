@@ -13,7 +13,7 @@ import {
   dislikePostAction,
   likePostAction,
 } from '@/actions/posts';
-import { CreatePostForm } from '@/components/global/post/CreatePostForm';
+import { CreatePostForm } from '@/components/global/post/create-post-form';
 import { UserAvatar } from '@/components/global/UserAvatar';
 import { Button } from '@/components/ui/button';
 import {

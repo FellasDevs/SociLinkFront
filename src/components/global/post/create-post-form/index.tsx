@@ -1,22 +1,16 @@
 'use client';
 
-import { useMemo } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useForm, UseFormReturn } from 'react-hook-form';
 
 import { Post } from '@/types/models/Post';
 
+import { PostImagesDropdown } from './PostImagesDropdown';
+import { PostImagesPreview } from './PostImagesPreview';
+import { VisibilityDropdown } from './PostVisibilityDropdown';
+
 import { createPostAction, editPostAction } from '@/actions/posts';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import {
   Form,
   FormControl,
@@ -28,7 +22,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { CreatePostParams } from '@/http/requests/server-side/posts';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Globe2, ImagePlus, Tag, User, Users } from 'lucide-react';
+import { Tag } from 'lucide-react';
 import * as z from 'zod';
 
 type Props = {
@@ -37,6 +31,10 @@ type Props = {
   originalPostId?: string;
   onCreate?: () => void;
 };
+
+export type CreatePostFormProps = UseFormReturn<
+  Omit<CreatePostParams, 'images'> & { images?: FileList }
+>;
 
 export const CreatePostForm = ({
   onCreate,
@@ -51,7 +49,7 @@ export const CreatePostForm = ({
         .min(1, { message: 'Conteúdo da postagem não pode estar vazio' })
         .max(500, { message: 'Postagem deve conter no máximo 500 caracteres' }),
       visibility: z.enum(['public', 'friends', 'private']),
-      images: z.array(z.string().url()),
+      images: z.instanceof(FileList).optional(),
     })
     .refine((data) => data.content !== post?.Content, {
       message: 'O conteúdo da postagem não mudou',
@@ -63,7 +61,7 @@ export const CreatePostForm = ({
     defaultValues: {
       content: post?.Content ?? '',
       visibility: post?.Visibility ?? 'public',
-      images: post?.Images ?? [],
+      images: undefined,
     },
   });
 
@@ -75,10 +73,51 @@ export const CreatePostForm = ({
 
     const values = form.getValues();
 
+    const imageStrings: string[] = [];
+
+    if (values.images && !!values.images.length) {
+      if (values.images.length > 2) {
+        toast({
+          title: 'Ocorreu um erro ao criar a sua postagem',
+          description: 'Máximo de 2 imagens por postagem',
+          variant: 'destructive',
+        });
+
+        return;
+      }
+
+      for (let i = 0; i < values.images.length; i++) {
+        const file = values.images.item(i)!;
+
+        if (file.size > 2000000) {
+          toast({
+            title: 'Ocorreu um erro ao criar a sua postagem',
+            description: `Imagem ${i + 1} muito grande! (Máximo de 2MB)`,
+            variant: 'destructive',
+          });
+
+          return;
+        }
+
+        const arrayBuffer = await file.arrayBuffer();
+
+        imageStrings.push(new Uint8Array(arrayBuffer).toString());
+      }
+    }
+
     const error =
       isEdit && !!post
-        ? await editPostAction.bind(null, { ...values, id: post.Id })()
-        : await createPostAction.bind(null, { ...values, originalPostId })();
+        ? await editPostAction.bind(null, {
+            ...values,
+            images: imageStrings,
+            id: post.Id,
+            lastPictures: post.Images,
+          })()
+        : await createPostAction.bind(null, {
+            ...values,
+            images: imageStrings,
+            originalPostId,
+          })();
 
     if (!error) {
       onCreate?.();
@@ -107,7 +146,7 @@ const PostForm = ({
   form,
   isEdit,
 }: {
-  form: UseFormReturn<CreatePostParams>;
+  form: CreatePostFormProps;
   isEdit: boolean;
 }) => {
   const { pending } = useFormStatus();
@@ -131,10 +170,10 @@ const PostForm = ({
         )}
       />
 
+      <PostImagesPreview form={form} />
+
       <div className="flex justify-around rounded-xl border-2 border-input p-1">
-        <Button type="button" variant="ghost">
-          <ImagePlus />
-        </Button>
+        <PostImagesDropdown form={form} />
 
         <Button type="button" variant="ghost">
           <Tag />
@@ -152,70 +191,5 @@ const PostForm = ({
         {isEdit ? 'Editar' : 'Criar'} postagem
       </Button>
     </Form>
-  );
-};
-
-const VisibilityDropdown = ({
-  form,
-}: {
-  form: UseFormReturn<CreatePostParams>;
-}) => {
-  const { visibility } = form.watch();
-
-  const DropDownIcon = useMemo(() => {
-    switch (visibility) {
-      case 'public':
-        return <Globe2 />;
-      case 'friends':
-        return <Users />;
-      case 'private':
-        return <User />;
-    }
-  }, [visibility]);
-
-  return (
-    <FormField
-      control={form.control}
-      name="visibility"
-      render={({ field }) => (
-        <FormItem>
-          <FormControl>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button type="button" variant="ghost">
-                  {DropDownIcon}
-                </Button>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>Visibilidade da postagem</DropdownMenuLabel>
-
-                <DropdownMenuSeparator />
-
-                <DropdownMenuRadioGroup
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
-                  <DropdownMenuRadioItem value="public" className="flex gap-3">
-                    <Globe2 />
-                    <span>Publico</span>
-                  </DropdownMenuRadioItem>
-
-                  <DropdownMenuRadioItem value="friends" className="flex gap-3">
-                    <Users />
-                    <span>Amigos</span>
-                  </DropdownMenuRadioItem>
-
-                  <DropdownMenuRadioItem value="private" className="flex gap-3">
-                    <User />
-                    <span>Privado</span>
-                  </DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </FormControl>
-        </FormItem>
-      )}
-    />
   );
 };
