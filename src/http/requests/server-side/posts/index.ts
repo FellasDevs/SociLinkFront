@@ -8,21 +8,23 @@ export type GetHomeTimelineParams = PaginationRequestParams;
 
 export type GetHomeTimelineResponse = {
   Posts: Post[];
-}
+};
 
 export type GetProfileTimelineParams = PaginationRequestParams & {
   nickname: string;
-}
+};
+
+export type UserWithFriendsCount = User & { FriendsCount: number };
 
 export type GetProfileTimelineResponse = {
   Posts: Post[];
-  User: User;
-}
+  User: UserWithFriendsCount;
+};
 
 export type SearchPostsParams = {
   pagination: PaginationRequestParams;
   query: string;
-}
+};
 
 export type PostVisibility = 'public' | 'friends' | 'private';
 
@@ -31,14 +33,17 @@ export type CreatePostParams = {
   originalPostId?: string;
   visibility: PostVisibility;
   images: string[];
-}
+};
 
 export type EditPostParams = CreatePostParams & { id: string };
 
 export type SearchPostsResponse = { Posts: Post[] };
 
 export const ServerSidePostRoutes = {
-  getOwnTimeline: async ({ page, pageSize }: GetHomeTimelineParams): Promise<Post[] | null> => {
+  getOwnTimeline: async ({
+    page,
+    pageSize,
+  }: GetHomeTimelineParams): Promise<Post[] | null> => {
     try {
       const { data } = await fetchClient<GetHomeTimelineResponse>(
         `/timeline?page=${page}&pageSize=${pageSize}`,
@@ -53,7 +58,11 @@ export const ServerSidePostRoutes = {
     }
   },
 
-  getUserTimeline: async ({ nickname, page, pageSize }: GetProfileTimelineParams): Promise<GetProfileTimelineResponse | null> => {
+  getUserTimeline: async ({
+    nickname,
+    page,
+    pageSize,
+  }: GetProfileTimelineParams): Promise<GetProfileTimelineResponse | null> => {
     try {
       const { data } = await fetchClient<GetProfileTimelineResponse>(
         `/timeline/${nickname}?page=${page}&pageSize=${pageSize}`,
@@ -68,10 +77,13 @@ export const ServerSidePostRoutes = {
     }
   },
 
-  searchPosts: async ({ query, pagination: { page, pageSize } }: SearchPostsParams): Promise<Post[] | null> => {
+  searchPosts: async ({
+    query,
+    pagination: { page, pageSize },
+  }: SearchPostsParams): Promise<Post[] | null> => {
     try {
       const { data } = await fetchClient<SearchPostsResponse>(
-        `/posts/search?search=${query}&page=${page}&pageSize=${pageSize}`,
+        `/posts/search?search=${query}&page=${page}&pageSize=${pageSize}`
       );
 
       return data.Posts;
@@ -131,4 +143,4 @@ export const ServerSidePostRoutes = {
   dislikePost: async (postId: string) => {
     await fetchClient(`/posts/like/${postId}`, { method: 'DELETE' });
   },
-}
+};

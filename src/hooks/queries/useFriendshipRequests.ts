@@ -1,15 +1,18 @@
 import { Friendship } from '@/types/models/Friendship';
 
 import { ClientSideFriendsRoutes } from '@/http/requests/client-side/friends';
-import { GetFriendsParams } from '@/http/requests/server-side/friends';
+import { GetFriendshipRequestsParams } from '@/http/requests/server-side/friends';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 export type UseFriendshipRequestsProps = {
   initialData: Friendship[];
-  params: GetFriendsParams;
-}
+  params: GetFriendshipRequestsParams;
+};
 
-export const useFriendshipRequests = ({ initialData, params: { page, pageSize } }: UseFriendshipRequestsProps) => {
+export const useFriendshipRequests = ({
+  initialData,
+  params: { page, pageSize },
+}: UseFriendshipRequestsProps) => {
   return useInfiniteQuery({
     queryKey: ['friendship-requests'],
     queryFn: async ({ pageParam }): Promise<Friendship[]> => {
@@ -36,4 +39,4 @@ export const useFriendshipRequests = ({ initialData, params: { page, pageSize } 
     enabled: !initialData.length,
     maxPages: 3,
   });
-}
+};
