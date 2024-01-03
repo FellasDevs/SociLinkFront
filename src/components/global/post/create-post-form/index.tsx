@@ -76,10 +76,10 @@ export const CreatePostForm = ({
     const imageStrings: string[] = [];
 
     if (values.images && !!values.images.length) {
-      if (values.images.length > 2) {
+      if (values.images.length > 10) {
         toast({
           title: 'Ocorreu um erro ao criar a sua postagem',
-          description: 'Máximo de 2 imagens por postagem',
+          description: 'Máximo de 10 imagens por postagem',
           variant: 'destructive',
         });
 
