@@ -50,14 +50,13 @@ const sendImageToAws = async (
   folderName: string,
   update: (newImageName: string) => Promise<void>
 ): Promise<string> => {
-  const inputData = formData.get('file-input') as File;
+  const file = formData.get('file-input') as File;
 
-  if (!inputData || inputData.size === 0) return 'Nenhum arquivo selecionado';
+  if (!file || file.size === 0) return 'Nenhum arquivo selecionado';
 
-  if (inputData.size > 2000000) return 'Imagem muito grande! (Máximo de 2MB)';
+  if (file.size > 2000000) return 'Imagem muito grande! (Máximo de 2MB)';
 
-  const arrayBuffer = await inputData.arrayBuffer();
-  const file = new Uint8Array(arrayBuffer);
+  const fileBuffer = new Uint8Array(await file.arrayBuffer());
 
   const client = new S3Client({
     credentials: {
@@ -67,7 +66,8 @@ const sendImageToAws = async (
     region: process.env.S3_REGION,
   });
 
-  const newImageName = randomUUID().toString() + '.jpg';
+  const newImageName =
+    randomUUID().toString() + '.' + file.name.split('.').pop();
 
   try {
     if (!!lastPicture) {
@@ -83,7 +83,7 @@ const sendImageToAws = async (
       new PutObjectCommand({
         Bucket: process.env.S3_BUCKET,
         Key: folderName + '/' + newImageName,
-        Body: file,
+        Body: fileBuffer,
         ACL: 'public-read',
       })
     );
