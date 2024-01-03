@@ -13,6 +13,7 @@ import {
   dislikePostAction,
   likePostAction,
 } from '@/actions/posts';
+import { Carousel } from '@/components/global/Carousel';
 import { CreatePostForm } from '@/components/global/post/create-post-form';
 import { UserAvatar } from '@/components/global/UserAvatar';
 import { Button } from '@/components/ui/button';
@@ -57,10 +58,12 @@ const GetCardContent = ({ post }: { post: Post }) => {
     <>
       <p className="text-xl">{post.Content}</p>
 
-      {!!post.OriginalPost && (
+      {!!post.OriginalPost ? (
         <div className="p-5">
           <PostCard post={post.OriginalPost} isRepost={true} />
         </div>
+      ) : (
+        <Carousel images={post.Images} />
       )}
     </>
   );
