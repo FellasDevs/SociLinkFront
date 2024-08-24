@@ -34,10 +34,12 @@ export const Carousel = ({ images }: Props) => {
       </Button>
 
       <div className="flex h-full max-w-min flex-col gap-2 p-4">
-        <Image
+        <img
           src={images[selectedImage]}
           alt={'Imagem não encontrada'}
           className="object-fit h-full w-full object-contain"
+          height="100"
+          width="100"
         />
 
         <div className="flex justify-center">

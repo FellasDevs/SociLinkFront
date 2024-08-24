@@ -15,7 +15,10 @@ import {
 } from '@aws-sdk/client-s3';
 import { randomUUID } from 'node:crypto';
 
-export type EditPostActionParams = EditPostParams & {
+type CreatePostActionParams = Omit<CreatePostParams, 'images'> & {
+  images?: string[];
+};
+type EditPostActionParams = EditPostParams & {
   lastPictures?: string[];
 };
 
@@ -98,7 +101,7 @@ const deleteImagesFromAws = async (images: string[]): Promise<string> => {
 };
 
 export const createPostAction = async (
-  params: CreatePostParams
+  params: CreatePostActionParams
 ): Promise<string | null> => {
   const imageUrls: string[] = [];
 

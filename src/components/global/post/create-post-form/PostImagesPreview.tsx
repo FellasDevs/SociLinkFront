@@ -26,7 +26,7 @@ export const PostImagesPreview = ({ form }: { form: CreatePostFormProps }) => {
           className="h-20 w-20 overflow-hidden rounded-xl"
         >
           <img
-            src={image}
+            src={image || ''}
             className="h-full w-full object-cover"
             alt="Imagem da postagem"
           />

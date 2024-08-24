@@ -1,5 +1,6 @@
 'use client';
 
+import { images } from 'next/dist/build/webpack/config/blocks/images';
 import { useFormStatus } from 'react-dom';
 import { useForm, UseFormReturn } from 'react-hook-form';
 
